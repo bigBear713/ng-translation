@@ -1,9 +1,12 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "25cd20b0-b00b-4a74-9b8e-07f9a492e269"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-translation": {
+    "ng-translation-demo": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ng-translation",
+            "outputPath": "dist/ng-translation-demo",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ng-translation:build:production"
+              "browserTarget": "ng-translation-demo:build:production"
             },
             "development": {
-              "browserTarget": "ng-translation:build:development"
+              "browserTarget": "ng-translation-demo:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ng-translation:build"
+            "browserTarget": "ng-translation-demo:build"
           }
         },
         "test": {
@@ -105,7 +108,38 @@
           }
         }
       }
+    },
+    "ng-translation": {
+      "projectType": "library",
+      "root": "projects/ng-translation",
+      "sourceRoot": "projects/ng-translation/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ng-translation/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-translation/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ng-translation/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng-translation/src/test.ts",
+            "tsConfig": "projects/ng-translation/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-translation/karma.conf.js"
+          }
+        }
+      }
     }
   },
-  "defaultProject": "ng-translation"
+  "defaultProject": "ng-translation-demo"
 }
