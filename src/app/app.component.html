@@ -1,1 +1,17 @@
+<button (click)="onChangeLang()">更改语言</button>
+<div>
+  {{'title'| ngTranslation}}
+  {{'content.helloWorld'| ngTranslation}}
+</div>
+
+<div>
+  get title():
+  {{title}}
+</div>
+
+<div>
+  title$|async:
+  {{title$|async}}
+</div>
+
 <ng-translation></ng-translation>
