@@ -1,4 +1,7 @@
-import { NgTranslationService } from 'ng-translation';
+import {
+    NgTranslationLangEnum,
+    NgTranslationService
+} from 'ng-translation';
 import { Observable } from 'rxjs';
 
 import {
@@ -30,8 +33,8 @@ export class AppComponent implements OnInit {
 
   onChangeLang(): void {
     this.translationService.changeLang(
-      this.translationService.lang === 'en' ? 'zh-CN' : 'en'
-    );
+      this.translationService.lang === NgTranslationLangEnum.EN ? NgTranslationLangEnum.ZH_CN : NgTranslationLangEnum.EN
+    ).toPromise();
   }
 
 }

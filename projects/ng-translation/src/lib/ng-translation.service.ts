@@ -1,42 +1,73 @@
 import { get } from 'lodash-es';
 import {
     BehaviorSubject,
-    Observable
+    from,
+    Observable,
+    of,
+    Subject
 } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {
+    map,
+    retry,
+    switchMap,
+    tap
+} from 'rxjs/operators';
 
-import { Injectable } from '@angular/core';
+import {
+    Inject,
+    Injectable
+} from '@angular/core';
+
+import {
+    NG_TRANS_DEFAULT_LANG,
+    NG_TRANS_LOADER
+} from './constants';
+import {
+    INgTranslationLoader,
+    NgTranslationLangEnum
+} from './models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NgTranslationService {
 
-  lang$ = new BehaviorSubject<string>('en');
+  private lang$ = new BehaviorSubject<string>(NgTranslationLangEnum.EN);
 
-  private translations: { [key: string]: any } = {
-    en: {
-      title: 'title',
-      content: {
-        'helloWorld': 'hello world'
-      }
-    },
-    'zh-CN': {
-      title: '标题',
-      content: {
-        'helloWorld': '你好，世界'
-      }
-    }
-  };
+  private loadDefaultOver$ = new BehaviorSubject<boolean>(false);
+
+  private loadLangTrans$ = new Subject<boolean>();
+
+  private translations: { [key: string]: Object } = {};
 
   get lang(): string {
     return this.lang$.value;
   }
 
-  constructor() { }
+  get loadDefaultOver(): boolean {
+    return this.loadDefaultOver$.value;
+  }
 
-  changeLang(lang: string): void {
+  constructor(
+    @Inject(NG_TRANS_DEFAULT_LANG) transDefaultLang: string,
+    @Inject(NG_TRANS_LOADER) private transLoader: INgTranslationLoader,
+  ) {
+    this.lang$.next(transDefaultLang);
+    this.loadDefaultTrans();
+  }
+
+  changeLang(lang: string): Observable<boolean> {
     this.lang$.next(lang);
+
+    if (this.translations[lang]) {
+      return of(true);
+    }
+
+    if (this.transLoader[lang]) {
+      return this.loadLangTrans();
+    }
+
+    return of(false);
   }
 
   translationSync(key: string): string {
@@ -45,7 +76,40 @@ export class NgTranslationService {
 
   translationAsync(key: string): Observable<string> {
     return this.lang$.pipe(
+      switchMap(_ => this.translations[this.lang] ? of(true) : this.loadLangTrans$),
       map(_ => this.translationSync(key))
+    );
+  }
+
+  subscribeLoadDefaultOverChange(): Observable<boolean> {
+    return this.loadDefaultOver ? of(true) : this.loadDefaultOver$.asObservable();
+  }
+
+  subscribeLangChange(): Observable<string> {
+    return this.lang$.asObservable();
+  }
+
+  private loadDefaultTrans(): void {
+    this.loadTrans().subscribe(_ => {
+      this.loadDefaultOver$.next(true);
+      this.loadDefaultOver$.complete();
+    });
+  }
+
+  private loadLangTrans(): Observable<boolean> {
+    return this.loadTrans().pipe(
+      map(_ => {
+        this.loadLangTrans$.next(true);
+        return true;
+      })
+    );
+  }
+
+  private loadTrans() {
+    return from(this.transLoader[this.lang]()).pipe(
+      tap(trans => this.translations[this.lang] = trans),
+      // TODO: will retry 5 times?
+      retry(5)
     );
   }
 
