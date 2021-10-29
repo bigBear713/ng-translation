@@ -41,7 +41,7 @@ export class NgTranslationPipe implements PipeTransform, OnDestroy {
   }
 
   private subscribeLangChange(): void {
-    this.translationService.lang$.pipe(
+    this.translationService.subscribeLangChange().pipe(
       takeUntil(this.destroy$)
     ).subscribe(_ => {
       this.latestValue = this.translationService.translationSync(this.key);
