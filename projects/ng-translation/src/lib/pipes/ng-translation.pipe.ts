@@ -10,8 +10,8 @@ import {
     PipeTransform
 } from '@angular/core';
 
-import { INgTranslationParams } from './models';
-import { NgTranslationService } from './ng-translation.service';
+import { INgTranslationParams } from '../models';
+import { NgTranslationService } from '../ng-translation.service';
 
 @Pipe({
   name: 'ngTranslation',

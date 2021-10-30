@@ -24,7 +24,7 @@ import { trans } from './localization/zh-CN/translations';
   providers: [
     {
       provide: NG_TRANS_DEFAULT_LANG,
-      useValue: NgTranslationLangEnum.ZH_CN,
+      useValue: NgTranslationLangEnum.EN,
     },
     {
       provide: NG_TRANS_LOADER,

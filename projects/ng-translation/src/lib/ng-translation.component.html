@@ -1,0 +1,33 @@
+<p>
+  ng-translation works!
+</p>
+<ng-container *ngTemplateOutlet="sentenceListTmp;context:{list:sentenceList}"></ng-container>
+
+
+<ng-template #sentenceListTmp let-list="list">
+  <ng-container *ngFor="let item of list">
+    <ng-container [ngSwitch]="getSentenceItemType(item)">
+      <ng-container *ngSwitchCase="SentenceItemEnum.STR" [ngTemplateOutlet]="strTmp"
+        [ngTemplateOutletContext]="{content:item}">
+      </ng-container>
+      <ng-container *ngSwitchCase="SentenceItemEnum.COMP" [ngTemplateOutlet]="compTmp"
+        [ngTemplateOutletContext]="{content:item}">
+      </ng-container>
+      <ng-container *ngSwitchCase="SentenceItemEnum.MULTI_COMP" [ngTemplateOutlet]="multiCompTmp"
+        [ngTemplateOutletContext]="{content:item}">
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #strTmp let-content="content">{{content|ngTranslationContent:params}}</ng-template>
+
+<ng-template #compTmp let-data="content">
+  <ng-container *ngTemplateOutlet="components[data.index];context:{content:data.content|ngTranslationContent:params}">
+  </ng-container>
+</ng-template>
+
+<ng-template #multiCompTmp let-data="content">
+  <ng-container *ngTemplateOutlet="components[data.index];context:{content:sentenceListTmp,list:data.list}">
+  </ng-container>
+</ng-template>

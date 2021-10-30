@@ -75,6 +75,29 @@ export class NgTranslationService {
     return of(false);
   }
 
+  handleSentenceWithParams(trans: string, params: INgTranslationParams): string {
+    const keys = Object.keys(params);
+
+    if (!keys.length) {
+      return trans;
+    }
+
+    const keysUUID: { [key: string]: string } = {};
+    keys.forEach(key => keysUUID[key] = uuidv4());
+
+    let transTemp = trans;
+    keys.forEach(key => {
+      transTemp = this.handleSentence(transTemp, `{{${key}}}`, keysUUID[key]);
+    });
+
+    trans = transTemp;
+    keys.forEach(key => {
+      trans = this.handleSentence(trans, keysUUID[key], params[key]);
+    });
+
+    return trans;
+  }
+
   translationAsync(key: string, params?: INgTranslationParams): Observable<string> {
     return this.lang$.pipe(
       switchMap(_ => this.translations[this.lang] ? of(true) : this.loadLangTrans$),
@@ -111,29 +134,6 @@ export class NgTranslationService {
   private handleSentence(str: string, searchStr: string, replaceStr: string): string {
     return str.replace(new RegExp(searchStr, 'g'), replaceStr);
   };
-
-  private handleSentenceWithParams(trans: string, params: INgTranslationParams): string {
-    const keys = Object.keys(params);
-
-    if (!keys.length) {
-      return trans;
-    }
-
-    const keysUUID: { [key: string]: string } = {};
-    keys.forEach(key => keysUUID[key] = uuidv4());
-
-    let transTemp = trans;
-    keys.forEach(key => {
-      transTemp = this.handleSentence(transTemp, `{{${key}}}`, keysUUID[key]);
-    });
-
-    trans = transTemp;
-    keys.forEach(key => {
-      trans = this.handleSentence(trans, keysUUID[key], params[key]);
-    });
-
-    return trans;
-  }
 
   private loadDefaultTrans(): void {
     this.loadTrans().subscribe(trans => {

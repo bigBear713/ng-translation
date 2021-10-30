@@ -1,11 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { NgTranslationSubcontentComponent } from './components';
 import { NgTranslationComponent } from './ng-translation.component';
-import { NgTranslationPipe } from './ng-translation.pipe';
+import {
+    NgTranslationContentPipe,
+    NgTranslationPipe
+} from './pipes';
 
 const COMPONENTS = [
-  NgTranslationComponent
+  NgTranslationComponent,
+  NgTranslationSubcontentComponent,
 ];
 
 const PIPES = [
@@ -15,6 +20,7 @@ const PIPES = [
   declarations: [
     ...COMPONENTS,
     ...PIPES,
+    NgTranslationContentPipe,
   ],
   imports: [
     CommonModule,

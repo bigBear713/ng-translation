@@ -1,0 +1,5 @@
+<ng-container [ngSwitch]="isString">
+  <ng-container *ngSwitchCase="true">{{content}}</ng-container>
+  <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="$any(content)" [ngTemplateOutletContext]="{list}">
+  </ng-container>
+</ng-container>
