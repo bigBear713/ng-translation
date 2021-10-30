@@ -15,6 +15,7 @@ import {
     switchMap,
     tap
 } from 'rxjs/operators';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
     Inject,
@@ -27,6 +28,7 @@ import {
 } from './constants';
 import {
     INgTranslationLoader,
+    INgTranslationParams,
     NgTranslationLangEnum
 } from './models';
 
@@ -52,7 +54,7 @@ export class NgTranslationService {
   }
 
   constructor(
-    @Inject(NG_TRANS_DEFAULT_LANG) transDefaultLang: string,
+    @Inject(NG_TRANS_DEFAULT_LANG) private transDefaultLang: string,
     @Inject(NG_TRANS_LOADER) private transLoader: INgTranslationLoader,
   ) {
     this.lang$.next(transDefaultLang);
@@ -73,14 +75,28 @@ export class NgTranslationService {
     return of(false);
   }
 
-  translationSync(key: string): string {
-    return get(this.translations[this.lang], key);
+  translationSync(key: string, params?: INgTranslationParams): string {
+    let trans = get(this.translations[this.lang], key);
+
+    if (!trans) {
+      trans = get(this.translations[this.transDefaultLang], key);
+    }
+
+    if (!trans) {
+      return '';
+    }
+
+    params = params || {};
+
+    trans = this.handleSentenceWithParams(trans, params);
+
+    return trans || '';
   }
 
-  translationAsync(key: string): Observable<string> {
+  translationAsync(key: string, params?: INgTranslationParams): Observable<string> {
     return this.lang$.pipe(
       switchMap(_ => this.translations[this.lang] ? of(true) : this.loadLangTrans$),
-      map(_ => this.translationSync(key))
+      map(_ => this.translationSync(key, params))
     );
   }
 
@@ -91,6 +107,33 @@ export class NgTranslationService {
   subscribeLangChange(): Observable<string> {
     return this.lang$.asObservable();
   }
+
+  private handleSentenceWithParams(trans: string, params: INgTranslationParams): string {
+    const keys = Object.keys(params);
+
+    if (!keys.length) {
+      return trans;
+    }
+
+    const keysUUID: { [key: string]: string } = {};
+    keys.forEach(key => keysUUID[key] = uuidv4());
+
+    let transTemp = trans;
+    keys.forEach(key => {
+      transTemp = this.handleSentence(transTemp, `{{${key}}}`, keysUUID[key]);
+    });
+
+    trans = transTemp;
+    keys.forEach(key => {
+      trans = this.handleSentence(trans, keysUUID[key], params[key]);
+    });
+
+    return trans;
+  }
+
+  private handleSentence(str: string, searchStr: string, replaceStr: string): string {
+    return str.replace(new RegExp(searchStr, 'g'), replaceStr);
+  };
 
   private loadDefaultTrans(): void {
     this.loadTrans().subscribe(trans => {
