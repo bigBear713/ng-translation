@@ -1,3 +1,4 @@
+import { isString } from 'lodash';
 import { NgTranslationService } from 'ng-translation';
 import { Observable } from 'rxjs';
 
@@ -42,6 +43,10 @@ export class Feature1Component implements OnInit {
   ngOnInit(): void {
     this.title$ = this.translationService.translationAsync('title');
     this.titleWithParams$ = this.translationService.translationAsync('content.contentWithParams', this.params);
+  }
+
+  isString(content: any): boolean {
+    return isString(content);
   }
 
 }

@@ -36,3 +36,27 @@
   </div>
 
 </div>
+
+<hr>
+
+<div>
+  使用ng-translation组件：
+
+  <div>
+    <ng-translation key="content.complexContent" [components]="[com1,com2,com3]" [params]="params"></ng-translation>
+  </div>
+
+</div>
+
+
+<ng-template #com1 let-comContent="content" let-list="list">
+  <b ng-translation-subcontent [content]="comContent" [list]="list"></b>
+</ng-template>
+
+<ng-template #com2 let-comContent="content" let-list="list">
+  <a ng-translation-subcontent [content]="comContent" [list]="list"></a>
+</ng-template>
+
+<ng-template #com3 let-comContent="content">
+  <b>{{comContent}}</b>
+</ng-template>
