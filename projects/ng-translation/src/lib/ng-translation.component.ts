@@ -1,7 +1,7 @@
 import {
     isNumber,
     isString
-} from 'lodash';
+} from 'lodash-es';
 import { Subject } from 'rxjs';
 import {
     switchMap,
