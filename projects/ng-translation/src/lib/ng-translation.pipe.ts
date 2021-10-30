@@ -1,5 +1,8 @@
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {
+    switchMap,
+    takeUntil
+} from 'rxjs/operators';
 
 import {
     OnDestroy,
@@ -7,6 +10,7 @@ import {
     PipeTransform
 } from '@angular/core';
 
+import { INgTranslationParams } from './models';
 import { NgTranslationService } from './ng-translation.service';
 
 @Pipe({
@@ -17,9 +21,11 @@ export class NgTranslationPipe implements PipeTransform, OnDestroy {
 
   latestValue: string = '';
 
+  private destroy$ = new Subject<void>();
+
   private key: string = '';
 
-  private destroy$ = new Subject<void>();
+  private params: INgTranslationParams | undefined;
 
   constructor(
     private translationService: NgTranslationService,
@@ -27,11 +33,14 @@ export class NgTranslationPipe implements PipeTransform, OnDestroy {
     this.subscribeLangChange();
   }
 
-  transform(key: any, args?: any): any {
+  transform(key: any, params?: INgTranslationParams): any {
     this.key = key;
+    this.params = params;
+
     if (!this.latestValue) {
-      this.latestValue = this.translationService.translationSync(this.key);
+      this.latestValue = this.translationService.translationSync(this.key, this.params);
     }
+
     return this.latestValue;
   }
 
@@ -42,10 +51,9 @@ export class NgTranslationPipe implements PipeTransform, OnDestroy {
 
   private subscribeLangChange(): void {
     this.translationService.subscribeLangChange().pipe(
+      switchMap(_ => this.translationService.translationAsync(this.key, this.params)),
       takeUntil(this.destroy$)
-    ).subscribe(_ => {
-      this.latestValue = this.translationService.translationSync(this.key);
-    });
+    ).subscribe(latestValue => this.latestValue = latestValue);
   }
 
 }
