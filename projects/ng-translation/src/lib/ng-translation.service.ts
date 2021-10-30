@@ -1,4 +1,7 @@
-import { get } from 'lodash-es';
+import {
+    get,
+    isFunction
+} from 'lodash-es';
 import {
     BehaviorSubject,
     from,
@@ -32,7 +35,7 @@ import {
 })
 export class NgTranslationService {
 
-  private lang$ = new BehaviorSubject<string>(NgTranslationLangEnum.EN);
+  private lang$ = new BehaviorSubject<string>(NgTranslationLangEnum.ZH_CN);
 
   private loadDefaultOver$ = new BehaviorSubject<boolean>(false);
 
@@ -90,23 +93,31 @@ export class NgTranslationService {
   }
 
   private loadDefaultTrans(): void {
-    this.loadTrans().subscribe(_ => {
-      this.loadDefaultOver$.next(true);
+    this.loadTrans().subscribe(trans => {
+      const result = !!trans;
+      this.loadDefaultOver$.next(result);
       this.loadDefaultOver$.complete();
     });
   }
 
   private loadLangTrans(): Observable<boolean> {
     return this.loadTrans().pipe(
-      map(_ => {
-        this.loadLangTrans$.next(true);
-        return true;
+      map(trans => {
+        const result = !!trans;
+        this.loadLangTrans$.next(result);
+        return result;
       })
     );
   }
 
-  private loadTrans() {
-    return from(this.transLoader[this.lang]()).pipe(
+  private loadTrans(): Observable<Object | null> {
+    const loader = this.transLoader[this.lang];
+    if (!loader) {
+      return of(null);
+    }
+
+    const loaderFn: Observable<Object> = isFunction(loader) ? from(loader()) : of(loader);
+    return loaderFn.pipe(
       tap(trans => this.translations[this.lang] = trans),
       // TODO: will retry 5 times?
       retry(5)
