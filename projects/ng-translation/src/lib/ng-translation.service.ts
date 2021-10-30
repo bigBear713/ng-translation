@@ -75,6 +75,13 @@ export class NgTranslationService {
     return of(false);
   }
 
+  translationAsync(key: string, params?: INgTranslationParams): Observable<string> {
+    return this.lang$.pipe(
+      switchMap(_ => this.translations[this.lang] ? of(true) : this.loadLangTrans$),
+      map(_ => this.translationSync(key, params))
+    );
+  }
+
   translationSync(key: string, params?: INgTranslationParams): string {
     let trans = get(this.translations[this.lang], key);
 
@@ -93,20 +100,17 @@ export class NgTranslationService {
     return trans || '';
   }
 
-  translationAsync(key: string, params?: INgTranslationParams): Observable<string> {
-    return this.lang$.pipe(
-      switchMap(_ => this.translations[this.lang] ? of(true) : this.loadLangTrans$),
-      map(_ => this.translationSync(key, params))
-    );
+  subscribeLangChange(): Observable<string> {
+    return this.lang$.asObservable();
   }
 
   subscribeLoadDefaultOverChange(): Observable<boolean> {
     return this.loadDefaultOver ? of(true) : this.loadDefaultOver$.asObservable();
   }
 
-  subscribeLangChange(): Observable<string> {
-    return this.lang$.asObservable();
-  }
+  private handleSentence(str: string, searchStr: string, replaceStr: string): string {
+    return str.replace(new RegExp(searchStr, 'g'), replaceStr);
+  };
 
   private handleSentenceWithParams(trans: string, params: INgTranslationParams): string {
     const keys = Object.keys(params);
@@ -130,10 +134,6 @@ export class NgTranslationService {
 
     return trans;
   }
-
-  private handleSentence(str: string, searchStr: string, replaceStr: string): string {
-    return str.replace(new RegExp(searchStr, 'g'), replaceStr);
-  };
 
   private loadDefaultTrans(): void {
     this.loadTrans().subscribe(trans => {
