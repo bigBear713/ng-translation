@@ -1,3 +1,3 @@
 export interface INgTranslationLoader {
-  [langKey: string]: () => Promise<Object>;
+  [langKey: string]: Object | (() => Promise<Object>);
 }
