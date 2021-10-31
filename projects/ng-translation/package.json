@@ -1,6 +1,14 @@
 {
   "name": "ng-translation",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjx774326739/ng-translation.git",
+    "directory": "packages/common"
+  },
+  "bugs": {
+    "url": "https://github.com/wjx774326739/ng-translation/issues"
+  },
   "peerDependencies": {
     "@angular/common": "^12.2.0",
     "@angular/core": "^12.2.0"
