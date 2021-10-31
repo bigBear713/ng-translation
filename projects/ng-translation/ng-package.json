@@ -1,6 +1,11 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/ng-translation",
+  "whitelistedNonPeerDependencies": [
+    "lodash-es",
+    "uuid",
+    "tslib"
+  ],
   "lib": {
     "entryFile": "src/public-api.ts"
   }
