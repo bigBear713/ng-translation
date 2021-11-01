@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wjx774326739/ng-translation.git",
-    "directory": "packages/common"
+    "url": "git+https://github.com/wjx774326739/ng-translation.git"
   },
   "bugs": {
     "url": "https://github.com/wjx774326739/ng-translation/issues"
