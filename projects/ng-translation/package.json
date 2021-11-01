@@ -8,10 +8,11 @@
   "bugs": {
     "url": "https://github.com/wjx774326739/ng-translation/issues"
   },
-  "peerDependencies": {},
-  "dependencies": {
+  "peerDependencies": {
     "@angular/common": "^12.2.0",
-    "@angular/core": "^12.2.0",
+    "@angular/core": "^12.2.0"
+  },
+  "dependencies": {
     "lodash-es": "^4.17.21",
     "tslib": "^2.3.0",
     "uuid": "^8.3.2"
