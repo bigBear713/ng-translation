@@ -10,10 +10,7 @@
     "start:lib": "ng build --watch ng-translation",
     "build:lib": "ng-packagr -p projects/ng-translation/ng-package.json && cd dist/ng-translation && npm pack",
     "build:analyze": "npm run build -- --source-map && npm run view:analyze",
-    "view:analyze": "node_modules/.bin/source-map-explorer dist/ng-translation-demo/*",
-    "postinstall": "npm run install:tarball && npm run link:lib",
-    "install:tarball": "npm i ./tarball/ng-translation-0.0.1.tgz",
-    "link:lib": "npm link node_modules/ng-translation"
+    "view:analyze": "node_modules/.bin/source-map-explorer dist/ng-translation-demo/*"
   },
   "private": true,
   "dependencies": {
