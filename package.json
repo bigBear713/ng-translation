@@ -1,5 +1,5 @@
 {
-  "name": "ng-translation",
+  "name": "ng-translation-demo",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -10,7 +10,10 @@
     "start:lib": "ng build --watch ng-translation",
     "build:lib": "ng-packagr -p projects/ng-translation/ng-package.json && cd dist/ng-translation && npm pack",
     "build:analyze": "npm run build -- --source-map && npm run view:analyze",
-    "view:analyze": "node_modules/.bin/source-map-explorer dist/ng-translation-demo/*"
+    "view:analyze": "node_modules/.bin/source-map-explorer dist/ng-translation-demo/*",
+    "postinstall": "npm run install:tarball && npm run link:lib",
+    "install:tarball": "cd tarball/ && npm i ./ng-translation-0.0.1.tgz && cd ../",
+    "link:lib": "cd node_modules/ng-translation && npm link && cd ../../../../ && npm link ng-translation"
   },
   "private": true,
   "dependencies": {
