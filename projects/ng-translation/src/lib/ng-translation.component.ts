@@ -18,7 +18,10 @@ import {
     TemplateRef
 } from '@angular/core';
 
-import { INgTranslationParams } from './models';
+import {
+    INgTranslationOptions,
+    INgTranslationParams
+} from './models';
 import { NgTranslationSentenceItemEnum } from './models/ng-translation-sentence-item.enum';
 import { INgTranslationSentencePart } from './models/ng-translation-sentence-part.interface';
 import { NgTranslationService } from './ng-translation.service';
@@ -38,7 +41,9 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
   key: string = '';
 
   @Input()
-  params: INgTranslationParams = {};
+  options: INgTranslationOptions = {};
+
+  params: INgTranslationParams | undefined;
 
   sentenceList: INgTranslationSentencePart[] = [];
 
@@ -88,6 +93,8 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private reRender(): void {
+    this.params = this.options?.params;
+
     let trans = this.originTrans;
     this.sentenceList = this.handleTrans(trans);
   }

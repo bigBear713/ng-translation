@@ -16,7 +16,6 @@ export class NgTranslationContentPipe implements PipeTransform {
   ) { }
 
   transform(value: any, params?: INgTranslationParams): any {
-    params = params || {};
     return this.translationService.handleSentenceWithParams(value, params);
   }
 
