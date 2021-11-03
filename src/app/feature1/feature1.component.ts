@@ -30,7 +30,7 @@ export class Feature1Component implements OnInit {
   }
 
   get titleWithParams() {
-    return this.translationService.translationSync('content.contentWithParams', this.params);
+    return this.translationService.translationSync('content.contentWithParams', { params: this.params });
   }
 
   trans = trans;
@@ -42,7 +42,7 @@ export class Feature1Component implements OnInit {
 
   ngOnInit(): void {
     this.title$ = this.translationService.translationAsync('title');
-    this.titleWithParams$ = this.translationService.translationAsync('content.contentWithParams', this.params);
+    this.titleWithParams$ = this.translationService.translationAsync('content.contentWithParams', { params: this.params });
   }
 
   isString(content: any): boolean {

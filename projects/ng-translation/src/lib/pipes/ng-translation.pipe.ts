@@ -10,7 +10,7 @@ import {
     PipeTransform
 } from '@angular/core';
 
-import { INgTranslationParams } from '../models';
+import { INgTranslationOptions } from '../models';
 import { NgTranslationService } from '../ng-translation.service';
 
 @Pipe({
@@ -25,7 +25,7 @@ export class NgTranslationPipe implements PipeTransform, OnDestroy {
 
   private key: string = '';
 
-  private params: INgTranslationParams | undefined;
+  private options: INgTranslationOptions | undefined;
 
   constructor(
     private translationService: NgTranslationService,
@@ -33,12 +33,12 @@ export class NgTranslationPipe implements PipeTransform, OnDestroy {
     this.subscribeLangChange();
   }
 
-  transform(key: any, params?: INgTranslationParams): any {
+  transform(key: any, options?: INgTranslationOptions): any {
     this.key = key;
-    this.params = params;
+    this.options = options;
 
     if (!this.latestValue) {
-      this.latestValue = this.translationService.translationSync(this.key, this.params);
+      this.latestValue = this.translationService.translationSync(key, options);
     }
 
     return this.latestValue;
@@ -51,7 +51,7 @@ export class NgTranslationPipe implements PipeTransform, OnDestroy {
 
   private subscribeLangChange(): void {
     this.translationService.subscribeLangChange().pipe(
-      switchMap(_ => this.translationService.translationAsync(this.key, this.params)),
+      switchMap(_ => this.translationService.translationAsync(this.key, this.options)),
       takeUntil(this.destroy$)
     ).subscribe(latestValue => this.latestValue = latestValue);
   }
