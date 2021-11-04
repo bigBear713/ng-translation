@@ -31,10 +31,13 @@ export class AppComponent implements OnInit {
     this.title$ = this.translationService.translationAsync('title');
   }
 
-  onChangeLang(): void {
-    this.translationService.changeLang(
-      this.translationService.lang === NgTranslationLangEnum.EN ? NgTranslationLangEnum.ZH_CN : NgTranslationLangEnum.EN
-    ).toPromise();
+  onChangeLang(lang: string): void {
+    this.translationService.changeLang(lang).subscribe(result => {
+      console.log(result);
+      if (!result.result) {
+        alert('切换语言失败，没有导入该语言包,当前语言是:' + result.curLang);
+      }
+    });
   }
 
 }

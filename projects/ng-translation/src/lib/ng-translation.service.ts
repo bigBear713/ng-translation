@@ -7,9 +7,11 @@ import {
     from,
     Observable,
     of,
-    Subject
+    Subject,
+    timer
 } from 'rxjs';
 import {
+    catchError,
     map,
     retry,
     switchMap,
@@ -27,6 +29,7 @@ import {
     NG_TRANS_LOADER
 } from './constants';
 import {
+    INgTranslationChangeLang,
     INgTranslationLoader,
     INgTranslationOptions,
     INgTranslationParams,
@@ -62,18 +65,37 @@ export class NgTranslationService {
     this.loadDefaultTrans();
   }
 
-  changeLang(lang: string): Observable<boolean> {
-    this.lang$.next(lang);
+  changeLang(lang: string): Observable<INgTranslationChangeLang> {
+    const successResult: INgTranslationChangeLang = {
+      curLang: lang,
+      result: true,
+    };
+    const failureResult: INgTranslationChangeLang = {
+      curLang: this.lang,
+      result: false,
+    };
 
     if (this.translations[lang]) {
-      return of(true);
+      this.lang$.next(lang);
+      return of(successResult);
     }
 
     if (this.transLoader[lang]) {
-      return this.loadLangTrans();
+      const oldLang = this.lang;
+      this.lang$.next(lang);
+      return this.loadLangTrans().pipe(
+        switchMap(loadResult => {
+          if (loadResult) {
+            return of(successResult);
+          }
+          this.lang$.next(oldLang);
+          return of(failureResult);
+        })
+      );
     }
 
-    return of(false);
+    timer().subscribe(_ => this.loadLangTrans$.next(false));
+    return of(failureResult);
   }
 
   handleSentenceWithParams(trans: string, params?: INgTranslationParams): string {
@@ -104,7 +126,11 @@ export class NgTranslationService {
 
   translationAsync(key: string, options?: INgTranslationOptions): Observable<string> {
     return this.lang$.pipe(
-      switchMap(_ => this.translations[this.lang] ? of(true) : this.loadLangTrans$),
+      switchMap(_ => {
+        return this.translations[this.lang]
+          ? of({ trans: this.translations[this.lang], result: true })
+          : this.loadLangTrans$;
+      }),
       map(_ => this.translationSync(key, options))
     );
   }
@@ -172,7 +198,8 @@ export class NgTranslationService {
     return loaderFn.pipe(
       tap(trans => this.translations[this.lang] = trans),
       // TODO: will retry 5 times?
-      retry(5)
+      retry(5),
+      catchError(_ => of(null))
     );
   }
 
