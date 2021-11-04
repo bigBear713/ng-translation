@@ -1,4 +1,6 @@
-<button (click)="onChangeLang()">更改语言</button>
+<button (click)="onChangeLang('zh-CN')">切换为中文</button>
+<button (click)="onChangeLang('en')">切换为英文</button>
+<button (click)="onChangeLang('other')">切换为其它不存在的语言</button>
 <div>
   {{'title'| ngTranslation}}
   {{'content.helloWorld'| ngTranslation}}

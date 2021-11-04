@@ -31,8 +31,9 @@ import { trans } from './localization/zh-CN/translations';
       useValue: {
         // dyn load
         [NgTranslationLangEnum.EN]: () => import('./localization/en/translations').then(data => data.trans),
+        [NgTranslationLangEnum.ZH_CN]: () => import('./localization/zh-CN/translations').then(data => data.trans),
         // direct load
-        [NgTranslationLangEnum.ZH_CN]: trans,
+        // [NgTranslationLangEnum.ZH_CN]: trans,
       }
     }
   ],
