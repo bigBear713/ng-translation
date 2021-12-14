@@ -1,26 +1,26 @@
 import {
-    isNumber,
-    isString
+  isNumber,
+  isString
 } from 'lodash-es';
 import { Subject } from 'rxjs';
 import {
-    switchMap,
-    takeUntil
+  switchMap,
+  takeUntil
 } from 'rxjs/operators';
 
 import {
-    Component,
-    Input,
-    OnChanges,
-    OnDestroy,
-    OnInit,
-    SimpleChanges,
-    TemplateRef
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  TemplateRef
 } from '@angular/core';
 
 import {
-    INgTranslationOptions,
-    INgTranslationParams
+  INgTranslationOptions,
+  INgTranslationParams
 } from './models';
 import { NgTranslationSentenceItemEnum } from './models/ng-translation-sentence-item.enum';
 import { INgTranslationSentencePart } from './models/ng-translation-sentence-part.interface';
@@ -60,9 +60,7 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.key) {
-      this.originTrans = this.translationService.translationSync(this.key);
-    }
+    this.originTrans = this.translationService.translationSync(this.key, this.options);
     this.reRender();
   }
 
@@ -154,7 +152,7 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
 
   private subscribeLangChange(): void {
     this.translationService.subscribeLangChange().pipe(
-      switchMap(_ => this.translationService.translationAsync(this.key)),
+      switchMap(_ => this.translationService.translationAsync(this.key, this.options)),
       takeUntil(this.destroy$)
     ).subscribe(latestValue => {
       // TODO: 为什么会触发两次，change lang的时候
