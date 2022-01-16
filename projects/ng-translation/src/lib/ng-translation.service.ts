@@ -21,12 +21,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   Inject,
-  Injectable
+  Injectable,
+  Optional
 } from '@angular/core';
 
 import {
   NG_TRANS_DEFAULT_LANG,
-  NG_TRANS_LOADER
+  NG_TRANS_LOADER,
+  NG_TRANS_MAX_RETRY_TOKEN
 } from './constants';
 import {
   INgTranslationChangeLang,
@@ -47,6 +49,8 @@ export class NgTranslationService {
 
   private loadLangTrans$ = new Subject<boolean>();
 
+  private retry: number = 5;
+
   private translations: { [key: string]: Object } = {};
 
   get lang(): string {
@@ -60,7 +64,11 @@ export class NgTranslationService {
   constructor(
     @Inject(NG_TRANS_DEFAULT_LANG) private transDefaultLang: string,
     @Inject(NG_TRANS_LOADER) private transLoader: INgTranslationLoader,
+    @Inject(NG_TRANS_MAX_RETRY_TOKEN) @Optional() private maxRetry: number,
   ) {
+    // when the maxRetry is undefined/null, use default setting
+    this.retry = this.maxRetry == null ? this.retry : this.maxRetry;
+
     this.lang$.next(transDefaultLang);
     this.loadDefaultTrans();
   }
@@ -75,27 +83,29 @@ export class NgTranslationService {
       result: false,
     };
 
+    // the lang has been loaded,
     if (this.translations[lang]) {
       this.lang$.next(lang);
       return of(successResult);
     }
 
-    if (this.transLoader[lang]) {
-      const oldLang = this.lang;
-      this.lang$.next(lang);
-      return this.loadLangTrans().pipe(
-        switchMap(loadResult => {
-          if (loadResult) {
-            return of(successResult);
-          }
-          this.lang$.next(oldLang);
-          return of(failureResult);
-        })
-      );
+    // there is no lang loader
+    if (!this.transLoader[lang]) {
+      timer().subscribe(_ => this.loadLangTrans$.next(false));
+      return of(failureResult);
     }
 
-    timer().subscribe(_ => this.loadLangTrans$.next(false));
-    return of(failureResult);
+    const oldLang = this.lang;
+    this.lang$.next(lang);
+    return this.loadLangTrans().pipe(
+      switchMap(loadResult => {
+        if (loadResult) {
+          return of(successResult);
+        }
+        this.lang$.next(oldLang);
+        return of(failureResult);
+      })
+    );
   }
 
   handleSentenceWithParams(trans: string, params?: INgTranslationParams): string {
@@ -137,6 +147,7 @@ export class NgTranslationService {
 
   translationSync(key: string, options?: INgTranslationOptions): string {
     const finalKey = this.getFinalKey(key, options?.prefix);
+    const emptyTrans = options?.returnKeyWhenEmpty === false ? '' : finalKey;
     let trans = get(this.translations[this.lang], finalKey);
 
     if (!trans) {
@@ -144,13 +155,13 @@ export class NgTranslationService {
     }
 
     if (!trans) {
-      return '';
+      return emptyTrans;
     }
 
     const params = options?.params;
     trans = this.handleSentenceWithParams(trans, params);
 
-    return trans || '';
+    return trans || emptyTrans;
   }
 
   subscribeLangChange(): Observable<string> {
@@ -193,6 +204,8 @@ export class NgTranslationService {
     if (!loader) {
       return of(null);
     }
+
+    console.log(this.maxRetry);
 
     const loaderFn: Observable<Object> = isFunction(loader)
       ? of(null).pipe(switchMap(() => from(loader())))

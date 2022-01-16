@@ -1,8 +1,9 @@
 import {
-    NG_TRANS_DEFAULT_LANG,
-    NG_TRANS_LOADER,
-    NgTranslationLangEnum,
-    NgTranslationModule
+  NG_TRANS_DEFAULT_LANG,
+  NG_TRANS_LOADER,
+  NgTranslationLangEnum,
+  NgTranslationModule,
+  NG_TRANS_MAX_RETRY_TOKEN
 } from 'ng-translation';
 
 import { NgModule } from '@angular/core';
@@ -22,6 +23,10 @@ import { trans } from './localization/zh-CN/translations';
     AppRoutingModule
   ],
   providers: [
+    // {
+    //   provide: NG_TRANS_MAX_RETRY_TOKEN,
+    //   useValue: 0
+    // },
     {
       provide: NG_TRANS_DEFAULT_LANG,
       useValue: NgTranslationLangEnum.EN,
