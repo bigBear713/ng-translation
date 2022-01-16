@@ -1,39 +1,39 @@
 import {
-    get,
-    isFunction
+  get,
+  isFunction
 } from 'lodash-es';
 import {
-    BehaviorSubject,
-    from,
-    Observable,
-    of,
-    Subject,
-    timer
+  BehaviorSubject,
+  from,
+  Observable,
+  of,
+  Subject,
+  timer
 } from 'rxjs';
 import {
-    catchError,
-    map,
-    retry,
-    switchMap,
-    tap
+  catchError,
+  map,
+  retry,
+  switchMap,
+  tap
 } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
-    Inject,
-    Injectable
+  Inject,
+  Injectable
 } from '@angular/core';
 
 import {
-    NG_TRANS_DEFAULT_LANG,
-    NG_TRANS_LOADER
+  NG_TRANS_DEFAULT_LANG,
+  NG_TRANS_LOADER
 } from './constants';
 import {
-    INgTranslationChangeLang,
-    INgTranslationLoader,
-    INgTranslationOptions,
-    INgTranslationParams,
-    NgTranslationLangEnum
+  INgTranslationChangeLang,
+  INgTranslationLoader,
+  INgTranslationOptions,
+  INgTranslationParams,
+  NgTranslationLangEnum
 } from './models';
 
 @Injectable({
@@ -194,10 +194,11 @@ export class NgTranslationService {
       return of(null);
     }
 
-    const loaderFn: Observable<Object> = isFunction(loader) ? from(loader()) : of(loader);
+    const loaderFn: Observable<Object> = isFunction(loader)
+      ? of(null).pipe(switchMap(() => from(loader())))
+      : of(loader);
     return loaderFn.pipe(
       tap(trans => this.translations[this.lang] = trans),
-      // TODO: will retry 5 times?
       retry(5),
       catchError(_ => of(null))
     );
