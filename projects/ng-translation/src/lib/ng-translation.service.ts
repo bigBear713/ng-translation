@@ -66,7 +66,8 @@ export class NgTranslationService {
     @Inject(NG_TRANS_LOADER) private transLoader: INgTranslationLoader,
     @Inject(NG_TRANS_MAX_RETRY_TOKEN) @Optional() private maxRetry: number,
   ) {
-    // when the maxRetry is undefined/null, use default setting
+    // if the maxRetry is undefined/null, use default setting,
+    // so can set the retry valus as 0 to cancel retry action.
     this.retry = this.maxRetry == null ? this.retry : this.maxRetry;
 
     this.lang$.next(transDefaultLang);
@@ -95,15 +96,16 @@ export class NgTranslationService {
       return of(failureResult);
     }
 
-    const oldLang = this.lang;
-    this.lang$.next(lang);
-    return this.loadLangTrans().pipe(
+    return this.loadLangTrans(lang).pipe(
       switchMap(loadResult => {
+        let curLang = this.lang;
+        let result = failureResult;
         if (loadResult) {
-          return of(successResult);
+          curLang = lang;
+          result = successResult;
         }
-        this.lang$.next(oldLang);
-        return of(failureResult);
+        this.lang$.next(curLang);
+        return of(result);
       })
     );
   }
@@ -181,7 +183,7 @@ export class NgTranslationService {
   };
 
   private loadDefaultTrans(): void {
-    this.loadTrans().subscribe(trans => {
+    this.loadTrans(this.lang).subscribe(trans => {
       const result = !!trans;
       this.loadDefaultOver$.next(result);
       this.loadDefaultOver$.complete();
@@ -189,8 +191,8 @@ export class NgTranslationService {
     });
   }
 
-  private loadLangTrans(): Observable<boolean> {
-    return this.loadTrans().pipe(
+  private loadLangTrans(lang: string): Observable<boolean> {
+    return this.loadTrans(lang).pipe(
       map(trans => {
         const result = !!trans;
         this.loadLangTrans$.next(result);
@@ -199,20 +201,19 @@ export class NgTranslationService {
     );
   }
 
-  private loadTrans(): Observable<Object | null> {
-    const loader = this.transLoader[this.lang];
+  private loadTrans(lang: string): Observable<Object | null> {
+    const loader = this.transLoader[lang];
     if (!loader) {
       return of(null);
     }
 
-    console.log(this.maxRetry);
-
     const loaderFn: Observable<Object> = isFunction(loader)
+      // switch map as load lang observable, so it will retry when failure to load the lang content
       ? of(null).pipe(switchMap(() => from(loader())))
       : of(loader);
     return loaderFn.pipe(
-      tap(trans => this.translations[this.lang] = trans),
-      retry(5),
+      tap(trans => this.translations[lang] = trans),
+      retry(this.retry),
       catchError(_ => of(null))
     );
   }
