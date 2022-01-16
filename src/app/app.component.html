@@ -16,5 +16,15 @@
   {{title$|async}}
 </div>
 
+<div>
+  当key对应的内容不存在, 默认返回key:
+  {{'test.test'| ngTranslation}}
+</div>
+
+<div>
+  当key对应的内容不存在, 也可以设置返回空字符串:
+  {{'test.test'| ngTranslation:({returnKeyWhenEmpty:false})}}
+</div>
+
 <ng-translation></ng-translation>
 <router-outlet></router-outlet>
