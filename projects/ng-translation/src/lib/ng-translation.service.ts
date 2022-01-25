@@ -62,15 +62,17 @@ export class NgTranslationService {
   }
 
   constructor(
-    @Inject(NG_TRANS_DEFAULT_LANG) private transDefaultLang: string,
-    @Inject(NG_TRANS_LOADER) private transLoader: INgTranslationLoader,
+    @Inject(NG_TRANS_DEFAULT_LANG) @Optional() private transDefaultLang: string,
+    @Inject(NG_TRANS_LOADER) @Optional() private transLoader: INgTranslationLoader,
     @Inject(NG_TRANS_MAX_RETRY_TOKEN) @Optional() private maxRetry: number,
   ) {
     // if the maxRetry is undefined/null, use default setting,
     // so can set the retry valus as 0 to cancel retry action.
     this.retry = this.maxRetry == null ? this.retry : this.maxRetry;
 
-    this.lang$.next(transDefaultLang);
+    this.transLoader = this.transLoader || {};
+
+    this.lang$.next(transDefaultLang || NgTranslationLangEnum.ZH_CN);
     this.loadDefaultTrans();
   }
 
