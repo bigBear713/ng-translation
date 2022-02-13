@@ -88,13 +88,13 @@ export class NgTranslationService {
 
     // the lang has been loaded,
     if (this.translations[lang]) {
+      this.lang$.next(lang);
       return of(successResult);
     }
 
     // there is no any lang loader
     if (!this.transLoader[lang]) {
       timer().subscribe(_ => this.loadLangTrans$.next(false));
-      this.lang$.next(this.lang);
       return of(failureResult);
     }
 
