@@ -88,13 +88,13 @@ export class NgTranslationService {
 
     // the lang has been loaded,
     if (this.translations[lang]) {
-      this.lang$.next(lang);
       return of(successResult);
     }
 
-    // there is no lang loader
+    // there is no any lang loader
     if (!this.transLoader[lang]) {
       timer().subscribe(_ => this.loadLangTrans$.next(false));
+      this.lang$.next(this.lang);
       return of(failureResult);
     }
 
@@ -122,15 +122,23 @@ export class NgTranslationService {
       return trans;
     }
 
-    const keysUUID: { [key: string]: string } = {};
-    keys.forEach(key => keysUUID[key] = uuidv4());
+    const keysUUID = keys.reduce(
+      (pre: { [key: string]: string }, key) => {
+        pre[key] = uuidv4();
+        return pre;
+      },
+      {}
+    );
 
     let transTemp = trans;
+    // first, replace the param keys as uuid keys
     keys.forEach(key => {
       transTemp = this.handleSentence(transTemp, `{{${key}}}`, keysUUID[key]);
     });
 
     trans = transTemp;
+    // then, replace the uuid keys as params value,
+    // so the value will not be wrong when the params value is same with other param value
     keys.forEach(key => {
       trans = this.handleSentence(trans, keysUUID[key], params[key]);
     });
