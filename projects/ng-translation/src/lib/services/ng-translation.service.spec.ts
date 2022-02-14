@@ -1,13 +1,15 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { delay, filter, skip, switchMap, take } from 'rxjs/operators';
-import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER } from './constants';
-import { INgTranslationParams, NgTranslationLangEnum } from './models';
+import { filter, skip, switchMap, take } from 'rxjs/operators';
+import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER } from '../constants';
+import { INgTranslationParams, NgTranslationLangEnum } from '../models';
+import { NgTranslationTestingModule } from '../ng-translation-testing.module';
+import { handleSentenceWithParamsTestData } from '../tests';
 import { NgTranslationService } from './ng-translation.service';
 
 const loader = {
   dynamicLoader: {
-    [NgTranslationLangEnum.EN]: () => import('./tests/localization/en/translations').then(data => data.trans),
-    [NgTranslationLangEnum.ZH_CN]: () => import('./tests/localization/zh-CN/translations').then(data => data.trans),
+    [NgTranslationLangEnum.EN]: () => import('../tests/localization/en/translations').then(data => data.trans),
+    [NgTranslationLangEnum.ZH_CN]: () => import('../tests/localization/zh-CN/translations').then(data => data.trans),
   },
   staticLoader: { [NgTranslationLangEnum.EN]: { title: 'title  ' }, [NgTranslationLangEnum.ZH_CN]: { title: '标题  ' }, }
 };
@@ -16,7 +18,7 @@ describe('NgTranslationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NgTranslationService]
+      imports: [NgTranslationTestingModule]
     });
   });
 
@@ -33,10 +35,10 @@ describe('NgTranslationService', () => {
         let service: NgTranslationService;
         beforeEach(async () => {
           TestBed.configureTestingModule({
+            imports: [NgTranslationTestingModule],
             providers: [
               { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTranslationLangEnum.ZH_CN, },
               { provide: NG_TRANS_LOADER, useValue: loaderMethodItem.loader },
-              NgTranslationService,
             ]
           });
           service = TestBed.inject(NgTranslationService);
@@ -103,23 +105,7 @@ describe('NgTranslationService', () => {
   });
 
   describe('#handleSentenceWithParams()', () => {
-    const testData: {
-      title: string;
-      test: { trans: string; params?: INgTranslationParams; };
-      expect: { result: string };
-    }[] = [
-        { title: 'no params', test: { trans: 'test trans', params: undefined, }, expect: { result: 'test trans' } },
-        { title: 'empty params', test: { trans: 'test trans', params: {} }, expect: { result: 'test trans' } },
-        { title: '2 params', test: { trans: 'a {{p1}} {{p2}}', params: { p1: '123', p2: 'abc' } }, expect: { result: 'a 123 abc' } },
-        { title: 'start with params', test: { trans: '{{p1}} and {{p2}}', params: { p1: '123', p2: 'abc' } }, expect: { result: '123 and abc' } },
-        { title: 'params are in middle', test: { trans: 'a {{p1}} b {{p2}} c', params: { p1: '123', p2: 'abc' } }, expect: { result: 'a 123 b abc c' }, },
-        { title: 'params value is same with param key', test: { trans: '{{p1}}{{p2}}', params: { p1: '{{p2}}', p2: '{{p2}}' } }, expect: { result: '{{p2}}{{p2}}' }, },
-        { title: 'err params format:{}', test: { trans: 'test {p1}', params: { p1: '123' } }, expect: { result: 'test {p1}' } },
-        { title: 'err params format:{{{}}}', test: { trans: 'test {{{p1}}}', params: { p1: '123' } }, expect: { result: 'test {123}' } },
-        { title: 'err params format:[]', test: { trans: 'test [p1]', params: { p1: '123' } }, expect: { result: 'test [p1]' } },
-        { title: 'err params format:[[]]', test: { trans: 'test [[p2]]', params: { p2: '123' } }, expect: { result: 'test [[p2]]' } }
-      ];
-    testData.forEach(item => {
+    handleSentenceWithParamsTestData.forEach(item => {
       it(item.title, inject([NgTranslationService], (service: NgTranslationService) => {
         const params: INgTranslationParams | undefined = item.test.params;
         const result = service.handleSentenceWithParams(item.test.trans, params);
@@ -131,13 +117,13 @@ describe('NgTranslationService', () => {
   describe('#translationSync()', () => {
     beforeEach(async () => {
       TestBed.configureTestingModule({
+        imports: [NgTranslationTestingModule],
         providers: [
           { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTranslationLangEnum.ZH_CN },
           {
             provide: NG_TRANS_LOADER,
             useValue: { [NgTranslationLangEnum.ZH_CN]: { prefix: { key: '测试' } }, }
           },
-          NgTranslationService,
         ]
       });
     });
@@ -163,13 +149,10 @@ describe('NgTranslationService', () => {
     let service: NgTranslationService;
     beforeEach(async () => {
       TestBed.configureTestingModule({
+        imports: [NgTranslationTestingModule],
         providers: [
           { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTranslationLangEnum.ZH_CN },
-          {
-            provide: NG_TRANS_LOADER,
-            useValue: loader.dynamicLoader
-          },
-          NgTranslationService,
+          { provide: NG_TRANS_LOADER, useValue: loader.dynamicLoader },
         ]
       });
       service = TestBed.inject(NgTranslationService);
@@ -196,6 +179,5 @@ describe('NgTranslationService', () => {
       });
     });
   });
-
 
 });

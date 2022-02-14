@@ -1,8 +1,6 @@
-/* tslint:disable:no-unused-variable */
-
 import { TestBed, async } from '@angular/core/testing';
 import { NgTranslationTestingModule } from '../ng-translation-testing.module';
-import { NgTranslationService } from '../ng-translation.service';
+import { NgTranslationService } from '../services/ng-translation.service';
 import { NgTranslationPipe } from './ng-translation.pipe';
 
 describe('Pipe: NgTranslatione', () => {
