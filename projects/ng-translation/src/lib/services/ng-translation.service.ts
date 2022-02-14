@@ -29,14 +29,14 @@ import {
   NG_TRANS_DEFAULT_LANG,
   NG_TRANS_LOADER,
   NG_TRANS_MAX_RETRY_TOKEN
-} from './constants';
+} from './../constants';
 import {
   INgTranslationChangeLang,
   INgTranslationLoader,
   INgTranslationOptions,
   INgTranslationParams,
   NgTranslationLangEnum
-} from './models';
+} from './../models';
 
 @Injectable({
   providedIn: 'root'

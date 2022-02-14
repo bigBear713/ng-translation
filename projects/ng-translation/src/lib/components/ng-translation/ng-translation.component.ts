@@ -21,10 +21,10 @@ import {
 import {
   INgTranslationOptions,
   INgTranslationParams
-} from './models';
-import { NgTranslationSentenceItemEnum } from './models/ng-translation-sentence-item.enum';
-import { INgTranslationSentencePart } from './models/ng-translation-sentence-part.interface';
-import { NgTranslationService } from './ng-translation.service';
+} from '../../models';
+import { NgTranslationSentenceItemEnum } from '../../models/ng-translation-sentence-item.enum';
+import { INgTranslationSentencePart } from '../../models/ng-translation-sentence-part.interface';
+import { NgTranslationService } from '../../services/ng-translation.service';
 
 @Component({
   selector: 'ng-translation',

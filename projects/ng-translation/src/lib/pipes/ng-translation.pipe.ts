@@ -1,17 +1,17 @@
 import { Subject } from 'rxjs';
 import {
-    switchMap,
-    takeUntil
+  switchMap,
+  takeUntil
 } from 'rxjs/operators';
 
 import {
-    OnDestroy,
-    Pipe,
-    PipeTransform
+  OnDestroy,
+  Pipe,
+  PipeTransform
 } from '@angular/core';
 
 import { INgTranslationOptions } from '../models';
-import { NgTranslationService } from '../ng-translation.service';
+import { NgTranslationService } from '../services/ng-translation.service';
 
 @Pipe({
   name: 'ngTranslation',

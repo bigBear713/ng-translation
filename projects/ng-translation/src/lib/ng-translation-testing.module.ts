@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { NgTranslationModule } from "./ng-translation.module";
-import { NgTranslationService } from "./ng-translation.service";
+import { NgTranslationService } from "./services/ng-translation.service";
 
 @NgModule({
   providers: [

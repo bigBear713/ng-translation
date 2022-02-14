@@ -1,0 +1,1 @@
+export * from './handleSentenceWithParams.test-data';
