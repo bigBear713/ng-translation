@@ -33,7 +33,7 @@ export class NgTranslationPipe implements PipeTransform, OnDestroy {
     this.subscribeLangChange();
   }
 
-  transform(key: any, options?: INgTranslationOptions): any {
+  transform(key: string, options?: INgTranslationOptions): string {
     this.key = key;
     this.options = options;
 

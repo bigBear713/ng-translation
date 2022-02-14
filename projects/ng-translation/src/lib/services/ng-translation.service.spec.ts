@@ -1,18 +1,10 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { filter, skip, switchMap, take } from 'rxjs/operators';
+import { filter, skip, switchMap, take, tap } from 'rxjs/operators';
 import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER } from '../constants';
 import { INgTranslationParams, NgTranslationLangEnum } from '../models';
 import { NgTranslationTestingModule } from '../ng-translation-testing.module';
-import { handleSentenceWithParamsTestData } from '../tests';
+import { handleSentenceWithParamsTestData, translationSyncTestData, transLoader } from '../tests';
 import { NgTranslationService } from './ng-translation.service';
-
-const loader = {
-  dynamicLoader: {
-    [NgTranslationLangEnum.EN]: () => import('../tests/localization/en/translations').then(data => data.trans),
-    [NgTranslationLangEnum.ZH_CN]: () => import('../tests/localization/zh-CN/translations').then(data => data.trans),
-  },
-  staticLoader: { [NgTranslationLangEnum.EN]: { title: 'title  ' }, [NgTranslationLangEnum.ZH_CN]: { title: '标题  ' }, }
-};
 
 describe('NgTranslationService', () => {
 
@@ -28,8 +20,8 @@ describe('NgTranslationService', () => {
 
   describe('#changeLang()', () => {
     [
-      { title: 'dynamic load language', skipLoadDefaultOverChangeTime: 1, loader: loader.dynamicLoader },
-      { title: 'static load language', skipLoadDefaultOverChangeTime: 0, loader: loader.staticLoader },
+      { title: 'dynamic load language', skipLoadDefaultOverChangeTime: 1, loader: transLoader.dynamicLoader },
+      { title: 'static load language', skipLoadDefaultOverChangeTime: 0, loader: transLoader.staticLoader },
     ].forEach(loaderMethodItem => {
       describe(loaderMethodItem.title, () => {
         let service: NgTranslationService;
@@ -77,9 +69,9 @@ describe('NgTranslationService', () => {
 
         describe('#subscribeLangChange()', () => {
           [
-            { lang: NgTranslationLangEnum.ZH_CN, skipTime: 0, expect: NgTranslationLangEnum.ZH_CN },
-            { lang: NgTranslationLangEnum.EN, skipTime: 0, expect: NgTranslationLangEnum.EN },
-            { lang: NgTranslationLangEnum.AR_EG, skipTime: 0, expect: NgTranslationLangEnum.ZH_CN },
+            { lang: NgTranslationLangEnum.ZH_CN, expect: NgTranslationLangEnum.ZH_CN },
+            { lang: NgTranslationLangEnum.EN, expect: NgTranslationLangEnum.EN },
+            { lang: NgTranslationLangEnum.AR_EG, expect: NgTranslationLangEnum.ZH_CN },
           ].forEach(item => {
             it(`change lang as ${item.lang}`, (done) => {
               service.subscribeLoadDefaultOverChange().pipe(
@@ -88,7 +80,6 @@ describe('NgTranslationService', () => {
                 take(1),
               ).subscribe(() => {
                 service.subscribeLangChange().pipe(
-                  skip(item.skipTime),
                   take(1)
                 ).subscribe(lang => {
                   expect(lang).toEqual(item.expect);
@@ -115,33 +106,31 @@ describe('NgTranslationService', () => {
   });
 
   describe('#translationSync()', () => {
+    let service: NgTranslationService;
     beforeEach(async () => {
       TestBed.configureTestingModule({
         imports: [NgTranslationTestingModule],
         providers: [
           { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTranslationLangEnum.ZH_CN },
-          {
-            provide: NG_TRANS_LOADER,
-            useValue: { [NgTranslationLangEnum.ZH_CN]: { prefix: { key: '测试' } }, }
-          },
+          { provide: NG_TRANS_LOADER, useValue: transLoader.staticLoader },
         ]
       });
+      service = TestBed.inject(NgTranslationService);
     });
 
-    [
-      { title: 'options is undefined', test: { key: 'trans.key', options: undefined, }, expect: { result: 'trans.key' }, },
-      { title: 'options is {}', test: { key: 'trans.key', options: {}, }, expect: { result: 'trans.key' }, },
-      { title: 'returnKeyWhenEmpty is false', test: { key: 'trans.key', options: { returnKeyWhenEmpty: false }, }, expect: { result: '' }, },
-      { title: 'returnKeyWhenEmpty is true', test: { key: 'trans.key', options: { returnKeyWhenEmpty: true }, }, expect: { result: 'trans.key' }, },
-      { title: 'prefix is "prefix"', test: { key: 'trans.key', options: { prefix: 'prefix' }, }, expect: { result: 'prefix.trans.key' }, },
-      { title: 'prefix is "prefix."', test: { key: 'trans.key', options: { prefix: 'prefix.' }, }, expect: { result: 'prefix..trans.key' }, },
-      { title: 'prefix is " prefix "', test: { key: 'trans.key', options: { prefix: ' prefix ' }, }, expect: { result: ' prefix .trans.key' }, },
-      { title: 'prefix is "prefix"', test: { key: 'key', options: { prefix: 'prefix' }, }, expect: { result: '测试' }, },
-    ].forEach(item => {
-      it(item.title, inject([NgTranslationService], (service: NgTranslationService) => {
-        const result = service.translationSync(item.test.key, item.test.options);
-        expect(result).toEqual(item.expect.result);
-      }));
+    translationSyncTestData.forEach(item => {
+      it(item.title, (done) => {
+        service.subscribeLoadDefaultOverChange().pipe(
+          filter(result => result),
+          take(1),
+        ).subscribe(
+          () => {
+            const result = service.translationSync(item.test.key, item.test.options);
+            expect(result).toEqual(item.expect.result);
+            done();
+          }
+        );
+      });
     });
   });
 
@@ -152,7 +141,7 @@ describe('NgTranslationService', () => {
         imports: [NgTranslationTestingModule],
         providers: [
           { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTranslationLangEnum.ZH_CN },
-          { provide: NG_TRANS_LOADER, useValue: loader.dynamicLoader },
+          { provide: NG_TRANS_LOADER, useValue: transLoader.dynamicLoader },
         ]
       });
       service = TestBed.inject(NgTranslationService);
