@@ -1,10 +1,10 @@
 import {
-    Pipe,
-    PipeTransform
+  Pipe,
+  PipeTransform
 } from '@angular/core';
 
-import { INgTranslationParams } from '../models';
-import { NgTranslationService } from '../ng-translation.service';
+import { INgTranslationParams } from '../models/ng-translation-params.interface';
+import { NgTranslationService } from '../services/ng-translation.service';
 
 @Pipe({
   name: 'ngTranslationContent'
@@ -15,8 +15,8 @@ export class NgTranslationContentPipe implements PipeTransform {
     private translationService: NgTranslationService,
   ) { }
 
-  transform(value: any, params?: INgTranslationParams): any {
-    return this.translationService.handleSentenceWithParams(value, params);
+  transform(trans: string, params?: INgTranslationParams): string {
+    return this.translationService.handleSentenceWithParams(trans, params);
   }
 
 }
