@@ -1,5 +1,5 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { filter, skip, switchMap, take, tap } from 'rxjs/operators';
+import { filter, skip, switchMap, take } from 'rxjs/operators';
 import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER } from '../constants';
 import { INgTranslationParams, NgTranslationLangEnum } from '../models';
 import { NgTranslationTestingModule } from '../ng-translation-testing.module';
