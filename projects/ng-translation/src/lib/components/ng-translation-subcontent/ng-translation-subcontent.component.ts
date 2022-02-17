@@ -1,18 +1,26 @@
 import { isString } from 'lodash-es';
 
 import {
-    Component,
-    Input,
-    OnChanges,
-    OnInit,
-    SimpleChanges,
-    TemplateRef
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  TemplateRef
 } from '@angular/core';
 
 @Component({
   selector: '[ng-translation-subcontent]',
-  templateUrl: './ng-translation-subcontent.component.html',
-  styleUrls: ['./ng-translation-subcontent.component.scss']
+  template: `
+    <ng-container [ngSwitch]="isString">
+    <ng-container *ngSwitchCase="true">{{content}}</ng-container>
+    <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="$any(content)" [ngTemplateOutletContext]="{list}">
+      </ng-container>
+    </ng-container>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgTranslationSubcontentComponent implements OnChanges, OnInit {
 
@@ -24,7 +32,9 @@ export class NgTranslationSubcontentComponent implements OnChanges, OnInit {
 
   isString: boolean = true;
 
-  constructor() { }
+  constructor(
+    private changeDR: ChangeDetectorRef,
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.content) {
@@ -35,8 +45,9 @@ export class NgTranslationSubcontentComponent implements OnChanges, OnInit {
   ngOnInit() {
   }
 
-  updateIsString(content: string | TemplateRef<any> = ''): void {
+  private updateIsString(content: string | TemplateRef<any> = ''): void {
     this.isString = isString(content);
+    this.changeDR.markForCheck();
   }
 
 }

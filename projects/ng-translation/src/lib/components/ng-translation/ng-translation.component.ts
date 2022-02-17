@@ -9,6 +9,8 @@ import {
 } from 'rxjs/operators';
 
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -29,8 +31,7 @@ import { NgTranslationService } from '../../services/ng-translation.service';
 @Component({
   selector: 'ng-translation',
   templateUrl: './ng-translation.component.html',
-  styles: [
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
 
@@ -54,6 +55,7 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
   private originTrans: string = '';
 
   constructor(
+    private changeDR: ChangeDetectorRef,
     private translationService: NgTranslationService
   ) {
     this.subscribeLangChange();
@@ -95,6 +97,8 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
 
     let trans = this.originTrans;
     this.sentenceList = this.handleTrans(trans);
+
+    this.changeDR.markForCheck();
   }
 
   private handleTrans(trans: string): INgTranslationSentencePart[] {
