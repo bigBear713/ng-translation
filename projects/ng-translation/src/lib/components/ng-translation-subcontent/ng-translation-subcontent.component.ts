@@ -10,6 +10,7 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
+import { INgTranslationSentencePart } from '../../models/ng-translation-sentence-part.interface';
 
 @Component({
   selector: '[ng-translation-subcontent]',
@@ -28,7 +29,7 @@ export class NgTranslationSubcontentComponent implements OnChanges, OnInit {
   content: string | TemplateRef<any> = '';
 
   @Input()
-  list: any[] = [];
+  list: INgTranslationSentencePart[] = [];
 
   isString: boolean = true;
 

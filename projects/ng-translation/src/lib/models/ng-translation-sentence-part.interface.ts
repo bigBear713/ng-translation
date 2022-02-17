@@ -1,7 +1,7 @@
-interface NgTranslationSentenceCompPart {
+interface INgTranslationSentenceCompPart {
   index: number;
   content: any;
   list?: INgTranslationSentencePart[];
 }
 
-export type INgTranslationSentencePart = string | NgTranslationSentenceCompPart;
+export type INgTranslationSentencePart = string | INgTranslationSentenceCompPart;
