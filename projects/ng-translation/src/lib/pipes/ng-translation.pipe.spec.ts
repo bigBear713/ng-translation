@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { filter, take } from 'rxjs/operators';
 import { NG_TRANS_DEFAULT_LANG } from '../constants/ng-translation-default-lang.token';
 import { NG_TRANS_LOADER } from '../constants/ng-translation-loader.token';

@@ -16,7 +16,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   TemplateRef
 } from '@angular/core';
 
@@ -61,7 +60,7 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
     this.subscribeLangChange();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.originTrans = this.translationService.translationSync(this.key, this.options);
     this.reRender();
   }
