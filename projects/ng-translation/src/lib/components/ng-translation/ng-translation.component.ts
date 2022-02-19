@@ -93,10 +93,6 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
     return type;
   }
 
-  isString(content: INgTranslationSentencePart): boolean {
-    return isString(content);
-  }
-
   private reRender(): void {
     this.params = this.options?.params;
 
