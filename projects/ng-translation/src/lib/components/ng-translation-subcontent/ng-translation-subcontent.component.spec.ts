@@ -22,7 +22,7 @@ export class MockTplRefComponent {
   content = 'mock templateRef content';
 }
 
-describe('NgTranslationSubcontentComponent', () => {
+describe('Component: NgTranslationSubcontent', () => {
   let component: NgTranslationSubcontentComponent;
   let fixture: ComponentFixture<NgTranslationSubcontentComponent>;
 
@@ -40,7 +40,7 @@ describe('NgTranslationSubcontentComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
