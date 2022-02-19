@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgTranslationTestingModule } from '../../ng-translation-testing.module';
 
 import { NgTranslationComponent } from './ng-translation.component';
 
@@ -8,9 +9,10 @@ describe('NgTranslationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NgTranslationComponent ]
+      imports: [NgTranslationTestingModule],
+      declarations: []
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -22,4 +24,5 @@ describe('NgTranslationComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });
