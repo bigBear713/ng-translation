@@ -6,7 +6,7 @@ import { NgTranslationTestingModule } from '../ng-translation-testing.module';
 import { handleSentenceWithParamsTestData, translationSyncTestData, transLoader } from '../tests';
 import { NgTranslationService } from './ng-translation.service';
 
-describe('NgTranslationService', () => {
+describe('Service: NgTranslation', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({

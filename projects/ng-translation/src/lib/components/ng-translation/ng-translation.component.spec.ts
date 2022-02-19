@@ -3,7 +3,7 @@ import { NgTranslationTestingModule } from '../../ng-translation-testing.module'
 
 import { NgTranslationComponent } from './ng-translation.component';
 
-describe('NgTranslationComponent', () => {
+describe('Component: NgTranslation', () => {
   let component: NgTranslationComponent;
   let fixture: ComponentFixture<NgTranslationComponent>;
 
@@ -21,7 +21,7 @@ describe('NgTranslationComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
