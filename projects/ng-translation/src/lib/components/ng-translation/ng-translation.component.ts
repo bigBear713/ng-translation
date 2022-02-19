@@ -16,6 +16,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
   TemplateRef
 } from '@angular/core';
 
@@ -26,6 +27,7 @@ import {
 import { NgTranslationSentenceItemEnum } from '../../models/ng-translation-sentence-item.enum';
 import { INgTranslationSentencePart } from '../../models/ng-translation-sentence-part.interface';
 import { NgTranslationService } from '../../services/ng-translation.service';
+import { NgTranslationCoreService } from '../../services/ng-translation-core.service';
 
 @Component({
   selector: 'ng-translation',
@@ -55,14 +57,18 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
 
   constructor(
     private changeDR: ChangeDetectorRef,
-    private translationService: NgTranslationService
+    private transCoreService: NgTranslationCoreService,
+    private translationService: NgTranslationService,
   ) {
     this.subscribeLangChange();
   }
 
-  ngOnChanges(): void {
-    this.originTrans = this.translationService.translationSync(this.key, this.options);
-    this.reRender();
+  ngOnChanges(changes: SimpleChanges): void {
+    const { key, options } = changes;
+    if (key || options) {
+      this.originTrans = this.translationService.translationSync(this.key, this.options);
+      this.reRender();
+    }
   }
 
   ngOnInit(): void {
@@ -94,63 +100,10 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
   private reRender(): void {
     this.params = this.options?.params;
 
-    let trans = this.originTrans;
-    this.sentenceList = this.handleTrans(trans);
+    const trans = this.originTrans;
+    this.sentenceList = this.transCoreService.handleTrans(trans);
 
     this.changeDR.markForCheck();
-  }
-
-  private handleTrans(trans: string): INgTranslationSentencePart[] {
-    const sentenceList: INgTranslationSentencePart[] = [];
-    while (trans.length) {
-      const firstStartFlagIndex = trans.search(/<\d+>/);
-      if (firstStartFlagIndex > 0) {
-        const contentBeforeFirstComp = trans.slice(0, firstStartFlagIndex);
-        sentenceList.push(contentBeforeFirstComp);
-      }
-
-      const handleResult = this.handleCompStr(trans);
-      if (isString(handleResult)) {
-        sentenceList.push(handleResult);
-        trans = '';
-      } else {
-        sentenceList.push({
-          index: handleResult.index,
-          content: handleResult.content,
-          list: handleResult.list,
-        });
-        trans = handleResult.otherContent;
-      }
-    }
-    return sentenceList;
-  }
-
-  private handleCompStr(content: string) {
-    const startFlagIndex = content.search(/<\d+>/);
-    if (startFlagIndex === -1) {
-      return content;
-    }
-
-    let list: INgTranslationSentencePart[] = [];
-    const startFlagEndIndex = content.indexOf('>', startFlagIndex);
-    const comIndex = Number(content.slice(startFlagIndex + 1, startFlagEndIndex));
-
-    const endFlag = `</${comIndex}>`;
-    const endFlagIndex = content.indexOf(endFlag);
-    const comContent = content.slice(startFlagEndIndex + 1, endFlagIndex);
-
-    if (comContent.search(/<\d+>/) > -1) {
-      list = this.handleTrans(comContent);
-    }
-
-    const otherContent = content.slice(endFlagIndex + endFlag.length, content.length);
-
-    return {
-      index: comIndex,
-      content: comContent,
-      list,
-      otherContent,
-    };
   }
 
   private subscribeLangChange(): void {

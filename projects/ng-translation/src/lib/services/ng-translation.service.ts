@@ -37,6 +37,7 @@ import {
   INgTranslationParams,
   NgTranslationLangEnum
 } from './../models';
+import { NgTranslationCoreService } from './ng-translation-core.service';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +66,7 @@ export class NgTranslationService {
     @Inject(NG_TRANS_DEFAULT_LANG) @Optional() private transDefaultLang: string,
     @Inject(NG_TRANS_LOADER) @Optional() private transLoader: INgTranslationLoader,
     @Inject(NG_TRANS_MAX_RETRY_TOKEN) @Optional() private maxRetry: number,
+    private transCoreService: NgTranslationCoreService,
   ) {
     // if the maxRetry is undefined/null, use default setting,
     // so can set the retry valus as 0 to cancel retry action.
@@ -133,14 +135,14 @@ export class NgTranslationService {
     let transTemp = trans;
     // first, replace the param keys as uuid keys
     keys.forEach(key => {
-      transTemp = this.handleSentence(transTemp, `{{${key}}}`, keysUUID[key]);
+      transTemp = this.transCoreService.handleSentence(transTemp, `{{${key}}}`, keysUUID[key]);
     });
 
     trans = transTemp;
     // then, replace the uuid keys as params value,
     // so the value will not be wrong when the params value is same with other param value
     keys.forEach(key => {
-      trans = this.handleSentence(trans, keysUUID[key], params[key]);
+      trans = this.transCoreService.handleSentence(trans, keysUUID[key], params[key]);
     });
 
     return trans;
@@ -158,7 +160,7 @@ export class NgTranslationService {
   }
 
   translationSync(key: string, options?: INgTranslationOptions): string {
-    const finalKey = this.getFinalKey(key, options?.prefix);
+    const finalKey = this.transCoreService.getFinalKey(key, options?.prefix);
     const emptyTrans = options?.returnKeyWhenEmpty === false ? '' : finalKey;
     let trans = get(this.translations[this.lang], finalKey);
 
@@ -183,14 +185,6 @@ export class NgTranslationService {
   subscribeLoadDefaultOverChange(): Observable<boolean> {
     return this.loadDefaultOver ? of(true) : this.loadDefaultOver$.asObservable();
   }
-
-  private getFinalKey(key: string, prefix?: string): string {
-    return prefix ? `${prefix}.${key}` : key;
-  }
-
-  private handleSentence(str: string, searchStr: string, replaceStr: string): string {
-    return str.replace(new RegExp(searchStr, 'g'), replaceStr);
-  };
 
   private loadDefaultTrans(): void {
     this.loadTrans(this.lang).subscribe(trans => {
