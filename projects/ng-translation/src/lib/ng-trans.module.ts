@@ -2,27 +2,27 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import {
-  NgTranslationComponent,
-  NgTranslationSubcontentComponent
+  NgTransComponent,
+  NgTransSubcontentComponent
 } from './components';
 import {
-  NgTranslationContentPipe,
-  NgTranslationPipe
+  NgTransContentPipe,
+  NgTransPipe
 } from './pipes';
 
 const COMPONENTS = [
-  NgTranslationComponent,
-  NgTranslationSubcontentComponent,
+  NgTransComponent,
+  NgTransSubcontentComponent,
 ];
 
 const PIPES = [
-  NgTranslationPipe,
+  NgTransPipe,
 ];
 @NgModule({
   declarations: [
     ...COMPONENTS,
     ...PIPES,
-    NgTranslationContentPipe,
+    NgTransContentPipe,
   ],
   imports: [
     CommonModule,
@@ -32,4 +32,4 @@ const PIPES = [
     ...PIPES,
   ]
 })
-export class NgTranslationModule { }
+export class NgTransModule { }

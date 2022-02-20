@@ -1,22 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { filter, take } from 'rxjs/operators';
-import { NG_TRANS_DEFAULT_LANG } from '../constants/ng-translation-default-lang.token';
-import { NG_TRANS_LOADER } from '../constants/ng-translation-loader.token';
-import { NgTranslationLangEnum } from '../models/ng-translation-lang.enum';
-import { NgTranslationTestingModule } from '../ng-translation-testing.module';
-import { NgTranslationService } from '../services/ng-translation.service';
+import { NG_TRANS_DEFAULT_LANG } from '../constants/ng-trans-default-lang.token';
+import { NG_TRANS_LOADER } from '../constants/ng-trans-loader.token';
+import { NgTransLangEnum } from '../models/ng-trans-lang.enum';
+import { NgTransTestingModule } from '../ng-trans-testing.module';
+import { NgTransService } from '../services/ng-trans.service';
 import { translationSyncTestData, transLoader } from '../tests';
-import { NgTranslationPipe } from './ng-translation.pipe';
+import { NgTransPipe } from './ng-trans.pipe';
 
-describe('Pipe: NgTranslatione', () => {
-  let transService: NgTranslationService;
+describe('Pipe: NgTrans', () => {
+  let transService: NgTransService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgTranslationTestingModule],
+      imports: [NgTransTestingModule],
       declarations: [],
       providers: [
-        { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTranslationLangEnum.ZH_CN, },
+        { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.ZH_CN, },
         { provide: NG_TRANS_LOADER, useValue: transLoader.dynamicLoader },
       ]
     })
@@ -24,11 +24,11 @@ describe('Pipe: NgTranslatione', () => {
   });
 
   beforeEach(() => {
-    transService = TestBed.inject(NgTranslationService);
+    transService = TestBed.inject(NgTransService);
   });
 
   it('create an instance', () => {
-    let pipe = new NgTranslationPipe(transService);
+    let pipe = new NgTransPipe(transService);
     expect(pipe).toBeTruthy();
   });
 
@@ -58,10 +58,10 @@ describe('Pipe: NgTranslatione', () => {
             const result = pipe.transform(item.test.key, item.test.options);
             expect(result).toEqual(expectResult);
           };
-          const pipe = new NgTranslationPipe(transService);
+          const pipe = new NgTransPipe(transService);
           verifyResult(item.expect.resultZHCN);
 
-          transService.changeLang(NgTranslationLangEnum.EN).pipe(take(1)).subscribe(() => {
+          transService.changeLang(NgTransLangEnum.EN).pipe(take(1)).subscribe(() => {
             verifyResult(item.expect.resultEN);
             done();
           });

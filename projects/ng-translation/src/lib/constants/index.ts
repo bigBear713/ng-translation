@@ -1,3 +1,3 @@
-export * from './ng-translation-loader.token';
-export * from './ng-translation-default-lang.token';
-export * from './ng-translation-max-retry.token';
+export * from './ng-trans-loader.token';
+export * from './ng-trans-default-lang.token';
+export * from './ng-trans-max-retry.token';

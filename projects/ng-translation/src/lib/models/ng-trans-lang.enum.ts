@@ -1,4 +1,4 @@
-export enum NgTranslationLangEnum {
+export enum NgTransLangEnum {
   // 简体中文
   ZH_CN = 'zh-CN',
   // 繁体中文	

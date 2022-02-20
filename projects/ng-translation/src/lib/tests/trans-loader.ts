@@ -1,12 +1,12 @@
-import { NgTranslationLangEnum } from '../models/ng-translation-lang.enum';
+import { NgTransLangEnum } from '../models/ng-trans-lang.enum';
 
 export const transLoader = {
   dynamicLoader: {
-    [NgTranslationLangEnum.EN]: () => import('./localization/en/translations').then(data => data.trans),
-    [NgTranslationLangEnum.ZH_CN]: () => import('./localization/zh-CN/translations').then(data => data.trans),
+    [NgTransLangEnum.EN]: () => import('./localization/en/translations').then(data => data.trans),
+    [NgTransLangEnum.ZH_CN]: () => import('./localization/zh-CN/translations').then(data => data.trans),
   },
   staticLoader: {
-    [NgTranslationLangEnum.EN]: {
+    [NgTransLangEnum.EN]: {
       title: 'title  ',
       content: {
         'helloWorld': 'hello world',
@@ -14,7 +14,7 @@ export const transLoader = {
       component: '<0>component</0>',
       complexComponent: '<0>component0<1>component1</1></0>',
     },
-    [NgTranslationLangEnum.ZH_CN]: {
+    [NgTransLangEnum.ZH_CN]: {
       title: '标题  ',
       content: {
         'helloWorld': '你好，世界',

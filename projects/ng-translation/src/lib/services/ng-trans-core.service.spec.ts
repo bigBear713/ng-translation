@@ -1,14 +1,14 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { NgTranslationCoreService } from './ng-translation-core.service';
+import { NgTransCoreService } from './ng-trans-core.service';
 
-describe('Service: NgTranslationCore', () => {
+describe('Service: NgTransCore', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NgTranslationCoreService]
+      providers: [NgTransCoreService]
     });
   });
 
-  it('should be created', inject([NgTranslationCoreService], (service: NgTranslationCoreService) => {
+  it('should be created', inject([NgTransCoreService], (service: NgTransCoreService) => {
     expect(service).toBeTruthy();
   }));
 
@@ -17,7 +17,7 @@ describe('Service: NgTranslationCore', () => {
       { params: { key: 'transKey' }, expect: 'transKey' },
       { params: { key: 'transKey', prefix: 'prefix' }, expect: 'prefix.transKey' },
     ].forEach(item => {
-      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTranslationCoreService], (service: NgTranslationCoreService) => {
+      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTransCoreService], (service: NgTransCoreService) => {
         const { key, prefix } = item.params;
         const finalKey = service.getFinalKey(key, prefix);
         expect(finalKey).toEqual(item.expect);
@@ -33,7 +33,7 @@ describe('Service: NgTranslationCore', () => {
       { params: { str: 'sentence {{p1}}', searchStr: '{{p1}}', replaceStr: '' }, expect: 'sentence ' },
       { params: { str: 'sentence {{p1}}', searchStr: '{{p1}}', replaceStr: '{{p1}}' }, expect: 'sentence {{p1}}' },
     ].forEach(item => {
-      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTranslationCoreService], (service: NgTranslationCoreService) => {
+      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTransCoreService], (service: NgTransCoreService) => {
         const { str, searchStr, replaceStr } = item.params;
         const finalKey = service.handleSentence(str, searchStr, replaceStr);
         expect(finalKey).toEqual(item.expect);
@@ -80,7 +80,7 @@ describe('Service: NgTranslationCore', () => {
         ]
       },
     ].forEach(item => {
-      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTranslationCoreService], (service: NgTranslationCoreService) => {
+      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTransCoreService], (service: NgTransCoreService) => {
         const { trans } = item.params;
         const handleResult = service.handleTrans(trans);
         expect(handleResult).toEqual(item.expect);

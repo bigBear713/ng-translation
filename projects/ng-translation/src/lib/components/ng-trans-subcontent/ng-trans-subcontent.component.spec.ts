@@ -1,8 +1,8 @@
 import { Component, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgTranslationTestingModule } from '../../ng-translation-testing.module';
+import { NgTransTestingModule } from '../../ng-trans-testing.module';
 
-import { NgTranslationSubcontentComponent } from './ng-translation-subcontent.component';
+import { NgTransSubcontentComponent } from './ng-trans-subcontent.component';
 
 @Component({
   selector: 'mock-tpl-ref',
@@ -21,21 +21,21 @@ export class MockTplRefComponent {
   content = 'mock templateRef content';
 }
 
-describe('Component: NgTranslationSubcontent', () => {
-  let component: NgTranslationSubcontentComponent;
-  let fixture: ComponentFixture<NgTranslationSubcontentComponent>;
+describe('Component: NgTransSubcontent', () => {
+  let component: NgTransSubcontentComponent;
+  let fixture: ComponentFixture<NgTransSubcontentComponent>;
   let hostEle: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgTranslationTestingModule],
+      imports: [NgTransTestingModule],
       declarations: [MockTplRefComponent]
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NgTranslationSubcontentComponent);
+    fixture = TestBed.createComponent(NgTransSubcontentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     hostEle = fixture.debugElement.nativeElement;

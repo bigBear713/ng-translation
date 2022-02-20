@@ -1,20 +1,20 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { filter, skip, switchMap, take } from 'rxjs/operators';
 import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER } from '../constants';
-import { INgTranslationParams, NgTranslationLangEnum } from '../models';
-import { NgTranslationTestingModule } from '../ng-translation-testing.module';
+import { INgTransParams, NgTransLangEnum } from '../models';
+import { NgTransTestingModule } from '../ng-trans-testing.module';
 import { handleSentenceWithParamsTestData, translationSyncTestData, transLoader } from '../tests';
-import { NgTranslationService } from './ng-translation.service';
+import { NgTransService } from './ng-trans.service';
 
-describe('Service: NgTranslation', () => {
+describe('Service: NgTrans', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NgTranslationTestingModule]
+      imports: [NgTransTestingModule]
     });
   });
 
-  it('should be created', inject([NgTranslationService], (service: NgTranslationService) => {
+  it('should be created', inject([NgTransService], (service: NgTransService) => {
     expect(service).toBeTruthy();
   }));
 
@@ -24,16 +24,16 @@ describe('Service: NgTranslation', () => {
       { title: 'static load language', skipLoadDefaultOverChangeTime: 0, loader: transLoader.staticLoader },
     ].forEach(loaderMethodItem => {
       describe(loaderMethodItem.title, () => {
-        let service: NgTranslationService;
+        let service: NgTransService;
         beforeEach(async () => {
           TestBed.configureTestingModule({
-            imports: [NgTranslationTestingModule],
+            imports: [NgTransTestingModule],
             providers: [
-              { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTranslationLangEnum.ZH_CN, },
+              { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.ZH_CN, },
               { provide: NG_TRANS_LOADER, useValue: loaderMethodItem.loader },
             ]
           });
-          service = TestBed.inject(NgTranslationService);
+          service = TestBed.inject(NgTransService);
         });
 
         it('#subscribeLoadDefaultOverChange()', (done) => {
@@ -49,9 +49,9 @@ describe('Service: NgTranslation', () => {
         });
 
         [
-          { lang: NgTranslationLangEnum.ZH_CN, expect: { changeResult: { curLang: NgTranslationLangEnum.ZH_CN, result: true }, transResult: '标题  ' } },
-          { lang: NgTranslationLangEnum.EN, expect: { changeResult: { curLang: NgTranslationLangEnum.EN, result: true }, transResult: 'title  ' } },
-          { lang: NgTranslationLangEnum.AR_EG, expect: { changeResult: { curLang: NgTranslationLangEnum.ZH_CN, result: false }, transResult: '标题  ' } },
+          { lang: NgTransLangEnum.ZH_CN, expect: { changeResult: { curLang: NgTransLangEnum.ZH_CN, result: true }, transResult: '标题  ' } },
+          { lang: NgTransLangEnum.EN, expect: { changeResult: { curLang: NgTransLangEnum.EN, result: true }, transResult: 'title  ' } },
+          { lang: NgTransLangEnum.AR_EG, expect: { changeResult: { curLang: NgTransLangEnum.ZH_CN, result: false }, transResult: '标题  ' } },
         ].forEach(item => {
           it(`change lang as ${item.lang}`, (done) => {
             service.subscribeLoadDefaultOverChange().pipe(
@@ -69,9 +69,9 @@ describe('Service: NgTranslation', () => {
 
         describe('#subscribeLangChange()', () => {
           [
-            { lang: NgTranslationLangEnum.ZH_CN, expect: NgTranslationLangEnum.ZH_CN },
-            { lang: NgTranslationLangEnum.EN, expect: NgTranslationLangEnum.EN },
-            { lang: NgTranslationLangEnum.AR_EG, expect: NgTranslationLangEnum.ZH_CN },
+            { lang: NgTransLangEnum.ZH_CN, expect: NgTransLangEnum.ZH_CN },
+            { lang: NgTransLangEnum.EN, expect: NgTransLangEnum.EN },
+            { lang: NgTransLangEnum.AR_EG, expect: NgTransLangEnum.ZH_CN },
           ].forEach(item => {
             it(`change lang as ${item.lang}`, (done) => {
               service.subscribeLoadDefaultOverChange().pipe(
@@ -97,8 +97,8 @@ describe('Service: NgTranslation', () => {
 
   describe('#handleSentenceWithParams()', () => {
     handleSentenceWithParamsTestData.forEach(item => {
-      it(item.title, inject([NgTranslationService], (service: NgTranslationService) => {
-        const params: INgTranslationParams | undefined = item.test.params;
+      it(item.title, inject([NgTransService], (service: NgTransService) => {
+        const params: INgTransParams | undefined = item.test.params;
         const result = service.handleSentenceWithParams(item.test.trans, params);
         expect(result).toEqual(item.expect.result);
       }));
@@ -106,16 +106,16 @@ describe('Service: NgTranslation', () => {
   });
 
   describe('#translationSync()', () => {
-    let service: NgTranslationService;
+    let service: NgTransService;
     beforeEach(async () => {
       TestBed.configureTestingModule({
-        imports: [NgTranslationTestingModule],
+        imports: [NgTransTestingModule],
         providers: [
-          { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTranslationLangEnum.ZH_CN },
+          { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.ZH_CN },
           { provide: NG_TRANS_LOADER, useValue: transLoader.staticLoader },
         ]
       });
-      service = TestBed.inject(NgTranslationService);
+      service = TestBed.inject(NgTransService);
     });
 
     translationSyncTestData.forEach(item => {
@@ -135,16 +135,16 @@ describe('Service: NgTranslation', () => {
   });
 
   describe('#translationAsync()', () => {
-    let service: NgTranslationService;
+    let service: NgTransService;
     beforeEach(async () => {
       TestBed.configureTestingModule({
-        imports: [NgTranslationTestingModule],
+        imports: [NgTransTestingModule],
         providers: [
-          { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTranslationLangEnum.ZH_CN },
+          { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.ZH_CN },
           { provide: NG_TRANS_LOADER, useValue: transLoader.dynamicLoader },
         ]
       });
-      service = TestBed.inject(NgTranslationService);
+      service = TestBed.inject(NgTransService);
     });
 
     it('not change lang', (done) => {
@@ -160,7 +160,7 @@ describe('Service: NgTranslation', () => {
     it('change lang as en', (done) => {
       service.subscribeLoadDefaultOverChange().pipe(
         filter(result => result),
-        switchMap(() => service.changeLang(NgTranslationLangEnum.EN)),
+        switchMap(() => service.changeLang(NgTransLangEnum.EN)),
         switchMap(() => service.translationAsync('title')),
       ).pipe(take(1)).subscribe(transContent => {
         expect(transContent).toEqual('title  ');

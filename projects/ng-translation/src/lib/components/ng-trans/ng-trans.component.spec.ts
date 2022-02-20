@@ -3,14 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { isString } from 'lodash-es';
 import { take } from 'rxjs/operators';
 import { NG_TRANS_LOADER } from '../../constants';
-import { NgTranslationLangEnum } from '../../models';
-import { NgTranslationSentenceItemEnum } from '../../models/ng-translation-sentence-item.enum';
-import { INgTranslationSentencePart } from '../../models/ng-translation-sentence-part.interface';
-import { NgTranslationTestingModule } from '../../ng-translation-testing.module';
-import { NgTranslationService } from '../../services';
-import { NgTranslationCoreService } from '../../services/ng-translation-core.service';
+import { NgTransLangEnum } from '../../models';
+import { NgTransSentenceItemEnum } from '../../models/ng-trans-sentence-item.enum';
+import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interface';
+import { NgTransTestingModule } from '../../ng-trans-testing.module';
+import { NgTransService } from '../../services';
+import { NgTransCoreService } from '../../services/ng-trans-core.service';
 import { transLoader } from '../../tests';
-import { NgTranslationComponent } from './ng-translation.component';
+import { NgTransComponent } from './ng-trans.component';
 
 @Component({
   selector: 'comp1',
@@ -25,7 +25,7 @@ export class MockComp1Component {
   selector: 'mock-tpl-ref',
   template: `
     <ng-template #tpl1 let-content="content" let-list="list">
-      <div class="has-subcontent" ng-translation-subcontent [content]="content" [list]="list"></div>
+      <div class="has-subcontent" ng-trans-subcontent [content]="content" [list]="list"></div>
     </ng-template>
     <ng-template #tpl2 let-content="content"><comp1>{{content}}</comp1></ng-template>
   `,
@@ -35,13 +35,13 @@ export class MockTplRefComponent {
   @ViewChild('tpl2') tpl2!: TemplateRef<any>;
 }
 
-describe('Component: NgTranslation', () => {
-  let component: NgTranslationComponent;
-  let fixture: ComponentFixture<NgTranslationComponent>;
+describe('Component: NgTrans', () => {
+  let component: NgTransComponent;
+  let fixture: ComponentFixture<NgTransComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgTranslationTestingModule],
+      imports: [NgTransTestingModule],
       declarations: [MockTplRefComponent, MockComp1Component],
       providers: [
         { provide: NG_TRANS_LOADER, useValue: transLoader.staticLoader },
@@ -51,7 +51,7 @@ describe('Component: NgTranslation', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NgTranslationComponent);
+    fixture = TestBed.createComponent(NgTransComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -62,11 +62,11 @@ describe('Component: NgTranslation', () => {
 
   describe('#getSentenceItemType()', () => {
     [
-      { params: 'strContent', expect: NgTranslationSentenceItemEnum.STR },
-      { params: { index: 0, content: 'strContent', list: [] }, expect: NgTranslationSentenceItemEnum.COMP },
-      { params: { index: 0, content: '<0>str</0>', list: [{ index: 0, content: 'str', list: [] }] }, expect: NgTranslationSentenceItemEnum.MULTI_COMP },
-      { params: { index: undefined, content: 'strContent', list: [] } as unknown as INgTranslationSentencePart, expect: undefined },
-      { params: { index: undefined, content: 'strContent', list: undefined } as unknown as INgTranslationSentencePart, expect: undefined },
+      { params: 'strContent', expect: NgTransSentenceItemEnum.STR },
+      { params: { index: 0, content: 'strContent', list: [] }, expect: NgTransSentenceItemEnum.COMP },
+      { params: { index: 0, content: '<0>str</0>', list: [{ index: 0, content: 'str', list: [] }] }, expect: NgTransSentenceItemEnum.MULTI_COMP },
+      { params: { index: undefined, content: 'strContent', list: [] } as unknown as INgTransSentencePart, expect: undefined },
+      { params: { index: undefined, content: 'strContent', list: undefined } as unknown as INgTransSentencePart, expect: undefined },
     ].forEach(item => {
       it(`the params is ${isString(item.params) ? item.params : JSON.stringify(item.params)}`, () => {
         const type = component.getSentenceItemType(item.params);
@@ -76,10 +76,10 @@ describe('Component: NgTranslation', () => {
   });
 
   it('#ngOnChanges()', () => {
-    const transCoreService = TestBed.inject(NgTranslationCoreService);
+    const transCoreService = TestBed.inject(NgTransCoreService);
     spyOn(transCoreService, 'handleTrans').and.callThrough();
 
-    const compFixture = TestBed.createComponent(NgTranslationComponent);
+    const compFixture = TestBed.createComponent(NgTransComponent);
     const comp = compFixture.componentInstance;
     comp.key = 'title';
     comp.options = {};
@@ -93,18 +93,18 @@ describe('Component: NgTranslation', () => {
   });
 
   it('verify has subscribed lang change event', (done) => {
-    const transService = TestBed.inject(NgTranslationService);
+    const transService = TestBed.inject(NgTransService);
     spyOn(transService, 'subscribeLangChange').and.callThrough();
-    const transCoreService = TestBed.inject(NgTranslationCoreService);
+    const transCoreService = TestBed.inject(NgTransCoreService);
     spyOn(transCoreService, 'handleTrans').and.callThrough();
 
-    const compFixture = TestBed.createComponent(NgTranslationComponent);
+    const compFixture = TestBed.createComponent(NgTransComponent);
     const comp = compFixture.componentInstance;
     comp.key = 'title';
     comp.options = {};
 
     expect(transService.subscribeLangChange).toHaveBeenCalledTimes(1);
-    transService.changeLang(NgTranslationLangEnum.EN).pipe(take(1)).subscribe(() => {
+    transService.changeLang(NgTransLangEnum.EN).pipe(take(1)).subscribe(() => {
       expect(transCoreService.handleTrans).toHaveBeenCalledTimes(1);
       done();
     });
@@ -112,8 +112,8 @@ describe('Component: NgTranslation', () => {
 
   describe('verify the UI', () => {
     let tpls: TemplateRef<any>[] = [];
-    let uiComp: NgTranslationComponent;
-    let uiFixture: ComponentFixture<NgTranslationComponent>;
+    let uiComp: NgTransComponent;
+    let uiFixture: ComponentFixture<NgTransComponent>;
     let hostEle: HTMLElement;
 
     beforeEach(() => {
@@ -122,14 +122,14 @@ describe('Component: NgTranslation', () => {
       tplFixture.detectChanges();
       tpls = [tplComp.tpl1, tplComp.tpl2];
 
-      uiFixture = TestBed.createComponent(NgTranslationComponent);
+      uiFixture = TestBed.createComponent(NgTransComponent);
       uiComp = uiFixture.componentInstance;
       uiFixture.detectChanges();
       hostEle = uiFixture.debugElement.nativeElement;
     });
 
     beforeEach(async () => {
-      const transService = TestBed.inject(NgTranslationService);
+      const transService = TestBed.inject(NgTransService);
       return transService.subscribeLoadDefaultOverChange().toPromise();
     });
 

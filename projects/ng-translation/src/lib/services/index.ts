@@ -1,1 +1,1 @@
-export * from './ng-translation.service';
+export * from './ng-trans.service';

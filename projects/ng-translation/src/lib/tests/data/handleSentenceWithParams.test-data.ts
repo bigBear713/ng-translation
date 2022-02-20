@@ -1,8 +1,8 @@
-import { INgTranslationParams } from "../../models/ng-translation-params.interface";
+import { INgTransParams } from "../../models/ng-trans-params.interface";
 
 export const handleSentenceWithParamsTestData: {
   title: string;
-  test: { trans: string; params?: INgTranslationParams; };
+  test: { trans: string; params?: INgTransParams; };
   expect: { result: string };
 }[] = [
     { title: 'no params', test: { trans: 'test trans', params: undefined, }, expect: { result: 'test trans' } },

@@ -10,14 +10,14 @@ import {
   PipeTransform
 } from '@angular/core';
 
-import { INgTranslationOptions } from '../models';
-import { NgTranslationService } from '../services/ng-translation.service';
+import { INgTransOptions } from '../models';
+import { NgTransService } from '../services/ng-trans.service';
 
 @Pipe({
-  name: 'ngTranslation',
+  name: 'ngTrans',
   pure: false
 })
-export class NgTranslationPipe implements PipeTransform, OnDestroy {
+export class NgTransPipe implements PipeTransform, OnDestroy {
 
   latestValue: string = '';
 
@@ -25,20 +25,20 @@ export class NgTranslationPipe implements PipeTransform, OnDestroy {
 
   private key: string = '';
 
-  private options: INgTranslationOptions | undefined;
+  private options: INgTransOptions | undefined;
 
   constructor(
-    private translationService: NgTranslationService,
+    private transService: NgTransService,
   ) {
     this.subscribeLangChange();
   }
 
-  transform(key: string, options?: INgTranslationOptions): string {
+  transform(key: string, options?: INgTransOptions): string {
     this.key = key;
     this.options = options;
 
     if (!this.latestValue) {
-      this.latestValue = this.translationService.translationSync(key, options);
+      this.latestValue = this.transService.translationSync(key, options);
     }
 
     return this.latestValue;
@@ -50,8 +50,8 @@ export class NgTranslationPipe implements PipeTransform, OnDestroy {
   }
 
   private subscribeLangChange(): void {
-    this.translationService.subscribeLangChange().pipe(
-      switchMap(_ => this.translationService.translationAsync(this.key, this.options)),
+    this.transService.subscribeLangChange().pipe(
+      switchMap(_ => this.transService.translationAsync(this.key, this.options)),
       takeUntil(this.destroy$)
     ).subscribe(latestValue => this.latestValue = latestValue);
   }

@@ -1,4 +1,4 @@
-interface INgTranslationSentenceCompPart {
+interface INgTransSentenceCompPart {
   // the component index, 
   // will be used to get component instance from components properties
   index: number;
@@ -6,7 +6,7 @@ interface INgTranslationSentenceCompPart {
   // e.g. ' str ' is the trans content string of '<0> str </0>'
   content: string;
   // the sentenceList from the trans content string of the current component
-  list?: INgTranslationSentencePart[];
+  list?: INgTransSentencePart[];
 }
 
-export type INgTranslationSentencePart = string | INgTranslationSentenceCompPart;
+export type INgTransSentencePart = string | INgTransSentenceCompPart;
