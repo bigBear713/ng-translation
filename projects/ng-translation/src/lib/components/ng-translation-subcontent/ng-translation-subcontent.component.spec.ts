@@ -1,6 +1,5 @@
-/* tslint:disable:no-unused-variable */
 import { Component, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgTranslationTestingModule } from '../../ng-translation-testing.module';
 
 import { NgTranslationSubcontentComponent } from './ng-translation-subcontent.component';
@@ -25,6 +24,7 @@ export class MockTplRefComponent {
 describe('Component: NgTranslationSubcontent', () => {
   let component: NgTranslationSubcontentComponent;
   let fixture: ComponentFixture<NgTranslationSubcontentComponent>;
+  let hostEle: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -38,6 +38,7 @@ describe('Component: NgTranslationSubcontent', () => {
     fixture = TestBed.createComponent(NgTranslationSubcontentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    hostEle = fixture.debugElement.nativeElement;
   });
 
   it('should be created', () => {
@@ -54,7 +55,6 @@ describe('Component: NgTranslationSubcontent', () => {
 
     fixture.detectChanges();
 
-    const hostEle: HTMLElement = fixture.debugElement.nativeElement;
     expect(hostEle.textContent?.trim()).toEqual(content);
     expect(component.isString).toEqual(true);
   });
@@ -73,7 +73,6 @@ describe('Component: NgTranslationSubcontent', () => {
 
     fixture.detectChanges();
 
-    const hostEle: HTMLElement = fixture.debugElement.nativeElement;
     expect(hostEle.textContent?.trim()).toEqual(mockTplRefComp.content);
     expect(component.isString).toEqual(false);
   });
@@ -95,7 +94,6 @@ describe('Component: NgTranslationSubcontent', () => {
 
     fixture.detectChanges();
 
-    const hostEle: HTMLElement = fixture.debugElement.nativeElement;
     const listFromDom = Array.from(hostEle.querySelectorAll('p')).map(item => item.textContent?.trim());
     expect(listFromDom).toEqual(mockList);
     expect(component.isString).toEqual(false);

@@ -114,6 +114,7 @@ describe('Component: NgTranslation', () => {
     let tpls: TemplateRef<any>[] = [];
     let uiComp: NgTranslationComponent;
     let uiFixture: ComponentFixture<NgTranslationComponent>;
+    let hostEle: HTMLElement;
 
     beforeEach(() => {
       const tplFixture = TestBed.createComponent(MockTplRefComponent);
@@ -124,6 +125,7 @@ describe('Component: NgTranslation', () => {
       uiFixture = TestBed.createComponent(NgTranslationComponent);
       uiComp = uiFixture.componentInstance;
       uiFixture.detectChanges();
+      hostEle = uiFixture.debugElement.nativeElement;
     });
 
     beforeEach(async () => {
@@ -140,7 +142,6 @@ describe('Component: NgTranslation', () => {
       uiComp.ngOnChanges(changes);
       uiFixture.detectChanges();
 
-      const hostEle: HTMLElement = uiFixture.debugElement.nativeElement;
       expect(hostEle.textContent?.trim()).toEqual('标题');
     });
 
@@ -153,7 +154,6 @@ describe('Component: NgTranslation', () => {
       uiComp.ngOnChanges(changes);
       uiFixture.detectChanges();
 
-      const hostEle: HTMLElement = uiFixture.debugElement.nativeElement;
       const comp1Instance = hostEle.querySelector('comp1');
       expect(!!comp1Instance).toEqual(true);
       expect(comp1Instance?.textContent?.trim()).toEqual('组件');
@@ -167,8 +167,6 @@ describe('Component: NgTranslation', () => {
       };
       uiComp.ngOnChanges(changes);
       uiFixture.detectChanges();
-
-      const hostEle: HTMLElement = uiFixture.debugElement.nativeElement;
 
       const hasSubContentEle = hostEle.querySelector('div.has-subcontent');
       expect(!!hasSubContentEle).toEqual(true);
