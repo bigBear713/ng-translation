@@ -1,10 +1,10 @@
 import {
   NG_TRANS_DEFAULT_LANG,
   NG_TRANS_LOADER,
-  NgTranslationLangEnum,
-  NgTranslationModule,
+  NgTransLangEnum,
+  NgTransModule,
   NG_TRANS_MAX_RETRY_TOKEN
-} from 'ng-translation';
+} from 'ng-trans';
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,7 +19,7 @@ import { trans } from './localization/zh-CN/translations';
   ],
   imports: [
     BrowserModule,
-    NgTranslationModule,
+    NgTransModule,
     AppRoutingModule
   ],
   providers: [
@@ -29,14 +29,14 @@ import { trans } from './localization/zh-CN/translations';
     // },
     {
       provide: NG_TRANS_DEFAULT_LANG,
-      useValue: NgTranslationLangEnum.EN,
+      useValue: NgTransLangEnum.EN,
     },
     {
       provide: NG_TRANS_LOADER,
       useValue: {
         // dyn load
-        [NgTranslationLangEnum.EN]: () => import('./localization/en/translations').then(data => data.trans),
-        [NgTranslationLangEnum.ZH_CN]: () => import('./localization/zh-CN/translations').then(data => data.trans),
+        [NgTransLangEnum.EN]: () => import('./localization/en/translations').then(data => data.trans),
+        [NgTransLangEnum.ZH_CN]: () => import('./localization/zh-CN/translations').then(data => data.trans),
         // direct load
         // [NgTranslationLangEnum.ZH_CN]: trans,
       }

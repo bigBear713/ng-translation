@@ -1,4 +1,4 @@
-import { NgTranslationModule } from 'ng-translation';
+import { NgTransModule } from 'ng-trans';
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -9,7 +9,7 @@ import { Feature1RoutingModule } from './feature1.routing.module';
 @NgModule({
   imports: [
     CommonModule,
-    NgTranslationModule,
+    NgTransModule,
     Feature1RoutingModule
   ],
   declarations: [Feature1Component]

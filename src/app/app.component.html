@@ -2,8 +2,8 @@
 <button (click)="onChangeLang('en')">切换为英文</button>
 <button (click)="onChangeLang('other')">切换为其它不存在的语言</button>
 <div>
-  {{'title'| ngTranslation}}
-  {{'content.helloWorld'| ngTranslation}}
+  {{'title'| ngTrans}}
+  {{'content.helloWorld'| ngTrans}}
 </div>
 
 <div>
@@ -18,13 +18,14 @@
 
 <div>
   当key对应的内容不存在, 默认返回key:
-  {{'test.test'| ngTranslation}}
+  {{'test.test'| ngTrans}}
 </div>
 
 <div>
   当key对应的内容不存在, 也可以设置返回空字符串:
-  {{'test.test'| ngTranslation:({returnKeyWhenEmpty:false})}}
+  {{'test.test'| ngTrans:({returnKeyWhenEmpty:false})}}
 </div>
 
-<ng-translation></ng-translation>
+<ng-trans>
+</ng-trans>
 <router-outlet></router-outlet>
