@@ -16,10 +16,10 @@
   </ng-container>
 </ng-template>
 
-<ng-template #strTmp let-content="content">{{content|ngTranslationContent:params}}</ng-template>
+<ng-template #strTmp let-content="content">{{content|ngTransContent:params}}</ng-template>
 
 <ng-template #compTmp let-data="content">
-  <ng-container *ngTemplateOutlet="components[data.index];context:{content:data.content|ngTranslationContent:params}">
+  <ng-container *ngTemplateOutlet="components[data.index];context:{content:data.content|ngTransContent:params}">
   </ng-container>
 </ng-template>
 

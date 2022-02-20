@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { isString } from 'lodash-es';
-import { INgTranslationSentencePart } from '../models/ng-translation-sentence-part.interface';
+import { INgTransSentencePart } from '../models/ng-trans-sentence-part.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NgTranslationCoreService {
+export class NgTransCoreService {
 
   constructor() { }
 
@@ -17,8 +17,8 @@ export class NgTranslationCoreService {
     return str.replace(new RegExp(searchStr, 'g'), replaceStr);
   };
 
-  handleTrans(trans: string): INgTranslationSentencePart[] {
-    const sentenceList: INgTranslationSentencePart[] = [];
+  handleTrans(trans: string): INgTransSentencePart[] {
+    const sentenceList: INgTransSentencePart[] = [];
     while (trans.length) {
       const firstStartFlagIndex = trans.search(/<\d+>/);
       if (firstStartFlagIndex > 0) {
@@ -48,7 +48,7 @@ export class NgTranslationCoreService {
       return content;
     }
 
-    let list: INgTranslationSentencePart[] = [];
+    let list: INgTransSentencePart[] = [];
     const startFlagEndIndex = content.indexOf('>', startFlagIndex);
     const comIndex = Number(content.slice(startFlagIndex + 1, startFlagEndIndex));
 

@@ -1,33 +1,33 @@
 import { TestBed } from '@angular/core/testing';
-import { NgTranslationTestingModule } from '../ng-translation-testing.module';
-import { NgTranslationService } from '../services/ng-translation.service';
+import { NgTransTestingModule } from '../ng-trans-testing.module';
+import { NgTransService } from '../services/ng-trans.service';
 import { handleSentenceWithParamsTestData } from '../tests';
-import { NgTranslationContentPipe } from './ng-translation-content.pipe';
+import { NgTransContentPipe } from './ng-trans-content.pipe';
 
-describe('Pipe: NgTranslationContente', () => {
-  let transService: NgTranslationService;
+describe('Pipe: NgTransContente', () => {
+  let transService: NgTransService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgTranslationTestingModule],
+      imports: [NgTransTestingModule],
       declarations: []
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    transService = TestBed.inject(NgTranslationService);
+    transService = TestBed.inject(NgTransService);
   });
 
   it('create an instance', () => {
-    let pipe = new NgTranslationContentPipe(transService);
+    let pipe = new NgTransContentPipe(transService);
     expect(pipe).toBeTruthy();
   });
 
   describe('#transform()', () => {
     handleSentenceWithParamsTestData.forEach(item => {
       it(item.title, () => {
-        const pipe = new NgTranslationContentPipe(transService);
+        const pipe = new NgTransContentPipe(transService);
         const result = pipe.transform(item.test.trans, item.test.params);
         expect(result).toEqual(item.expect.result);
       });

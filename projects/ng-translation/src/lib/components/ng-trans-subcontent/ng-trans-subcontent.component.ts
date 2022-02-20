@@ -10,10 +10,10 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
-import { INgTranslationSentencePart } from '../../models/ng-translation-sentence-part.interface';
+import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interface';
 
 @Component({
-  selector: '[ng-translation-subcontent]',
+  selector: '[ng-trans-subcontent]',
   template: `
     <ng-container [ngSwitch]="isString">
     <ng-container *ngSwitchCase="true">{{content}}</ng-container>
@@ -23,13 +23,13 @@ import { INgTranslationSentencePart } from '../../models/ng-translation-sentence
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NgTranslationSubcontentComponent implements OnChanges, OnInit {
+export class NgTransSubcontentComponent implements OnChanges, OnInit {
 
   @Input()
   content: string | TemplateRef<any> = '';
 
   @Input()
-  list: INgTranslationSentencePart[] = [];
+  list: INgTransSentencePart[] = [];
 
   isString: boolean = true;
 
@@ -43,8 +43,7 @@ export class NgTranslationSubcontentComponent implements OnChanges, OnInit {
     }
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   private updateIsString(content: string | TemplateRef<any> = ''): void {
     this.isString = isString(content);

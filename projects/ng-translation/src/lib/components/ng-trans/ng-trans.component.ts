@@ -21,20 +21,20 @@ import {
 } from '@angular/core';
 
 import {
-  INgTranslationOptions,
-  INgTranslationParams
+  INgTransOptions,
+  INgTransParams
 } from '../../models';
-import { NgTranslationSentenceItemEnum } from '../../models/ng-translation-sentence-item.enum';
-import { INgTranslationSentencePart } from '../../models/ng-translation-sentence-part.interface';
-import { NgTranslationService } from '../../services/ng-translation.service';
-import { NgTranslationCoreService } from '../../services/ng-translation-core.service';
+import { NgTransSentenceItemEnum } from '../../models/ng-trans-sentence-item.enum';
+import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interface';
+import { NgTransService } from '../../services/ng-trans.service';
+import { NgTransCoreService } from '../../services/ng-trans-core.service';
 
 @Component({
-  selector: 'ng-translation',
-  templateUrl: './ng-translation.component.html',
+  selector: 'ng-trans',
+  templateUrl: './ng-trans.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
+export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input()
   components: TemplateRef<any>[] = [];
@@ -43,13 +43,13 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
   key: string = '';
 
   @Input()
-  options: INgTranslationOptions = {};
+  options: INgTransOptions = {};
 
-  params: INgTranslationParams | undefined;
+  params: INgTransParams | undefined;
 
-  sentenceList: INgTranslationSentencePart[] = [];
+  sentenceList: INgTransSentencePart[] = [];
 
-  SentenceItemEnum = NgTranslationSentenceItemEnum;
+  SentenceItemEnum = NgTransSentenceItemEnum;
 
   private destroy$ = new Subject<void>();
 
@@ -57,8 +57,8 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
 
   constructor(
     private changeDR: ChangeDetectorRef,
-    private transCoreService: NgTranslationCoreService,
-    private translationService: NgTranslationService,
+    private transCoreService: NgTransCoreService,
+    private transService: NgTransService,
   ) {
     this.subscribeLangChange();
   }
@@ -66,28 +66,27 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     const { key, options } = changes;
     if (key || options) {
-      this.originTrans = this.translationService.translationSync(this.key, this.options);
+      this.originTrans = this.transService.translationSync(this.key, this.options);
       this.reRender();
     }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  getSentenceItemType(item: INgTranslationSentencePart): number | undefined {
+  getSentenceItemType(item: INgTransSentencePart): number | undefined {
     let type: number | undefined;
 
     if (isString(item)) {
-      type = NgTranslationSentenceItemEnum.STR;
+      type = NgTransSentenceItemEnum.STR;
     } else if (isNumber((item?.index))) {
       type = (Array.isArray(item?.list) && item.list.length)
-        ? NgTranslationSentenceItemEnum.MULTI_COMP
-        : NgTranslationSentenceItemEnum.COMP;
+        ? NgTransSentenceItemEnum.MULTI_COMP
+        : NgTransSentenceItemEnum.COMP;
     }
 
     return type;
@@ -103,8 +102,8 @@ export class NgTranslationComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private subscribeLangChange(): void {
-    this.translationService.subscribeLangChange().pipe(
-      switchMap(_ => this.translationService.translationAsync(this.key, this.options)),
+    this.transService.subscribeLangChange().pipe(
+      switchMap(_ => this.transService.translationAsync(this.key, this.options)),
       takeUntil(this.destroy$)
     ).subscribe(latestValue => {
       // TODO: 为什么会触发两次，change lang的时候

@@ -1,2 +1,2 @@
-export * from './ng-translation.pipe';
-export * from './ng-translation-content.pipe';
+export * from './ng-trans.pipe';
+export * from './ng-trans-content.pipe';

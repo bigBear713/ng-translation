@@ -29,22 +29,22 @@ import {
   NG_TRANS_DEFAULT_LANG,
   NG_TRANS_LOADER,
   NG_TRANS_MAX_RETRY_TOKEN
-} from './../constants';
+} from '../constants';
 import {
-  INgTranslationChangeLang,
-  INgTranslationLoader,
-  INgTranslationOptions,
-  INgTranslationParams,
-  NgTranslationLangEnum
-} from './../models';
-import { NgTranslationCoreService } from './ng-translation-core.service';
+  INgTransChangeLang,
+  INgTransLoader,
+  INgTransOptions,
+  INgTransParams,
+  NgTransLangEnum
+} from '../models';
+import { NgTransCoreService } from './ng-trans-core.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NgTranslationService {
+export class NgTransService {
 
-  private lang$ = new BehaviorSubject<string>(NgTranslationLangEnum.ZH_CN);
+  private lang$ = new BehaviorSubject<string>(NgTransLangEnum.ZH_CN);
 
   private loadDefaultOver$ = new BehaviorSubject<boolean>(false);
 
@@ -64,9 +64,9 @@ export class NgTranslationService {
 
   constructor(
     @Inject(NG_TRANS_DEFAULT_LANG) @Optional() private transDefaultLang: string,
-    @Inject(NG_TRANS_LOADER) @Optional() private transLoader: INgTranslationLoader,
+    @Inject(NG_TRANS_LOADER) @Optional() private transLoader: INgTransLoader,
     @Inject(NG_TRANS_MAX_RETRY_TOKEN) @Optional() private maxRetry: number,
-    private transCoreService: NgTranslationCoreService,
+    private transCoreService: NgTransCoreService,
   ) {
     // if the maxRetry is undefined/null, use default setting,
     // so can set the retry valus as 0 to cancel retry action.
@@ -74,16 +74,16 @@ export class NgTranslationService {
 
     this.transLoader = this.transLoader || {};
 
-    this.lang$.next(transDefaultLang || NgTranslationLangEnum.ZH_CN);
+    this.lang$.next(transDefaultLang || NgTransLangEnum.ZH_CN);
     this.loadDefaultTrans();
   }
 
-  changeLang(lang: string): Observable<INgTranslationChangeLang> {
-    const successResult: INgTranslationChangeLang = {
+  changeLang(lang: string): Observable<INgTransChangeLang> {
+    const successResult: INgTransChangeLang = {
       curLang: lang,
       result: true,
     };
-    const failureResult: INgTranslationChangeLang = {
+    const failureResult: INgTransChangeLang = {
       curLang: this.lang,
       result: false,
     };
@@ -114,7 +114,7 @@ export class NgTranslationService {
     );
   }
 
-  handleSentenceWithParams(trans: string, params?: INgTranslationParams): string {
+  handleSentenceWithParams(trans: string, params?: INgTransParams): string {
     if (!params) {
       return trans;
     }
@@ -148,7 +148,7 @@ export class NgTranslationService {
     return trans;
   }
 
-  translationAsync(key: string, options?: INgTranslationOptions): Observable<string> {
+  translationAsync(key: string, options?: INgTransOptions): Observable<string> {
     return this.lang$.pipe(
       switchMap(_ => {
         return this.translations[this.lang]
@@ -159,7 +159,7 @@ export class NgTranslationService {
     );
   }
 
-  translationSync(key: string, options?: INgTranslationOptions): string {
+  translationSync(key: string, options?: INgTransOptions): string {
     const finalKey = this.transCoreService.getFinalKey(key, options?.prefix);
     const emptyTrans = options?.returnKeyWhenEmpty === false ? '' : finalKey;
     let trans = get(this.translations[this.lang], finalKey);
