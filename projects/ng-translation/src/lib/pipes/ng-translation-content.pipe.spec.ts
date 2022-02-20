@@ -1,4 +1,4 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { NgTranslationTestingModule } from '../ng-translation-testing.module';
 import { NgTranslationService } from '../services/ng-translation.service';
 import { handleSentenceWithParamsTestData } from '../tests';
@@ -26,15 +26,13 @@ describe('Pipe: NgTranslationContente', () => {
 
   describe('#transform()', () => {
     handleSentenceWithParamsTestData.forEach(item => {
-      it(item.title, inject([NgTranslationService], (service: NgTranslationService) => {
-        const pipe = new NgTranslationContentPipe(service);
+      it(item.title, () => {
+        const pipe = new NgTranslationContentPipe(transService);
         const result = pipe.transform(item.test.trans, item.test.params);
         expect(result).toEqual(item.expect.result);
-      }));
+      });
     });
 
   });
-
-
 
 });
