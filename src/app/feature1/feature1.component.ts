@@ -1,10 +1,10 @@
 import { isString } from 'lodash-es';
-import { NgTranslationService } from 'ng-translation';
+import { NgTransService } from 'ng-trans';
 import { Observable } from 'rxjs';
 
 import {
-    Component,
-    OnInit
+  Component,
+  OnInit
 } from '@angular/core';
 
 import { trans } from '../localization/en/translations';
@@ -26,23 +26,23 @@ export class Feature1Component implements OnInit {
   };
 
   get title() {
-    return this.translationService.translationSync('title');
+    return this.transService.translationSync('title');
   }
 
   get titleWithParams() {
-    return this.translationService.translationSync('content.contentWithParams', { params: this.params });
+    return this.transService.translationSync('content.contentWithParams', { params: this.params });
   }
 
   contentWithParams = 'This is a sentence. <0>component1</0>. <0>This is params: {{params1}} - {{params2}} - {{params3}} - {{params2}}</0>.<1><0>component2</0> abc</1>.<1>test <0>this is params: {{params1}} - {{params2}} - {{params3}} - {{params2}}</0></1>.<2>this is component3</2>222';
 
   constructor(
-    private translationService: NgTranslationService,
+    private transService: NgTransService,
   ) {
   }
 
   ngOnInit(): void {
-    this.title$ = this.translationService.translationAsync('title');
-    this.titleWithParams$ = this.translationService.translationAsync('content.contentWithParams', { params: this.params });
+    this.title$ = this.transService.translationAsync('title');
+    this.titleWithParams$ = this.transService.translationAsync('content.contentWithParams', { params: this.params });
   }
 
   isString(content: any): boolean {

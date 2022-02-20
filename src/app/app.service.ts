@@ -1,4 +1,4 @@
-import { NgTranslationService } from 'ng-translation';
+import { NgTransService } from 'ng-trans';
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
@@ -10,11 +10,11 @@ import { CanActivate } from '@angular/router';
 export class AppService implements CanActivate {
 
   constructor(
-    private translationService: NgTranslationService
+    private transService: NgTransService
   ) { }
 
   canActivate(): Promise<boolean> {
-    return this.translationService.subscribeLoadDefaultOverChange().toPromise();
+    return this.transService.subscribeLoadDefaultOverChange().toPromise();
   }
 
 }

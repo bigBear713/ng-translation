@@ -2,8 +2,8 @@
   feature1 works!
 </p>
 <div>
-  {{'title'| ngTranslation}}
-  {{'helloWorld'| ngTranslation:({prefix:'content'})}}
+  {{'title'| ngTrans}}
+  {{'helloWorld'| ngTrans:({prefix:'content'})}}
 </div>
 
 <div>
@@ -31,13 +31,13 @@
     {{titleWithParams$|async}}
   </div>
   <div>
-    'content.contentWithParams'| ngTranslation:params:
-    {{'content.contentWithParams'| ngTranslation:({params})}}
+    'content.contentWithParams'| ngTrans:params:
+    {{'content.contentWithParams'| ngTrans:({params})}}
   </div>
 
   <div>
-    'contentWithParams'| ngTranslation:options:
-    {{'contentWithParams'| ngTranslation:({prefix:'content',params})}}
+    'contentWithParams'| ngTrans:options:
+    {{'contentWithParams'| ngTrans:({prefix:'content',params})}}
   </div>
 
 
@@ -49,23 +49,24 @@
   使用ng-translation组件：
 
   <div>
-    <ng-translation key="content.complexContent" [components]="[com1,com2,com3]" [options]="{params}"></ng-translation>
+    <ng-trans key="content.complexContent" [components]="[com1,com2,com3]" [options]="{params}">
+    </ng-trans>
   </div>
 
   <div>
-    <ng-translation key="complexContent" [components]="[com1,com2,com3]" [options]="{params,prefix:'content'}">
-    </ng-translation>
+    <ng-trans key="complexContent" [components]="[com1,com2,com3]" [options]="{params,prefix:'content'}">
+    </ng-trans>
   </div>
 
 </div>
 
 
 <ng-template #com1 let-comContent="content" let-list="list">
-  <b ng-translation-subcontent [content]="comContent" [list]="list"></b>
+  <b ng-trans-subcontent [content]="comContent" [list]="list"></b>
 </ng-template>
 
 <ng-template #com2 let-comContent="content" let-list="list">
-  <a ng-translation-subcontent [content]="comContent" [list]="list"></a>
+  <a ng-trans-subcontent [content]="comContent" [list]="list"></a>
 </ng-template>
 
 <ng-template #com3 let-comContent="content">
