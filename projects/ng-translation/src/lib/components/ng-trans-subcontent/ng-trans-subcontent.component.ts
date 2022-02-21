@@ -16,9 +16,10 @@ import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interf
   selector: '[ng-trans-subcontent]',
   template: `
     <ng-container [ngSwitch]="isString">
-    <ng-container *ngSwitchCase="true">{{content}}</ng-container>
-    <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="$any(content)" [ngTemplateOutletContext]="{list}">
-      </ng-container>
+      <ng-container *ngSwitchCase="true">{{content}}</ng-container>
+      <ng-container *ngSwitchDefault
+                    [ngTemplateOutlet]="content | tplContent" 
+                    [ngTemplateOutletContext]="tplContext"></ng-container>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,6 +33,11 @@ export class NgTransSubcontentComponent implements OnChanges, OnInit {
   list: INgTransSentencePart[] = [];
 
   isString: boolean = true;
+
+  get tplContext(): { list: INgTransSentencePart[] } {
+    const list = this.list ? this.list : [];
+    return { list };
+  }
 
   constructor(
     private changeDR: ChangeDetectorRef,

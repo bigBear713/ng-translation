@@ -17,7 +17,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core';
 
 import {
@@ -29,6 +29,11 @@ import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interf
 import { NgTransService } from '../../services/ng-trans.service';
 import { NgTransCoreService } from '../../services/ng-trans-core.service';
 
+interface IComponentTemplateRef {
+  content: string | TemplateRef<any>;
+  list?: INgTransSentencePart[]
+}
+
 @Component({
   selector: 'ng-trans',
   templateUrl: './ng-trans.component.html',
@@ -37,7 +42,7 @@ import { NgTransCoreService } from '../../services/ng-trans-core.service';
 export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input()
-  components: TemplateRef<any>[] = [];
+  components: TemplateRef<IComponentTemplateRef>[] = [];
 
   @Input()
   key: string = '';
@@ -76,20 +81,6 @@ export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  getSentenceItemType(item: INgTransSentencePart): number | undefined {
-    let type: number | undefined;
-
-    if (isString(item)) {
-      type = NgTransSentenceItemEnum.STR;
-    } else if (isNumber((item?.index))) {
-      type = (Array.isArray(item?.list) && item.list.length)
-        ? NgTransSentenceItemEnum.MULTI_COMP
-        : NgTransSentenceItemEnum.COMP;
-    }
-
-    return type;
   }
 
   private reRender(): void {
