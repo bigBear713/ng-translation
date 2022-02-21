@@ -1,11 +1,8 @@
 import { Component, SimpleChange, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { isString } from 'lodash-es';
 import { take } from 'rxjs/operators';
 import { NG_TRANS_LOADER } from '../../constants';
 import { NgTransLangEnum } from '../../models';
-import { NgTransSentenceItemEnum } from '../../models/ng-trans-sentence-item.enum';
-import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interface';
 import { NgTransTestingModule } from '../../ng-trans-testing.module';
 import { NgTransService } from '../../services';
 import { NgTransCoreService } from '../../services/ng-trans-core.service';
@@ -58,21 +55,6 @@ describe('Component: NgTrans', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('#getSentenceItemType()', () => {
-    [
-      { params: 'strContent', expect: NgTransSentenceItemEnum.STR },
-      { params: { index: 0, content: 'strContent', list: [] }, expect: NgTransSentenceItemEnum.COMP },
-      { params: { index: 0, content: '<0>str</0>', list: [{ index: 0, content: 'str', list: [] }] }, expect: NgTransSentenceItemEnum.MULTI_COMP },
-      { params: { index: undefined, content: 'strContent', list: [] } as unknown as INgTransSentencePart, expect: undefined },
-      { params: { index: undefined, content: 'strContent', list: undefined } as unknown as INgTransSentencePart, expect: undefined },
-    ].forEach(item => {
-      it(`the params is ${isString(item.params) ? item.params : JSON.stringify(item.params)}`, () => {
-        const type = component.getSentenceItemType(item.params);
-        expect(type).toEqual(item.expect);
-      });
-    });
   });
 
   it('#ngOnChanges()', () => {

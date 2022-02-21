@@ -7,7 +7,9 @@ import {
 } from './components';
 import {
   NgTransContentPipe,
-  NgTransPipe
+  NgTransPipe,
+  SentenceItemTypePipe,
+  TplContentPipe,
 } from './pipes';
 
 const COMPONENTS = [
@@ -23,6 +25,8 @@ const PIPES = [
     ...COMPONENTS,
     ...PIPES,
     NgTransContentPipe,
+    TplContentPipe,
+    SentenceItemTypePipe,
   ],
   imports: [
     CommonModule,
