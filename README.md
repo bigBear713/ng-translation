@@ -1,27 +1,41 @@
-# NgTranslation
+<div align="center">
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.11.
+### @bigBear/ng-trans
 
-## Development server
+Angular i18n translation component.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+<br>
 
-## Code scaffolding
+[Bug Report](https://github.com/wjx774326739/ng-translation/issues)
+·
+[Feature Request](https://github.com/wjx774326739/ng-translation/issues)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+<br>
 
-## Build
+[![Made with Angular](https://img.shields.io/badge/Made%20with-Angular-E13137.svg)](https://angular.io)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+</div>
 
-## Running unit tests
+<br>
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Demo
 
-## Running end-to-end tests
+> Previews needs to be opened in new standalone windows.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- [Demo](https://github.com/wjx774326739/ng-translation)
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## start the project
+- install dependencies: 
+```bash
+npm i
+```
+- build ng-trans lib: 
+```bash
+npm run build:lib
+```
+- start demo: 
+```bash
+npm start
+```
+
