@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 
 import { INgTransParams } from '../models/ng-trans-params.interface';
-import { NgTransService } from '../services/ng-trans.service';
+import { NgTransCoreService } from '../services/ng-trans-core.service';
 
 @Pipe({
   name: 'ngTransContent'
@@ -12,11 +12,11 @@ import { NgTransService } from '../services/ng-trans.service';
 export class NgTransContentPipe implements PipeTransform {
 
   constructor(
-    private transService: NgTransService,
+    private transCoreService: NgTransCoreService,
   ) { }
 
   transform(trans: string, params?: INgTransParams): string {
-    return this.transService.handleSentenceWithParams(trans, params);
+    return this.transCoreService.handleSentenceWithParams(trans, params);
   }
 
 }

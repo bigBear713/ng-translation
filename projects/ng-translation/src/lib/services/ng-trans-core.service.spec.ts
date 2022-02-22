@@ -1,4 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { INgTransParams } from '../models/ng-trans-params.interface';
+import { handleSentenceWithParamsTestData } from '../tests/data';
 import { NgTransCoreService } from './ng-trans-core.service';
 
 describe('Service: NgTransCore', () => {
@@ -37,6 +39,16 @@ describe('Service: NgTransCore', () => {
         const { str, searchStr, replaceStr } = item.params;
         const finalKey = service.handleSentence(str, searchStr, replaceStr);
         expect(finalKey).toEqual(item.expect);
+      }));
+    });
+  });
+
+  describe('#handleSentenceWithParams()', () => {
+    handleSentenceWithParamsTestData.forEach(item => {
+      it(item.title, inject([NgTransCoreService], (service: NgTransCoreService) => {
+        const params: INgTransParams | undefined = item.test.params;
+        const result = service.handleSentenceWithParams(item.test.trans, params);
+        expect(result).toEqual(item.expect.result);
       }));
     });
   });

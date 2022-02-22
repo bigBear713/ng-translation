@@ -1,4 +1,4 @@
-interface INgTransSentenceCompPart {
+export interface INgTransSentenceCompPart {
   // the component index, 
   // will be used to get component instance from components properties
   index: number;

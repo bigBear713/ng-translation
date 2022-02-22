@@ -9,6 +9,7 @@ import { translationSyncTestData, transLoader } from '../tests';
 import { NgTransPipe } from './ng-trans.pipe';
 
 describe('Pipe: NgTrans', () => {
+  let pipe: NgTransPipe;
   let transService: NgTransService;
 
   beforeEach(async () => {
@@ -25,10 +26,10 @@ describe('Pipe: NgTrans', () => {
 
   beforeEach(() => {
     transService = TestBed.inject(NgTransService);
+    pipe = new NgTransPipe(transService);
   });
 
   it('create an instance', () => {
-    let pipe = new NgTransPipe(transService);
     expect(pipe).toBeTruthy();
   });
 
@@ -58,7 +59,6 @@ describe('Pipe: NgTrans', () => {
             const result = pipe.transform(item.test.key, item.test.options);
             expect(result).toEqual(expectResult);
           };
-          const pipe = new NgTransPipe(transService);
           verifyResult(item.expect.resultZHCN);
 
           transService.changeLang(NgTransLangEnum.EN).pipe(take(1)).subscribe(() => {

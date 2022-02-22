@@ -17,7 +17,6 @@ import {
   switchMap,
   tap
 } from 'rxjs/operators';
-import { v4 as uuidv4 } from 'uuid';
 
 import {
   Inject,
@@ -34,7 +33,6 @@ import {
   INgTransChangeLang,
   INgTransLoader,
   INgTransOptions,
-  INgTransParams,
   NgTransLangEnum
 } from '../models';
 import { NgTransCoreService } from './ng-trans-core.service';
@@ -114,40 +112,6 @@ export class NgTransService {
     );
   }
 
-  handleSentenceWithParams(trans: string, params?: INgTransParams): string {
-    if (!params) {
-      return trans;
-    }
-
-    const keys = Object.keys(params);
-    if (!keys.length) {
-      return trans;
-    }
-
-    const keysUUID = keys.reduce(
-      (pre: { [key: string]: string }, key) => {
-        pre[key] = uuidv4();
-        return pre;
-      },
-      {}
-    );
-
-    let transTemp = trans;
-    // first, replace the param keys as uuid keys
-    keys.forEach(key => {
-      transTemp = this.transCoreService.handleSentence(transTemp, `{{${key}}}`, keysUUID[key]);
-    });
-
-    trans = transTemp;
-    // then, replace the uuid keys as params value,
-    // so the value will not be wrong when the params value is same with other param value
-    keys.forEach(key => {
-      trans = this.transCoreService.handleSentence(trans, keysUUID[key], params[key]);
-    });
-
-    return trans;
-  }
-
   translationAsync(key: string, options?: INgTransOptions): Observable<string> {
     return this.lang$.pipe(
       switchMap(_ => {
@@ -173,7 +137,7 @@ export class NgTransService {
     }
 
     const params = options?.params;
-    trans = this.handleSentenceWithParams(trans, params);
+    trans = this.transCoreService.handleSentenceWithParams(trans, params);
 
     return trans || emptyTrans;
   }
