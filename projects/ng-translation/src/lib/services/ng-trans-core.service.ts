@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { isString } from 'lodash-es';
+import { INgTransParams } from '../models/ng-trans-params.interface';
 import { INgTransSentencePart } from '../models/ng-trans-sentence-part.interface';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,40 @@ export class NgTransCoreService {
   handleSentence(str: string, searchStr: string, replaceStr: string): string {
     return str.replace(new RegExp(searchStr, 'g'), replaceStr);
   };
+
+  handleSentenceWithParams(trans: string, params?: INgTransParams): string {
+    if (!params) {
+      return trans;
+    }
+
+    const keys = Object.keys(params);
+    if (!keys.length) {
+      return trans;
+    }
+
+    const keysUUID = keys.reduce(
+      (pre: { [key: string]: string }, key) => {
+        pre[key] = uuidv4();
+        return pre;
+      },
+      {}
+    );
+
+    let transTemp = trans;
+    // first, replace the param keys as uuid keys
+    keys.forEach(key => {
+      transTemp = this.handleSentence(transTemp, `{{${key}}}`, keysUUID[key]);
+    });
+
+    trans = transTemp;
+    // then, replace the uuid keys as params value,
+    // so the value will not be wrong when the params value is same with other param value
+    keys.forEach(key => {
+      trans = this.handleSentence(trans, keysUUID[key], params[key]);
+    });
+
+    return trans;
+  }
 
   handleTrans(trans: string): INgTransSentencePart[] {
     const sentenceList: INgTransSentencePart[] = [];

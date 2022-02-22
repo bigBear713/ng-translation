@@ -95,16 +95,6 @@ describe('Service: NgTrans', () => {
     });
   });
 
-  describe('#handleSentenceWithParams()', () => {
-    handleSentenceWithParamsTestData.forEach(item => {
-      it(item.title, inject([NgTransService], (service: NgTransService) => {
-        const params: INgTransParams | undefined = item.test.params;
-        const result = service.handleSentenceWithParams(item.test.trans, params);
-        expect(result).toEqual(item.expect.result);
-      }));
-    });
-  });
-
   describe('#translationSync()', () => {
     let service: NgTransService;
     beforeEach(async () => {
