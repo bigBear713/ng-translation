@@ -1,6 +1,6 @@
 {
   "name": "ng-translation-demo",
-  "version": "0.0.0",
+  "version": "12.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -13,7 +13,7 @@
     "view:analyze": "node_modules/.bin/source-map-explorer dist/ng-translation-demo/*",
     "test:lib": "ng test ng-translation"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "~12.2.0",
     "@angular/common": "~12.2.0",
