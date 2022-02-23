@@ -135,7 +135,10 @@
           "options": {
             "main": "projects/ng-translation/src/test.ts",
             "tsConfig": "projects/ng-translation/tsconfig.spec.json",
-            "karmaConfig": "projects/ng-translation/karma.conf.js"
+            "karmaConfig": "projects/ng-translation/karma.conf.js",
+            "watch": true,
+            "progress": true,
+            "codeCoverage": true
           }
         }
       }
