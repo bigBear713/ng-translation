@@ -14,6 +14,8 @@ import {
   catchError,
   map,
   retry,
+  skip,
+  skipWhile,
   switchMap,
   tap
 } from 'rxjs/operators';
@@ -143,11 +145,18 @@ export class NgTransService {
   }
 
   subscribeLangChange(): Observable<string> {
-    return this.lang$.asObservable();
+    return this.lang$.asObservable().pipe(skip(1));
   }
 
   subscribeLoadDefaultOverChange(): Observable<boolean> {
-    return this.loadDefaultOver ? of(true) : this.loadDefaultOver$.asObservable();
+    return this.loadDefaultOver
+      ? of(true)
+      : this.loadDefaultOver$.asObservable().pipe(
+        // the loadDefaultOver$ is BehaviorSubject, 
+        // so the user will get a value immediately when subscribe it, 
+        // but it doesn't make sense， so here will skip it
+        skipWhile((result, index) => (!result && (index === 0)))
+      );
   }
 
   private loadDefaultTrans(): void {
@@ -176,7 +185,8 @@ export class NgTransService {
     }
 
     const loaderFn: Observable<Object> = isFunction(loader)
-      // switch map as load lang observable, so it will retry when failure to load the lang content
+      // switch map as load lang observable, 
+      // so it will retry when failure to load the lang content
       ? of(null).pipe(switchMap(() => from(loader())))
       : of(loader);
     return loaderFn.pipe(
