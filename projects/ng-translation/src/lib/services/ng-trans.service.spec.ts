@@ -1,5 +1,5 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { filter, skip, switchMap, take } from 'rxjs/operators';
+import { filter, skip, switchMap, take, tap } from 'rxjs/operators';
 import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER, NG_TRANS_MAX_RETRY_TOKEN } from '../constants';
 import { NgTransLangEnum } from '../models';
 import { NgTransTestingModule } from '../ng-trans-testing.module';
@@ -20,11 +20,12 @@ describe('Service: NgTrans', () => {
 
   describe('#changeLang()', () => {
     [
-      { title: 'dynamic load language', skipLoadDefaultOverChangeTime: 1, loader: transLoader.dynamicLoader },
-      { title: 'static load language', skipLoadDefaultOverChangeTime: 0, loader: transLoader.staticLoader },
+      { title: 'dynamic load language', loader: transLoader.dynamicLoader },
+      { title: 'static load language', loader: transLoader.staticLoader },
     ].forEach(loaderMethodItem => {
       describe(loaderMethodItem.title, () => {
         let service: NgTransService;
+
         beforeEach(async () => {
           TestBed.configureTestingModule({
             imports: [NgTransTestingModule],
@@ -38,7 +39,6 @@ describe('Service: NgTrans', () => {
 
         it('#subscribeLoadDefaultOverChange()', (done) => {
           service.subscribeLoadDefaultOverChange().pipe(
-            skip(loaderMethodItem.skipLoadDefaultOverChangeTime),
             take(1),
           ).subscribe(
             result => {
@@ -57,7 +57,7 @@ describe('Service: NgTrans', () => {
             service.subscribeLoadDefaultOverChange().pipe(
               filter(result => result),
               switchMap(() => service.changeLang(item.lang))
-            ).pipe(take(1)).subscribe(result => {
+            ).pipe().subscribe(result => {
               expect(result).toEqual(item.expect.changeResult);
               expect(service.lang).toEqual(item.expect.changeResult.curLang);
               expect(service.translationSync('title')).toEqual(item.expect.transResult);
@@ -77,11 +77,8 @@ describe('Service: NgTrans', () => {
               service.subscribeLoadDefaultOverChange().pipe(
                 filter(result => result),
                 switchMap(() => service.changeLang(item.lang)),
-                take(1),
               ).subscribe(() => {
-                service.subscribeLangChange().pipe(
-                  take(1)
-                ).subscribe(lang => {
+                service.subscribeLangChange().pipe().subscribe(lang => {
                   expect(lang).toEqual(item.expect);
                   done();
                 });

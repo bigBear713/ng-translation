@@ -59,19 +59,17 @@ describe('Component: NgTrans', () => {
 
   it('#ngOnChanges()', () => {
     const transCoreService = TestBed.inject(NgTransCoreService);
-    spyOn(transCoreService, 'handleTrans').and.callThrough();
+    const spyFn = spyOn(transCoreService, 'handleTrans').and.callThrough();
 
-    const compFixture = TestBed.createComponent(NgTransComponent);
-    const comp = compFixture.componentInstance;
-    comp.key = 'title';
-    comp.options = {};
+    component.key = 'title';
+    component.options = {};
     const changes = {
-      key: new SimpleChange(undefined, comp.key, true),
-      options: new SimpleChange(undefined, comp.options, true),
+      key: new SimpleChange(undefined, component.key, true),
+      options: new SimpleChange(undefined, component.options, true),
     };
-    comp.ngOnChanges(changes);
+    component.ngOnChanges(changes);
 
-    expect(transCoreService.handleTrans).toHaveBeenCalledTimes(1);
+    expect(spyFn).toHaveBeenCalledTimes(1);
   });
 
   it('verify has subscribed lang change event', (done) => {
@@ -80,16 +78,14 @@ describe('Component: NgTrans', () => {
     const transCoreService = TestBed.inject(NgTransCoreService);
     spyOn(transCoreService, 'handleTrans').and.callThrough();
 
-    const compFixture = TestBed.createComponent(NgTransComponent);
-    const comp = compFixture.componentInstance;
-    comp.key = 'title';
-    comp.options = {};
+    component.key = 'title';
+    component.options = {};
 
-    expect(transService.subscribeLangChange).toHaveBeenCalledTimes(1);
     transService.changeLang(NgTransLangEnum.EN).pipe(take(1)).subscribe(() => {
       expect(transCoreService.handleTrans).toHaveBeenCalledTimes(1);
       done();
     });
+
   });
 
   describe('verify the UI', () => {

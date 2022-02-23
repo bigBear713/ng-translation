@@ -145,7 +145,7 @@ export class NgTransService {
   }
 
   subscribeLangChange(): Observable<string> {
-    return this.lang$.asObservable().pipe(skip(1));
+    return this.lang$.asObservable();
   }
 
   subscribeLoadDefaultOverChange(): Observable<boolean> {
