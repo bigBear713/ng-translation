@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { filter, take } from 'rxjs/operators';
+import { filter, switchMap, take } from 'rxjs/operators';
 import { NG_TRANS_DEFAULT_LANG } from '../constants/ng-trans-default-lang.token';
 import { NG_TRANS_LOADER } from '../constants/ng-trans-loader.token';
 import { NgTransLangEnum } from '../models/ng-trans-lang.enum';
@@ -34,8 +34,6 @@ describe('Pipe: NgTrans', () => {
   });
 
   describe('#transform()', () => {
-    const testData1 = [...translationSyncTestData];
-    testData1.pop();
     translationSyncTestData.map((item, index) => {
       const expect = {
         resultZHCN: item.expect.result,
@@ -69,6 +67,25 @@ describe('Pipe: NgTrans', () => {
       });
     });
 
+  });
+
+  it('#ngOnDestroy()', (done) => {
+    transService.subscribeLoadDefaultOverChange().pipe(
+      filter(result => result),
+      take(1),
+    ).subscribe(() => {
+      transService.changeLang(NgTransLangEnum.EN).pipe(
+        switchMap(() => {
+          pipe.ngOnDestroy();
+          spyOn(transService, 'translationAsync').and.callThrough();
+          return transService.changeLang(NgTransLangEnum.ZH_CN)
+        }),
+        take(1),
+      ).subscribe(() => {
+        expect(transService.translationAsync).toHaveBeenCalledTimes(0);
+        done();
+      });
+    });
   });
 
 });

@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 import {
   switchMap,
-  takeUntil
+  takeUntil,
 } from 'rxjs/operators';
 
 import {
@@ -19,7 +19,7 @@ import { NgTransService } from '../services/ng-trans.service';
 })
 export class NgTransPipe implements PipeTransform, OnDestroy {
 
-  latestValue: string = '';
+  private latestValue: string = '';
 
   private destroy$ = new Subject<void>();
 
