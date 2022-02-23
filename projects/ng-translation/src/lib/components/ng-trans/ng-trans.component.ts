@@ -1,11 +1,7 @@
-import {
-  isNumber,
-  isString
-} from 'lodash-es';
 import { Subject } from 'rxjs';
 import {
   switchMap,
-  takeUntil
+  takeUntil,
 } from 'rxjs/operators';
 
 import {
@@ -97,10 +93,6 @@ export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
       switchMap(_ => this.transService.translationAsync(this.key, this.options)),
       takeUntil(this.destroy$)
     ).subscribe(latestValue => {
-      // TODO: 为什么会触发两次，change lang的时候
-      if (!latestValue || latestValue === this.originTrans) {
-        return;
-      }
       this.originTrans = latestValue;
       this.reRender();
     });
