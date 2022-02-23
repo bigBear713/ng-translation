@@ -1,9 +1,9 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { filter, skip, switchMap, take } from 'rxjs/operators';
-import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER } from '../constants';
-import { INgTransParams, NgTransLangEnum } from '../models';
+import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER, NG_TRANS_MAX_RETRY_TOKEN } from '../constants';
+import { NgTransLangEnum } from '../models';
 import { NgTransTestingModule } from '../ng-trans-testing.module';
-import { handleSentenceWithParamsTestData, translationSyncTestData, transLoader } from '../tests';
+import { translationSyncTestData, transLoader } from '../tests';
 import { NgTransService } from './ng-trans.service';
 
 describe('Service: NgTrans', () => {
@@ -156,6 +156,29 @@ describe('Service: NgTrans', () => {
         expect(transContent).toEqual('title  ');
         done();
       });
+    });
+  });
+
+  it('when failure to load default lang', (done) => {
+    const langLoader = () => Promise.reject();
+    const transLoader = {
+      [NgTransLangEnum.EN_US]: langLoader
+    };
+    TestBed.configureTestingModule({
+      imports: [NgTransTestingModule],
+      providers: [
+        { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.EN_US },
+        { provide: NG_TRANS_LOADER, useValue: transLoader },
+        { provide: NG_TRANS_MAX_RETRY_TOKEN, useValue: 3 },
+      ]
+    });
+    spyOn(transLoader, NgTransLangEnum.EN_US).and.callThrough();
+    const service = TestBed.inject(NgTransService);
+    service.subscribeLoadDefaultOverChange().pipe(
+      take(1),
+    ).subscribe(_ => {
+      expect(transLoader[NgTransLangEnum.EN_US]).toHaveBeenCalledTimes(4);
+      done();
     });
   });
 
