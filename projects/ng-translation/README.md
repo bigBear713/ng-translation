@@ -32,37 +32,115 @@ Angular i18n translation component.
 | Name  | Return  | Description  | Scenes  |
 | ------------ | ------------ | ------------ | ------------ |
 | changeLang(lang: string)  | `Observable<INgTransChangeLang>`  | 切换语言。lang参数需要和`NG_TRANS_LOADER`中的key值相对应。是一个观察者异步事件。当切换的语言的翻译文本被加载完成后才会返回结果。订阅后无需取消订阅，因为当语言切换后（不管是否成功），将自动complete。结果的具体内容见下方`INgTransChangeLang`的定义  | 需要切换语言时  |
+| changeLangSync(lang: string)  | `void`  | 切换语言。lang参数需要和`NG_TRANS_LOADER`中的key值相对应。是一个同步事件。但是并不保证语言切换成功，以及何时成功。  | 适合只想出发切换语言操作，并不关心切换后的结果的场景  |
 | translationAsync(key: string, options?: INgTransOptions)  | `Observable<string>`  | 根据key和options异步获取翻译文本。options选填，具体配置见下方`INgTransOptions`定义。返回一个观察者对象。获取值后如果未取消订阅，当语言被切换时，将会订阅、获取切换后的语言下的翻译文本  | 适合将订阅事件变量在模板中使用，推荐结合ng官方的`async`管道使用。 |
 | translationSync(key: string, options?: INgTransOptions)  | `string`  | 根据key和options同步获取翻译文本。options选填，具体配置见下方`INgTransOptions`定义。因为是同步获取，所以返回的获取后的文本内容。当语言被切换时，需要重新调用该方法才能获取切换后的语言下的文本。 | 适合文本内容临时使用，每次显示文本都需要重新获取的场景。比如通过service动态创建modal时，设置modal的title。 |
 | subscribeLangChange()  | `Observable<string>`  | 语言切换的订阅事件。返回一个观察者对象。当订阅未取消时，语言被切换时，会自动被订阅到。订阅的内容为切换后的语言值 | 适合需要根据不同语言进行动态调整的地方 |
 | subscribeLoadDefaultOverChange()  | `Observable<boolean>`  | 默认语言翻译文本是否加载完成的订阅事件。加载成功时订阅到的值为true，反之为false。加载完成后（不管是否加载成功）会自动complete，因此可以不用取消订阅 | 适合整个项目最外层的数据准备。当默认语言的翻译文本被加载完成后再显示整个项目，体验效果更好. |
 
 ##### Usage
+```ts
+constructor( private transService: NgTransService) {}
 
+// 切换语言，异步事件，subscribe()是必需的
+this.transService.changeLang(lang).subscribe(result=>{
+    // result是切换后的结果
+});
+
+// 切换语言，同步事件，但不保证切换是否成功
+this.transService.changeLangSync(lang);
+
+// 语言异步翻译。可订阅获取翻译后的值，也可在模板中和async管道结合使用
+const trans$ = this.transService.translationAsync('title');
+trans$.subscribe(trans=>{
+    // trans是翻译后的文本
+});
+
+// 语言同步翻译。获取当前语言下的翻译内容
+const trans = this.transService.translationSync('title'); // trans是翻译后的文本
+
+// 语言切换订阅。当语言被切换时，会触发订阅事件，得到切换后的语言
+this.transService.subscribeLangChange().subscribe(lang=>{
+      // lang是切换后的语言值
+});
+
+// 默认语言翻译文本加载结束订阅事件。当翻译文本被加载完成时，会触发订阅事件
+this.transService.subscribeLoadDefaultOverChange().subscribe(over=>{
+      // over是加载后的结果
+});
+```
 
 ### Component
 
 #### `<ng-trans></ng-trans>`
-###### 当翻译文本中含有组件等复杂场景时使用的组件
+###### 当翻译文本中含有组件等复杂场景时使用的组件。当语言被切换时，组件渲染的内容将自动更新
+##### Input
+| Name  | Type  | Default  | Description  |
+| ------------ | ------------ | ------------ | ------------ |
+| components  | `TemplateRef<{ content: string ｜ TemplateRef<any>; list?: INgTransSentencePart[] }>[]`  | []  | 翻译文本中的对应的组件。  |
+| key  | `string`  | `''`  | 翻译文本的key值  |
+| options  | `INgTransOptions`  | {}  | 翻译的配置信息。具体配置见下方的`INgTransOptions`定义。  |
 
 ##### Usage
+```html
+<!-- only trans key -->
+<ng-trans key="title"></ng-trans>
+<ng-trans [key]="transKey"></ng-trans>
+
+<!-- trans key and options -->
+<ng-trans key="title" [options]="options"></ng-trans>
+<ng-trans key="helloWorld" [options]="({prefix:'content'})"></ng-trans>
+
+<!-- trans key, options and components -->
+<ng-trans [key]="complexContent" [options]="options" [components]="[com1,com2]"></ng-trans>
+<ng-template #comp1 let-compContent="content">
+  <span>{{compContent}}</span>
+</ng-template>
+<ng-template #comp2 let-compContent="content" let-compList="list">
+  <ng-container *ngTemplateOutlet="compContent,context:{list}"></ng-container>
+</ng-template>
+```
 
 #### `[ng-trans-subcontent]`
-###### 当翻译文本中含有组件嵌套时使用的一种官方提供的方案，会将嵌套的组件内容渲染出来。selector为attribute，可用于`<div />`, `<span />`, `<a />`等
+###### 当翻译文本中含有组件嵌套时使用的一种官方提供的方案，会将嵌套的组件内容渲染出来。selector为attribute，可用于`<div />`, `<span />`, `<a />`，`<ng-container />`等。该组件是搭配`<ng-trans></ng-trans>`使用，请勿单独使用。
+##### Input
+| Name  | Type  | Default  | Description  |
+| ------------ | ------------ | ------------ | ------------ |
+| ng-trans-subcontent  | `string ｜ TemplateRef<any>`  | `''`  | 要显示的子内容。接受`string`类型和`TemplateRef`类型。当为`string`类型时，直接渲染出来，`trans-subcontent-list`输入参数不起作用。当为`TemplateRef`类型时，`trans-subcontent-list`参数将起作用。  |
+| trans-subcontent-list  | `INgTransSentencePart[]`  | []  | 仅当`ng-trans-subcontent`为`TemplateRef`类型时，且该内容为`<ng-trans></ng-trans>`的components输入属性的子内容时有效。`[ng-trans-subcontent]`会将该参数的值传到template的context中。详情见下方Usage  |
 
 ##### Usage
-
+```html
+<!-- 和配合<ng-trans></ng-trans>使用 -->
+<ng-trans [key]="complexContent" [components]="[com1]"></ng-trans>
+<ng-template #comp1 let-compContent="content" let-compList="list">
+  <ng-container [ng-trans-subcontent]="compContent" [trans-subcontent-list]="compList"></ng-container>
+</ng-template>
+```
 
 ### Pipe
 
-#### ngTrans
-###### 翻译文本的管道，可用于在模版中根据key值翻译文本
+#### ngTrans: `transform(key: string, options?: INgTransOptions): string`
+###### 翻译文本的管道，可用于在模版中根据key值翻译文本。当语言被切换时，组件渲染的内容将自动更新
+##### Params
+| Name  | Type  | Mandatory  | Description  |
+| ------------ | ------------ | ------------ | ------------ |
+| key  | `string`  | true  | 翻译文本的key值  |
+| options  | `INgTransOptions`  | false  | 翻译配置。具体配置见下方的`INgTransOptions`定义  |
+
+##### Return
+| Type  | Description  |
+| ------------ | ------------ |
+| `string`  | 翻译后的文本  |
+
 
 ##### Usage
 ```html
 <!-- only key param -->
 <div>{{'title'|ngTrans}}</div>
+
 <!-- key and options params -->
+<div>{{'title'|ngTrans:options}}</div>
 <div>{{'helloWorld'|ngTrans:({prefix:'content'})}}</div>
 ```
 
@@ -86,7 +164,7 @@ Angular i18n translation component.
 #### NG_TRANS_LOADER：
 ###### 翻译文本加载器。加载器支持急性加载和懒加载。一般只在AppModule设置一次
 - 急性加载：直接引入翻译文本内容，作为值赋给对应的语言。急性加载会增大项目初始化文件的体积，因此当内容比较多时，建议使用懒加载
-- 懒加载：通过`import()`等方式加载翻译文本文件，同时需要直接翻译文本的内容
+- 懒加载：通过`http.get()`或者`import()`等方式加载翻译文本文件。当翻译文本文件为`ts`格式时，可使用`import()`加载。当翻译文本文件为`json`格式时，可使用`http.get()`加载。翻译文本文件支持`ts(js)`格式文件和`json`等其它格式文件。推荐翻译文本文件为json格式，因为最终的文件都会更小一点。
 
 ##### Usage
 ###### 急性加载
@@ -104,6 +182,26 @@ Angular i18n translation component.
   ]
 ```
 ###### 懒加载
+- 翻译文本文件为json格式
+```ts
+  providers: [
+    // ...
+    {
+      provide: NG_TRANS_LOADER,
+      useFactory: (http: HttpClient) => ({
+        // dyn load and the content is a json file
+        // the loader fn return value can be Observable<Object>/Promise<Object> type
+        // [NgTransLangEnum.EN]: () => http.get('./assets/localization/en/translations.json').toPromise(),
+        [NgTransLangEnum.EN]: () => http.get('./assets/localization/en/translations.json'),
+        // [NgTransLangEnum.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json').toPromise(),
+        [NgTransLangEnum.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json'),
+      }),
+      deps: [HttpClient]
+    }
+    // ...
+  ]
+```
+- 翻译文本文件为ts格式
 ```ts
   providers: [
     // ...
@@ -139,7 +237,7 @@ Angular i18n translation component.
 ###### 文本加载器
 | Property  | Type  | Mandatory  | Description  |
 | ------------ | ------------ | ------------ | ------------ |
-| [langKey: string]  | `Object ｜ (() => Promise<Object>)`  | false  | key值为字符串类型，通常使用对应的语言的字符串值；value为含有文本的Object，或者返回含有文本的Object的Promise函数 |
+| [langKey: string]  | `Object ｜ (() => (Observable<Object> ｜ Promise<Object>))`  | false  | key值为字符串类型，通常使用对应的语言的字符串值；value为含有文本的Object，或者返回含有文本的Object的Observable或者Promise |
 
 #### INgTransOptions：
 ###### 配置
@@ -172,7 +270,6 @@ Angular i18n translation component.
 | index  | `number`  | true  | 组件索引，用于匹配`<ng-trans />`组件的`components`输入属性中的组件  |
 | content  | `string`  | true  | 翻译文本  |
 | list  | `INgTransSentencePart[]`  | false  | 文本句子的解析部分 |
-
 
 ### Enum
 #### NgTransLangEnum：

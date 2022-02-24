@@ -25,11 +25,6 @@ import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interf
 import { NgTransService } from '../../services/ng-trans.service';
 import { NgTransCoreService } from '../../services/ng-trans-core.service';
 
-interface IComponentTemplateRef {
-  content: string | TemplateRef<any>;
-  list?: INgTransSentencePart[]
-}
-
 @Component({
   selector: 'ng-trans',
   templateUrl: './ng-trans.component.html',
@@ -39,7 +34,7 @@ interface IComponentTemplateRef {
 export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input()
-  components: TemplateRef<IComponentTemplateRef>[] = [];
+  components: TemplateRef<{ content: string | TemplateRef<any>; list?: INgTransSentencePart[] }>[] = [];
 
   @Input()
   key: string = '';

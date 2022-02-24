@@ -92,6 +92,12 @@ describe('Service: NgTrans', () => {
     });
   });
 
+  it('#changeLangSync()', inject([NgTransService], (service: NgTransService) => {
+    spyOn(service, 'changeLang').and.callThrough();
+    service.changeLangSync(NgTransLangEnum.BG_BG);
+    expect(service.changeLang).toHaveBeenCalledTimes(1);
+  }));
+
   describe('#translationSync()', () => {
     let service: NgTransService;
     beforeEach(async () => {
