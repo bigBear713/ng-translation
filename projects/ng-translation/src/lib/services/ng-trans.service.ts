@@ -114,6 +114,10 @@ export class NgTransService {
     );
   }
 
+  changeLangSync(lang: string): void {
+    this.changeLang(lang).subscribe();
+  }
+
   translationAsync(key: string, options?: INgTransOptions): Observable<string> {
     return this.lang$.pipe(
       switchMap(_ => {
