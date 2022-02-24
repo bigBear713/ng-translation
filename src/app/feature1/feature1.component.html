@@ -60,11 +60,11 @@
 
 
 <ng-template #com1 let-comContent="content" let-list="list">
-  <b ng-trans-subcontent [content]="comContent" [list]="list"></b>
+  <b [ng-trans-subcontent]="comContent" [trans-subcontent-list]="list"></b>
 </ng-template>
 
 <ng-template #com2 let-comContent="content" let-list="list">
-  <a ng-trans-subcontent [content]="comContent" [list]="list"></a>
+  <a [ng-trans-subcontent]="comContent" [trans-subcontent-list]="list"></a>
 </ng-template>
 
 <ng-template #com3 let-comContent="content">

@@ -34,6 +34,7 @@ interface IComponentTemplateRef {
   selector: 'ng-trans',
   templateUrl: './ng-trans.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  preserveWhitespaces: false,
 })
 export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
 
