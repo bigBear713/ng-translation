@@ -22,7 +22,7 @@ export class MockComp1Component {
   selector: 'mock-tpl-ref',
   template: `
     <ng-template #tpl1 let-content="content" let-list="list">
-      <div class="has-subcontent" ng-trans-subcontent [content]="content" [list]="list"></div>
+      <div class="has-subcontent" [ng-trans-subcontent]="content" [trans-subcontent-list]="list"></div>
     </ng-template>
     <ng-template #tpl2 let-content="content"><comp1>{{content}}</comp1></ng-template>
   `,

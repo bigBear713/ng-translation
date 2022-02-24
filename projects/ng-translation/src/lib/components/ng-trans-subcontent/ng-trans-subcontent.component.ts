@@ -23,13 +23,14 @@ import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interf
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  preserveWhitespaces: false,
 })
 export class NgTransSubcontentComponent implements OnChanges, OnInit {
 
-  @Input()
+  @Input('ng-trans-subcontent')
   content: string | TemplateRef<any> = '';
 
-  @Input()
+  @Input('trans-subcontent-list')
   list: INgTransSentencePart[] = [];
 
   isString: boolean = true;
