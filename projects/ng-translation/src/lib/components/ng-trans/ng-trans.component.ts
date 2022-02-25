@@ -23,7 +23,7 @@ import {
 import { NgTransSentenceItemEnum } from '../../models/ng-trans-sentence-item.enum';
 import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interface';
 import { NgTransService } from '../../services/ng-trans.service';
-import { NgTransCoreService } from '../../services/ng-trans-core.service';
+import { NgTransToolsService } from '../../services/ng-trans-tools.service';
 
 @Component({
   selector: 'ng-trans',
@@ -54,7 +54,7 @@ export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
 
   constructor(
     private changeDR: ChangeDetectorRef,
-    private transCoreService: NgTransCoreService,
+    private transToolsService: NgTransToolsService,
     private transService: NgTransService,
   ) {
     this.subscribeLangChange();
@@ -79,7 +79,7 @@ export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
     this.params = this.options?.params;
 
     const trans = this.originTrans;
-    this.sentenceList = this.transCoreService.handleTrans(trans);
+    this.sentenceList = this.transToolsService.handleTrans(trans);
 
     this.changeDR.markForCheck();
   }

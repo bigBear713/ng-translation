@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { NgTransTestingModule } from '../ng-trans-testing.module';
-import { NgTransCoreService } from '../services/ng-trans-core.service';
+import { NgTransToolsService } from '../services/ng-trans-tools.service';
 import { handleSentenceWithParamsTestData } from '../tests';
 import { NgTransContentPipe } from './ng-trans-content.pipe';
 
@@ -16,8 +16,8 @@ describe('Pipe: NgTransContente', () => {
   });
 
   beforeEach(() => {
-    const transCoreService = TestBed.inject(NgTransCoreService);
-    pipe = new NgTransContentPipe(transCoreService)
+    const transToolsService = TestBed.inject(NgTransToolsService);
+    pipe = new NgTransContentPipe(transToolsService)
   });
 
   it('create an instance', () => {

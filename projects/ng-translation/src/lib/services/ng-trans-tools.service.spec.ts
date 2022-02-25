@@ -1,16 +1,16 @@
+import { NgTransToolsService } from './ng-trans-tools.service';
 import { TestBed, inject } from '@angular/core/testing';
 import { INgTransParams } from '../models/ng-trans-params.interface';
 import { handleSentenceWithParamsTestData } from '../tests/data';
-import { NgTransCoreService } from './ng-trans-core.service';
 
-describe('Service: NgTransCore', () => {
+describe('Service: NgTransTools', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NgTransCoreService]
+      providers: [NgTransToolsService]
     });
   });
 
-  it('should be created', inject([NgTransCoreService], (service: NgTransCoreService) => {
+  it('should be created', inject([NgTransToolsService], (service: NgTransToolsService) => {
     expect(service).toBeTruthy();
   }));
 
@@ -19,7 +19,7 @@ describe('Service: NgTransCore', () => {
       { params: { key: 'transKey' }, expect: 'transKey' },
       { params: { key: 'transKey', prefix: 'prefix' }, expect: 'prefix.transKey' },
     ].forEach(item => {
-      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTransCoreService], (service: NgTransCoreService) => {
+      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTransToolsService], (service: NgTransToolsService) => {
         const { key, prefix } = item.params;
         const finalKey = service.getFinalKey(key, prefix);
         expect(finalKey).toEqual(item.expect);
@@ -35,7 +35,7 @@ describe('Service: NgTransCore', () => {
       { params: { str: 'sentence {{p1}}', searchStr: '{{p1}}', replaceStr: '' }, expect: 'sentence ' },
       { params: { str: 'sentence {{p1}}', searchStr: '{{p1}}', replaceStr: '{{p1}}' }, expect: 'sentence {{p1}}' },
     ].forEach(item => {
-      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTransCoreService], (service: NgTransCoreService) => {
+      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTransToolsService], (service: NgTransToolsService) => {
         const { str, searchStr, replaceStr } = item.params;
         const finalKey = service.handleSentence(str, searchStr, replaceStr);
         expect(finalKey).toEqual(item.expect);
@@ -45,7 +45,7 @@ describe('Service: NgTransCore', () => {
 
   describe('#handleSentenceWithParams()', () => {
     handleSentenceWithParamsTestData.forEach(item => {
-      it(item.title, inject([NgTransCoreService], (service: NgTransCoreService) => {
+      it(item.title, inject([NgTransToolsService], (service: NgTransToolsService) => {
         const params: INgTransParams | undefined = item.test.params;
         const result = service.handleSentenceWithParams(item.test.trans, params);
         expect(result).toEqual(item.expect.result);
@@ -92,12 +92,11 @@ describe('Service: NgTransCore', () => {
         ]
       },
     ].forEach(item => {
-      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTransCoreService], (service: NgTransCoreService) => {
+      it(`the params is ${JSON.stringify(item.params)}`, inject([NgTransToolsService], (service: NgTransToolsService) => {
         const { trans } = item.params;
         const handleResult = service.handleTrans(trans);
         expect(handleResult).toEqual(item.expect);
       }));
     });
   });
-
 });

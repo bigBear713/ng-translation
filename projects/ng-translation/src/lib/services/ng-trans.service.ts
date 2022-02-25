@@ -14,7 +14,6 @@ import {
   catchError,
   map,
   retry,
-  skip,
   skipWhile,
   switchMap,
   tap
@@ -37,7 +36,7 @@ import {
   INgTransOptions,
   NgTransLangEnum
 } from '../models';
-import { NgTransCoreService } from './ng-trans-core.service';
+import { NgTransToolsService } from './ng-trans-tools.service';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +65,7 @@ export class NgTransService {
     @Inject(NG_TRANS_DEFAULT_LANG) @Optional() private transDefaultLang: string,
     @Inject(NG_TRANS_LOADER) @Optional() private transLoader: INgTransLoader,
     @Inject(NG_TRANS_MAX_RETRY_TOKEN) @Optional() private maxRetry: number,
-    private transCoreService: NgTransCoreService,
+    private transToolsService: NgTransToolsService,
   ) {
     // if the maxRetry is undefined/null, use default setting,
     // so can set the retry valus as 0 to cancel retry action.
@@ -130,7 +129,7 @@ export class NgTransService {
   }
 
   translationSync(key: string, options?: INgTransOptions): string {
-    const finalKey = this.transCoreService.getFinalKey(key, options?.prefix);
+    const finalKey = this.transToolsService.getFinalKey(key, options?.prefix);
     const emptyTrans = options?.returnKeyWhenEmpty === false ? '' : finalKey;
     let trans = get(this.translations[this.lang], finalKey);
 
@@ -143,7 +142,7 @@ export class NgTransService {
     }
 
     const params = options?.params;
-    trans = this.transCoreService.handleSentenceWithParams(trans, params);
+    trans = this.transToolsService.handleSentenceWithParams(trans, params);
 
     return trans || emptyTrans;
   }
