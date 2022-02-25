@@ -18,8 +18,18 @@ export class AppComponent implements OnInit {
 
   title$: Observable<string> | undefined;
 
+  params = {
+    params1: '{{params2}}',
+    params2: '1111',
+    params3: '2222',
+  };
+
   get title() {
     return this.transService.translationSync('title');
+  }
+
+  get lang(): string {
+    return this.transService.lang;
   }
 
   constructor(

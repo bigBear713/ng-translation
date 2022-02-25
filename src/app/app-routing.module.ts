@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {
-    RouterModule,
-    Routes
+  RouterModule,
+  Routes
 } from '@angular/router';
 
 import { AppService } from './app.service';
@@ -9,7 +9,9 @@ import { AppService } from './app.service';
 const routes: Routes = [
   {
     path: '',
-    canActivate: [AppService],
+    resolve: {
+      defalutLangLoadOver: AppService
+    },
     children: [
       {
         path: '',
