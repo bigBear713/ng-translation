@@ -1,14 +1,23 @@
+<div align="center">
 
 ### @bigBear/ng-trans
 
 Angular i18n translation component.
 
+[OnlineDemo](https://github.com/wjx774326739/ng-translation)
+
 [Bug Report](https://github.com/wjx774326739/ng-translation/issues)
+
 [Feature Request](https://github.com/wjx774326739/ng-translation/issues)
 
-<br>
 
 [![Made with Angular](https://img.shields.io/badge/Made%20with-Angular-E13137.svg)](https://angular.io)
+
+</div>
+
+### Version
+###### ng-trans的版本和Angular的版本保持对应关系
+- "@bigBear/ng-trans":"^12.0.0" - "@angular/common": "^12.0.0"
 
 ### Module
 
@@ -40,14 +49,14 @@ Angular i18n translation component.
 
 ##### Usage
 ```ts
-constructor( private transService: NgTransService) {}
+constructor(private transService: NgTransService) {}
 
 // 切换语言，异步事件，subscribe()是必需的
 this.transService.changeLang(lang).subscribe(result=>{
     // result是切换后的结果
 });
 
-// 切换语言，同步事件，但不保证切换是否成功
+// 切换语言，同步事件，但不保证语言切换成功
 this.transService.changeLangSync(lang);
 
 // 语言异步翻译。可订阅获取翻译后的值，也可在模板中和async管道结合使用
@@ -114,7 +123,7 @@ this.transService.subscribeLoadDefaultOverChange().subscribe(over=>{
 <!-- 和配合<ng-trans></ng-trans>使用 -->
 <ng-trans [key]="complexContent" [components]="[com1]"></ng-trans>
 <ng-template #comp1 let-compContent="content" let-compList="list">
-  <ng-container [ng-trans-subcontent]="compContent" [trans-subcontent-list]="compList"></ng-container>
+  <div [ng-trans-subcontent]="compContent" [trans-subcontent-list]="compList"></div>
 </ng-template>
 ```
 
