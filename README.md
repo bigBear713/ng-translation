@@ -4,13 +4,13 @@
 
 Angular i18n translation component.
 
+[Document](./projects/ng-translation/README.md "Document")
+
 [OnlineDemo](https://github.com/wjx774326739/ng-translation)
 
 [Bug Report](https://github.com/wjx774326739/ng-translation/issues)
 
 [Feature Request](https://github.com/wjx774326739/ng-translation/issues)
-
-[Document](./projects/ng-translation/README.md "Document")
 
 
 [![Made with Angular](https://img.shields.io/badge/Made%20with-Angular-E13137.svg)](https://angular.io)

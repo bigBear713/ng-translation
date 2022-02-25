@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable({
   providedIn: 'root'
 })
-export class NgTransCoreService {
+export class NgTransToolsService {
 
   constructor() { }
 
@@ -105,5 +105,4 @@ export class NgTransCoreService {
       otherContent,
     };
   }
-
 }

@@ -5,7 +5,7 @@ import { NG_TRANS_LOADER } from '../../constants';
 import { NgTransLangEnum } from '../../models';
 import { NgTransTestingModule } from '../../ng-trans-testing.module';
 import { NgTransService } from '../../services';
-import { NgTransCoreService } from '../../services/ng-trans-core.service';
+import { NgTransToolsService } from '../../services/ng-trans-tools.service';
 import { transLoader } from '../../tests';
 import { NgTransComponent } from './ng-trans.component';
 
@@ -35,6 +35,7 @@ export class MockTplRefComponent {
 describe('Component: NgTrans', () => {
   let component: NgTransComponent;
   let fixture: ComponentFixture<NgTransComponent>;
+  let transToolsService: NgTransToolsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -48,6 +49,8 @@ describe('Component: NgTrans', () => {
   });
 
   beforeEach(() => {
+    transToolsService = TestBed.inject(NgTransToolsService);
+
     fixture = TestBed.createComponent(NgTransComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -58,8 +61,7 @@ describe('Component: NgTrans', () => {
   });
 
   it('#ngOnChanges()', () => {
-    const transCoreService = TestBed.inject(NgTransCoreService);
-    const spyFn = spyOn(transCoreService, 'handleTrans').and.callThrough();
+    const spyFn = spyOn(transToolsService, 'handleTrans').and.callThrough();
 
     component.key = 'title';
     component.options = {};
@@ -75,14 +77,13 @@ describe('Component: NgTrans', () => {
   it('verify has subscribed lang change event', (done) => {
     const transService = TestBed.inject(NgTransService);
     spyOn(transService, 'subscribeLangChange').and.callThrough();
-    const transCoreService = TestBed.inject(NgTransCoreService);
-    spyOn(transCoreService, 'handleTrans').and.callThrough();
+    spyOn(transToolsService, 'handleTrans').and.callThrough();
 
     component.key = 'title';
     component.options = {};
 
     transService.changeLang(NgTransLangEnum.EN).pipe(take(1)).subscribe(() => {
-      expect(transCoreService.handleTrans).toHaveBeenCalledTimes(1);
+      expect(transToolsService.handleTrans).toHaveBeenCalledTimes(1);
       done();
     });
 
