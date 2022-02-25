@@ -1,72 +1,63 @@
-<p>
-  feature1 works!
-</p>
 <div>
+  <h5>使用 ngTrans 管道，语言切换时自动获取最新的翻译</h5>
+  {{ "{{'title'| ngTrans}}：" }}
   {{'title'| ngTrans}}
-  {{'helloWorld'| ngTrans:({prefix:'content'})}}
 </div>
+<hr>
 
 <div>
-  get title():
+  <h5>使用 ngTrans 管道，key值为多层</h5>
+  {{"{{'content.helloWorld'| ngTrans}}:"}}
+  {{'content.helloWorld'| ngTrans}}
+</div>
+<hr>
+
+<div>
+  <h5>使用 ngTrans 管道，带有options参数。设置key值前缀和翻译文本中的参数,params参数为：{{params|json}}</h5>
+  <p>
+    翻译文本原文：{{'contentWithParams'| ngTrans:({prefix:'content'})}}
+  </p>
+  {{"{{'contentWithParams'| ngTrans:({prefix:'content',params: params})}}:"}}
+  {{'contentWithParams'| ngTrans:({prefix:'content',params: params})}}
+</div>
+<hr>
+
+<div>
+  <h5>通过getter，调用translationSync()时时获取最新的翻译</h5>
+  {{"get title(){return this.transService.translationSync('title');}:"}}
   {{title}}
 </div>
+<hr>
 
 <div>
-  title$|async:
+  <h5>调用translationAsync()得到一个Observable,结合 async 管道使用，语言切换时自动获取最新的翻译</h5>
+  <div>{{"this.title$ = this.transService.translationAsync('title');// ts"}}</div>
+  {{"{{title$ | async}}:"}}
   {{title$|async}}
 </div>
-
 <hr>
 
-<div>
-  带有参数的内容:{{contentWithParams}} - 参数值：{{params|json}}
-
-  <div>
-    get titleWithParams():
-    {{titleWithParams}}
-  </div>
-
-  <div>
-    titleWithParams$|async:
-    {{titleWithParams$|async}}
-  </div>
-  <div>
-    'content.contentWithParams'| ngTrans:params:
-    {{'content.contentWithParams'| ngTrans:({params})}}
-  </div>
-
-  <div>
-    'contentWithParams'| ngTrans:options:
-    {{'contentWithParams'| ngTrans:({prefix:'content',params})}}
-  </div>
-
-
-</div>
-
-<hr>
+<h5>使用ng-trans组件，带有components参数和options参数。设置key值前缀和翻译文本中的参数,params参数为：{{params|json}}</h5>
+<p>
+  翻译文本原文：{{'complexContent'| ngTrans:({prefix:'content'})}}
+</p>
 
 <div>
-  使用ng-trans组件：
-
-  <div>
-    <ng-trans key="content.complexContent" [components]="[com1,com2,com3]" [options]="{params}"> </ng-trans>
-  </div>
-
-  <div>
-    <ng-trans key="complexContent" [components]="[com1,com2,com3]" [options]="{params,prefix:'content'}"> </ng-trans>
-  </div>
-
+  <pre><code>{{compStr1}}</code></pre>
 </div>
 
+<div>
+  <ng-trans key="complexContent" [components]="[com0,com1,com2]" [options]="{params,prefix:'content'}"> </ng-trans>
+</div>
 
-<ng-template #com1 let-comContent="content" let-list="list">
+<ng-template #com0 let-comContent="content" let-list="list">
   <b [ng-trans-subcontent]="comContent" [trans-subcontent-list]="list"></b>
 </ng-template>
 
-<ng-template #com2 let-comContent="content" let-list="list">
+<ng-template #com1 let-comContent="content" let-list="list">
   <a [ng-trans-subcontent]="comContent" [trans-subcontent-list]="list"></a>
 </ng-template>
 
-<ng-template #com3 let-comContent="content">
+<ng-template #com2 let-comContent="content">
   <b>{{comContent}}</b>
 </ng-template>

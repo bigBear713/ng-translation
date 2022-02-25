@@ -25,20 +25,35 @@ export class Feature1Component implements OnInit {
     params3: '2222',
   };
 
+  get lang() {
+    return this.transService.lang;
+  }
+
   get title() {
     return this.transService.translationSync('title');
   }
 
-  get titleWithParams() {
-    return this.transService.translationSync('content.contentWithParams', { params: this.params });
-  }
+  compStr1 = `
+    <div>
+      <ng-trans key="complexContent" [components]="[com0,com1,com2]" [options]="{params,prefix:'content'}"> </ng-trans>
+    </div>
 
-  contentWithParams = 'This is a sentence. <0>component1</0>. <0>This is params: {{params1}} - {{params2}} - {{params3}} - {{params2}}</0>.<1><0>component2</0> abc</1>.<1>test <0>this is params: {{params1}} - {{params2}} - {{params3}} - {{params2}}</0></1>.<2>this is component3</2>222';
+    <ng-template #com0 let-comContent="content" let-list="list">
+      <b [ng-trans-subcontent]="comContent" [trans-subcontent-list]="list"></b>
+    </ng-template>
+
+    <ng-template #com1 let-comContent="content" let-list="list">
+      <a [ng-trans-subcontent]="comContent" [trans-subcontent-list]="list"></a>
+    </ng-template>
+
+    <ng-template #com2 let-comContent="content">
+      <b>{{comContent}}</b>
+    </ng-template>
+  `;
 
   constructor(
     private transService: NgTransService,
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.title$ = this.transService.translationAsync('title');
