@@ -11,7 +11,8 @@
     "build:lib": "ng build ng-translation && cd dist/ng-translation && npm pack",
     "build:analyze": "npm run build -- --source-map && npm run view:analyze",
     "view:analyze": "node_modules/.bin/source-map-explorer dist/ng-translation-demo/*",
-    "test:lib": "ng test ng-translation"
+    "test:lib": "ng test ng-translation",
+    "deploy": "ng build --outputPath=docs --base-href=/ng-translation/ && cp docs/index.html docs/404.html"
   },
   "private": false,
   "dependencies": {

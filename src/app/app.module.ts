@@ -31,7 +31,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     // },
     {
       provide: NG_TRANS_DEFAULT_LANG,
-      useValue: NgTransLangEnum.EN,
+      useValue: NgTransLangEnum.ZH_CN,
     },
     // {
     //   provide: NG_TRANS_LOADER,
