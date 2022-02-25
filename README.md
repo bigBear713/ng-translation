@@ -6,7 +6,7 @@ Angular i18n translation component.
 
 [Document](./projects/ng-translation/README.md "Document")
 
-[OnlineDemo](https://github.com/wjx774326739/ng-translation)
+[OnlineDemo](https://wjx774326739.github.io/ng-translation/)
 
 [Bug Report](https://github.com/wjx774326739/ng-translation/issues)
 
