@@ -12,9 +12,6 @@ Angular i18n translation component.
 
 [Feature Request](https://github.com/wjx774326739/ng-translation/issues)
 
-
-[![Made with Angular](https://img.shields.io/badge/Made%20with-Angular-E13137.svg)](https://angular.io)
-
 </div>
 
 ## Feature
@@ -23,6 +20,7 @@ Angular i18n translation component.
 - 支持翻译文本中带有参数；
 - 支持设置翻译文本加载失败时的重试次数；
 - 支持翻译文本中带有组件的复杂场景；
+- 支持SSR，具体可见本demo；
 
 ## 启动demo项目
 - 安装依赖：

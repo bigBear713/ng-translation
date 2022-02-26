@@ -19,7 +19,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     AppComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     NgTransModule,
     HttpClientModule,
     AppRoutingModule
@@ -40,7 +40,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     //     [NgTransLangEnum.EN]: () => import('./localization/en/translations').then(data => data.trans),
     //     [NgTransLangEnum.ZH_CN]: () => import('./localization/zh-CN/translations').then(data => data.trans),
     //     // direct load
-    //     // [NgTranslationLangEnum.ZH_CN]: trans,
+    //     // [NgTransLangEnum.ZH_CN]: trans,
     //   },
     // },
     {
