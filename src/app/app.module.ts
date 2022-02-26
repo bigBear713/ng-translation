@@ -11,8 +11,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { trans } from './localization/zh-CN/translations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -46,11 +46,15 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     {
       provide: NG_TRANS_LOADER,
       useFactory: (http: HttpClient) => ({
+        // https://github.com/ngx-translate/core/issues/1207#issuecomment-673921899
+        // it is expecting to get the translation file using HTTP via absolute URL when angualr SSR.
+        // So here change the file's path as relative/absolute via environment
+
         // dyn load and the content is a json file
         // [NgTransLangEnum.EN]: () => http.get('./assets/localization/en/translations.json').toPromise(),
-        [NgTransLangEnum.EN]: () => http.get('./assets/localization/en/translations.json'),
+        [NgTransLangEnum.EN]: () => http.get(environment.domain + 'assets/localization/en/translations.json'),
         // [NgTransLangEnum.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json').toPromise(),
-        [NgTransLangEnum.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json'),
+        [NgTransLangEnum.ZH_CN]: () => http.get(environment.domain + 'assets/localization/zh-CN/translations.json'),
       }),
       deps: [HttpClient]
     }
