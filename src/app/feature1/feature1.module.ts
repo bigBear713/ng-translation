@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 
 import { Feature1Component } from './feature1.component';
 import { Feature1RoutingModule } from './feature1.routing.module';
+import { WidgetComponent } from './widget/widget.component';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { Feature1RoutingModule } from './feature1.routing.module';
     NgTransModule,
     Feature1RoutingModule
   ],
-  declarations: [Feature1Component]
+  declarations: [Feature1Component, WidgetComponent]
 })
 export class Feature1Module { }
