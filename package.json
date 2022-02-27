@@ -1,6 +1,7 @@
 {
   "name": "ng-translation-demo",
   "version": "12.0.0",
+  "homepage": "https://github.com/wjx774326739/ng-translation/blob/master/projects/ng-translation/README.md",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
