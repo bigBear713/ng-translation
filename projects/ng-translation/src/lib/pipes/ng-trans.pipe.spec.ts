@@ -49,7 +49,7 @@ describe('Pipe: NgTrans', () => {
       };
     }).forEach(item => {
       it(item.title, (done) => {
-        transService.subscribeLoadDefaultOverChange().pipe(
+        transService.subscribeLoadDefaultOver().pipe(
           filter(result => result),
           take(1),
         ).subscribe(() => {
@@ -70,7 +70,7 @@ describe('Pipe: NgTrans', () => {
   });
 
   it('#ngOnDestroy()', (done) => {
-    transService.subscribeLoadDefaultOverChange().pipe(
+    transService.subscribeLoadDefaultOver().pipe(
       filter(result => result),
       take(1),
     ).subscribe(() => {

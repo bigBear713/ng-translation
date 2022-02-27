@@ -4,25 +4,28 @@
 
 Angular i18n translation component.
 
-[OnlineDemo](https://wjx774326739.github.io/ng-translation/)
+[OnlineDemo](https://bigBear713.github.io/ng-translation/)
 
-[Bug Report](https://github.com/wjx774326739/ng-translation/issues)
+[Bug Report](https://github.com/bigBear713/ng-translation/issues)
 
-[Feature Request](https://github.com/wjx774326739/ng-translation/issues)
+[Feature Request](https://github.com/bigBear713/ng-translation/issues)
 
 </div>
+
+## Document
+- [中文](./README.md "中文文档")
+- [English](./README.en.md "English Document")
 
 ## Feature
 - 支持翻译文本懒加载，或者急性加载；
 - 支持切换语言时，不刷新页面自动更新翻译文本；
-- 支持翻译文本中带有参数；
 - 支持设置翻译文本加载失败时的重试次数；
+- 支持翻译文本中带有参数；
 - 支持翻译文本中带有组件的复杂场景；
-- 支持SSR，具体可见本demo；
 
 ### Version
-###### ng-trans的版本和Angular的版本保持对应关系
-- "@bigBear/ng-trans":"^12.0.0" - "@angular/common": "^12.0.0"
+###### ng-trans的大版本和Angular的大版本保持对应关系
+- "@bigBear/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
 
 ### Module
 
@@ -50,7 +53,7 @@ Angular i18n translation component.
 | translationAsync(key: string, options?: INgTransOptions)  | `Observable<string>`  | 根据key和options异步获取翻译文本。options选填，具体配置见下方`INgTransOptions`定义。返回一个观察者对象。获取值后如果未取消订阅，当语言被切换时，将会订阅、获取切换后的语言下的翻译文本  | 适合将订阅事件变量在模板中使用，推荐结合ng官方的`async`管道使用。 |
 | translationSync(key: string, options?: INgTransOptions)  | `string`  | 根据key和options同步获取翻译文本。options选填，具体配置见下方`INgTransOptions`定义。因为是同步获取，所以返回的获取后的文本内容。当语言被切换时，需要重新调用该方法才能获取切换后的语言下的文本。 | 适合文本内容临时使用，每次显示文本都需要重新获取的场景。比如通过service动态创建modal时，设置modal的title。 |
 | subscribeLangChange()  | `Observable<string>`  | 语言切换的订阅事件。返回一个观察者对象。当订阅未取消时，语言被切换时，会自动被订阅到。订阅的内容为切换后的语言值 | 适合需要根据不同语言进行动态调整的地方 |
-| subscribeLoadDefaultOverChange()  | `Observable<boolean>`  | 默认语言翻译文本是否加载完成的订阅事件。加载成功时订阅到的值为true，反之为false。加载完成后（不管是否加载成功）会自动complete，因此可以不用取消订阅 | 适合整个项目最外层的数据准备。当默认语言的翻译文本被加载完成后再显示整个项目，体验效果更好. |
+| subscribeLoadDefaultOver()  | `Observable<boolean>`  | 默认语言翻译文本是否加载完成的订阅事件。加载成功时订阅到的值为true，反之为false。加载完成后（不管是否加载成功）会自动complete，因此可以不用取消订阅 | 适合整个项目最外层的数据准备。当默认语言的翻译文本被加载完成后再显示整个项目，体验效果更好. |
 
 ##### Usage
 ```ts
@@ -79,7 +82,7 @@ this.transService.subscribeLangChange().subscribe(lang=>{
 });
 
 // 默认语言翻译文本加载结束订阅事件。当翻译文本被加载完成时，会触发订阅事件
-this.transService.subscribeLoadDefaultOverChange().subscribe(over=>{
+this.transService.subscribeLoadDefaultOver().subscribe(over=>{
       // over是加载后的结果
 });
 ```
@@ -92,7 +95,7 @@ this.transService.subscribeLoadDefaultOverChange().subscribe(over=>{
 | Name  | Type  | Default  | Description  |
 | ------------ | ------------ | ------------ | ------------ |
 | components  | `TemplateRef<{ content: string ｜ TemplateRef<any>; list?: INgTransSentencePart[] }>[]`  | []  | 翻译文本中的对应的组件。  |
-| key  | `string`  | `''`  | 翻译文本的key值  |
+| key  | `string`  | `''`  | 获取翻译文本的key值  |
 | options  | `INgTransOptions`  | {}  | 翻译的配置信息。具体配置见下方的`INgTransOptions`定义。  |
 
 ##### Usage
@@ -116,7 +119,7 @@ this.transService.subscribeLoadDefaultOverChange().subscribe(over=>{
 ```
 
 #### `[ng-trans-subcontent]`
-###### 当翻译文本中含有组件嵌套时使用的一种官方提供的方案，会将嵌套的组件内容渲染出来。selector为attribute，可用于`<div />`, `<span />`, `<a />`，`<ng-container />`等。该组件是搭配`<ng-trans></ng-trans>`使用，请勿单独使用。
+###### 当翻译文本中含有组件嵌套时使用的一种官方提供的方案(可根据需要有自己的实现方式)，会将嵌套的组件内容渲染出来。selector为attribute，可用于`<div />`, `<span />`, `<a />`，`<ng-container />`等。该组件是搭配`<ng-trans></ng-trans>`使用，请勿单独使用。
 ##### Input
 | Name  | Type  | Default  | Description  |
 | ------------ | ------------ | ------------ | ------------ |
@@ -177,8 +180,8 @@ this.transService.subscribeLoadDefaultOverChange().subscribe(over=>{
 
 #### NG_TRANS_LOADER：
 ###### 翻译文本加载器。加载器支持急性加载和懒加载。一般只在AppModule设置一次
-- 急性加载：直接引入翻译文本内容，作为值赋给对应的语言。急性加载会增大项目初始化文件的体积，因此当内容比较多时，建议使用懒加载
-- 懒加载：通过`http.get()`或者`import()`等方式加载翻译文本文件。当翻译文本文件为`ts`格式时，可使用`import()`加载。当翻译文本文件为`json`格式时，可使用`http.get()`加载。翻译文本文件支持`ts(js)`格式文件和`json`等其它格式文件。推荐翻译文本文件为json格式，因为最终的文件都会更小一点。
+- 急性加载：直接引入翻译文本内容，作为值赋给对应的语言。急性加载会增大项目初始化文件的体积.
+- 懒加载：通过`http.get()`或者`import()`等方式加载翻译文本文件。当翻译文本文件为`json`格式时，可使用`http.get()`加载。当翻译文本文件为`ts`格式时，可使用`import()`加载。
 
 ##### Usage
 ###### 急性加载
@@ -254,7 +257,7 @@ this.transService.subscribeLoadDefaultOverChange().subscribe(over=>{
 | [langKey: string]  | `Object ｜ (() => (Observable<Object> ｜ Promise<Object>))`  | false  | key值为字符串类型，通常使用对应的语言的字符串值；value为含有文本的Object，或者返回含有文本的Object的Observable或者Promise |
 
 #### INgTransOptions：
-###### 配置
+###### 翻译配置
 | Property  | Type  | Mandatory  | Description  |
 | ------------ | ------------ | ------------ | ------------ |
 | prefix  | `string`  | false  | key值的前缀。根据key值获取对应文本时，会自动将该值追加在key值之前，形成一个新的key值，并以此来获取文本  |
@@ -262,7 +265,7 @@ this.transService.subscribeLoadDefaultOverChange().subscribe(over=>{
 | returnKeyWhenEmpty  | `boolean`  | false  | 当根据key值获取不到文本时，是否返回key值。默认为true。当显式设为false时，会返回空字符串  |
 
 #### INgTransParams：
-###### 参数
+###### 翻译文本中的参数
 | Property  | Type  | Mandatory  | Description  |
 | ------------ | ------------ | ------------ | ------------ |
 | [key: string]  | `string`  | false  | key值为字符串类型，value值为字符串类型  |
@@ -275,7 +278,7 @@ this.transService.subscribeLoadDefaultOverChange().subscribe(over=>{
 | curLang  | `string`  | true  | 当前语言。如果语言切换失败，则为切换前的语言；否则为切换后的语言  |
 
 #### INgTransSentencePart：
-###### 句子部分，可能为`string`或者`INgTransSentenceCompPart`类型。为string时，即该句子为文本；为INgTransSentenceCompPart时，即该句子中含有需要解析的组件。一般交给组件自己处理便可，可不用关心内部逻辑
+###### 句子部分，可能为`string`或者`INgTransSentenceCompPart`类型。为`string`时，即该句子为文本；为`INgTransSentenceCompPart`时，即该句子中含有需要解析的组件。一般交给组件自己处理便可，可不用关心内部逻辑
 
 #### INgTransSentenceCompPart：
 ###### 句子中含有组件的部分
@@ -292,3 +295,11 @@ this.transService.subscribeLoadDefaultOverChange().subscribe(over=>{
 #### NgTransSentenceItemEnum：
 ###### 句子项类型枚举。在对句子内容进行解析时，会将句子分为`STR`,`COMP`和`MULTI_COMP`这3种类型
 
+
+### 贡献
+> 欢迎提feature和PR，一起使该项目更好
+
+<a href="https://github.com/bigBear713" target="_blank"><img src="https://avatars.githubusercontent.com/u/12368900?v=4" alt="bigBear713" width="30px" height="30px"></a>
+
+### License
+MIT
