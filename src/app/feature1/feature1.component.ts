@@ -43,7 +43,7 @@ export class Feature1Component implements OnInit {
     </ng-template>
 
     <ng-template #com1 let-comContent="content" let-list="list">
-      <a [ng-trans-subcontent]="comContent" [trans-subcontent-list]="list"></a>
+      <app-widget [comContent]="comContent" [list]="list"></app-widget>
     </ng-template>
 
     <ng-template #com2 let-comContent="content">

@@ -59,5 +59,7 @@ npm run serve:ssr
 ## Contribution
 > Feature and PR are welcome to make this project better together
 
+<a href="https://github.com/bigBear713" target="_blank"><img src="https://avatars.githubusercontent.com/u/12368900?v=4" alt="bigBear713" width="30px" height="30px"></a>
+
 ## License
 MIT
