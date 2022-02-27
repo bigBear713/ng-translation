@@ -151,7 +151,7 @@ export class NgTransService {
     return this.lang$.asObservable();
   }
 
-  subscribeLoadDefaultOverChange(): Observable<boolean> {
+  subscribeLoadDefaultOver(): Observable<boolean> {
     return this.loadDefaultOver
       ? of(true)
       : this.loadDefaultOver$.asObservable().pipe(

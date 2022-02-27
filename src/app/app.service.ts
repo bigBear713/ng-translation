@@ -13,7 +13,7 @@ export class AppService implements Resolve<Boolean> {
   ) { }
 
   resolve(): Promise<boolean> {
-    return this.transService.subscribeLoadDefaultOverChange().toPromise();
+    return this.transService.subscribeLoadDefaultOver().toPromise();
   }
 
 }

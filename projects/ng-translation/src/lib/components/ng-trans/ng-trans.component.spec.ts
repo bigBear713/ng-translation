@@ -109,7 +109,7 @@ describe('Component: NgTrans', () => {
 
     beforeEach(async () => {
       const transService = TestBed.inject(NgTransService);
-      return transService.subscribeLoadDefaultOverChange().toPromise();
+      return transService.subscribeLoadDefaultOver().toPromise();
     });
 
     it(`the content is string`, () => {

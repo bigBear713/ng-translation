@@ -16,47 +16,48 @@ Angular i18n translation component.
 - [中文](./projects/ng-translation/README.md "中文文档")
 - [English](./projects/ng-translation/README.en.md "English Document")
 
-## Feature
-- 支持翻译文本懒加载，或者急性加载；
-- 支持切换语言时，不刷新页面自动更新翻译文本；
-- 支持翻译文本中带有参数；
-- 支持翻译文本中带有组件的复杂场景；
-- 支持设置翻译文本加载失败时的重试次数；
 
-## 启动demo项目
-- 安装依赖：
+## Feature
+- Support to direct/lazy loading translation file;
+- Support to update translation content in page directly and no need to reload page;
+- Support to reset the max retry time when failure to load the translation file;
+- Support there are some params in translation sentence;
+- Support there are some components in the translation sentence;
+
+## Start the demo project
+- Install the dependencies:
 ```bash
 npm i
 ```
 
-- 编译ng-trans库
+- Build the ng-trans lib
 ```bash
 npm run build:lib
 ```
 
-- 启动demo项目
+- Start the demo
 ```bash
 npm start
 ```
 
-- 部署demo
+- build the demo
 ```bash
 npm run build
 ```
 
-- 启动带有SSR的demo项目
+- Start the demo with SSR
 ```bash
 npm run dev:ssr
 ```
 
-- 部署带有SSR的demo项目
+- Build the demo with SSR
 ```bash
 npm run build:ssr
 
 npm run serve:ssr
 ```
-## 贡献者
-> 欢迎提feature和PR，一起使该项目更好
+## Contribution
+> Feature and PR are welcome to make this project better together
 
 ## License
 MIT

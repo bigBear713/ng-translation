@@ -37,8 +37,8 @@ describe('Service: NgTrans', () => {
           service = TestBed.inject(NgTransService);
         });
 
-        it('#subscribeLoadDefaultOverChange()', (done) => {
-          service.subscribeLoadDefaultOverChange().pipe(
+        it('#subscribeLoadDefaultOver()', (done) => {
+          service.subscribeLoadDefaultOver().pipe(
             take(1),
           ).subscribe(
             result => {
@@ -54,7 +54,7 @@ describe('Service: NgTrans', () => {
           { lang: NgTransLangEnum.AR_EG, expect: { changeResult: { curLang: NgTransLangEnum.ZH_CN, result: false }, transResult: '标题  ' } },
         ].forEach(item => {
           it(`change lang as ${item.lang}`, (done) => {
-            service.subscribeLoadDefaultOverChange().pipe(
+            service.subscribeLoadDefaultOver().pipe(
               filter(result => result),
               switchMap(() => service.changeLang(item.lang))
             ).pipe().subscribe(result => {
@@ -74,7 +74,7 @@ describe('Service: NgTrans', () => {
             { lang: NgTransLangEnum.AR_EG, expect: NgTransLangEnum.ZH_CN },
           ].forEach(item => {
             it(`change lang as ${item.lang}`, (done) => {
-              service.subscribeLoadDefaultOverChange().pipe(
+              service.subscribeLoadDefaultOver().pipe(
                 filter(result => result),
                 switchMap(() => service.changeLang(item.lang)),
               ).subscribe(() => {
@@ -113,7 +113,7 @@ describe('Service: NgTrans', () => {
 
     translationSyncTestData.forEach(item => {
       it(item.title, (done) => {
-        service.subscribeLoadDefaultOverChange().pipe(
+        service.subscribeLoadDefaultOver().pipe(
           filter(result => result),
           take(1),
         ).subscribe(
@@ -141,7 +141,7 @@ describe('Service: NgTrans', () => {
     });
 
     it('not change lang', (done) => {
-      service.subscribeLoadDefaultOverChange().pipe(
+      service.subscribeLoadDefaultOver().pipe(
         filter(result => result),
         switchMap(() => service.translationAsync('title')),
       ).pipe(take(1)).subscribe(transContent => {
@@ -151,7 +151,7 @@ describe('Service: NgTrans', () => {
     });
 
     it('change lang as en', (done) => {
-      service.subscribeLoadDefaultOverChange().pipe(
+      service.subscribeLoadDefaultOver().pipe(
         filter(result => result),
         switchMap(() => service.changeLang(NgTransLangEnum.EN)),
         switchMap(() => service.translationAsync('title')),
@@ -177,7 +177,7 @@ describe('Service: NgTrans', () => {
     });
     spyOn(transLoader, NgTransLangEnum.EN_US).and.callThrough();
     const service = TestBed.inject(NgTransService);
-    service.subscribeLoadDefaultOverChange().pipe(
+    service.subscribeLoadDefaultOver().pipe(
       take(1),
     ).subscribe(_ => {
       expect(transLoader[NgTransLangEnum.EN_US]).toHaveBeenCalledTimes(4);
