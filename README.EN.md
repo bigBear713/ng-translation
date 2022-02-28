@@ -1,6 +1,6 @@
 <div align="center">
 
-### @bigBear713/ng-trans
+### @bigbear713/ng-trans
 
 Angular i18n translation component.
 
@@ -18,11 +18,18 @@ Angular i18n translation component.
 
 
 ## Feature
-- Support to direct/lazy loading translation file;
+- Support to direct/lazing loading translation file;
 - Support to update translation content in page directly and no need to reload page;
 - Support to reset the max retry time when failure to load the translation file;
 - Support there are some params in translation sentence;
 - Support there are some components in the translation sentence;
+
+## Installation
+```bash
+$ npm i @bigbear713/ng-trans
+// or
+$ yarn add @bigbear713/ng-trans
+```
 
 ## Start the demo project
 - Install the dependencies:

@@ -1,6 +1,6 @@
 <div align="center">
 
-### @bigBear713/ng-trans
+### @bigbear713/ng-trans
 
 Angular i18n translation component.
 
@@ -22,6 +22,13 @@ Angular i18n translation component.
 - 支持翻译文本中带有参数；
 - 支持翻译文本中带有组件的复杂场景；
 - 支持设置翻译文本加载失败时的重试次数；
+
+## Installation
+```bash
+$ npm i @bigbear713/ng-trans
+// or
+$ yarn add @bigbear713/ng-trans
+```
 
 ## 启动demo项目
 - 安装依赖：

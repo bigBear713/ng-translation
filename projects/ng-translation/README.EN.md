@@ -1,6 +1,6 @@
 <div align="center">
 
-### @bigBear713/ng-trans
+### @bigbear713/ng-trans
 
 Angular i18n translation component.
 
@@ -17,7 +17,7 @@ Angular i18n translation component.
 - [English](./README.EN.md "English Document")
 
 ## Feature
-- Support to direct/lazy loading translated file;
+- Support to direct/lazing loading translated file;
 - Support to update translated content in page directly and no need to reload page;
 - Support to reset the max retry time when failure to load the translated file;
 - Support there are some params in translated sentence;
@@ -25,7 +25,14 @@ Angular i18n translation component.
 
 ### Version
 ###### The ng-trans's main version will keep up with the Angular's main version
-- "@bigBear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
+- "@bigbear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
+
+### Installation
+```bash
+$ npm i @bigbear713/ng-trans
+// or
+$ yarn add @bigbear713/ng-trans
+```
 
 ### Module
 
