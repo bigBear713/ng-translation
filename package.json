@@ -17,7 +17,8 @@
     "dev:ssr": "ng run ng-translation-demo:serve-ssr",
     "serve:ssr": "node dist/ng-translation-demo/server/main.js",
     "build:ssr": "ng build && ng run ng-translation-demo:server",
-    "prerender": "ng run ng-translation-demo:prerender"
+    "prerender": "ng run ng-translation-demo:prerender",
+    "publish:lib": "cd ./dist/ng-translation && npm publish --access=public"
   },
   "private": false,
   "dependencies": {

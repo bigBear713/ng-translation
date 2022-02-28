@@ -1,6 +1,6 @@
 <div align="center">
 
-### @bigBear713/ng-trans
+### @bigbear713/ng-trans
 
 Angular i18n translation component.
 
@@ -25,7 +25,14 @@ Angular i18n translation component.
 
 ### Version
 ###### ng-trans的大版本和Angular的大版本保持对应关系
-- "@bigBear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
+- "@bigbear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
+
+### Installation
+```bash
+$ npm i @bigbear713/ng-trans
+// or
+$ yarn add @bigbear713/ng-trans
+```
 
 ### Module
 
