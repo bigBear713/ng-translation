@@ -1,6 +1,6 @@
 <div align="center">
 
-### @bigBear/ng-trans
+### @bigBear713/ng-trans
 
 Angular i18n translation component.
 
@@ -14,7 +14,7 @@ Angular i18n translation component.
 
 ## Document
 - [中文](./README.md "中文文档")
-- [English](./README.en.md "English Document")
+- [English](./README.EN.md "English Document")
 
 ## Feature
 - 支持翻译文本懒加载，或者急性加载；
@@ -25,7 +25,7 @@ Angular i18n translation component.
 
 ### Version
 ###### ng-trans的大版本和Angular的大版本保持对应关系
-- "@bigBear/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
+- "@bigBear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
 
 ### Module
 

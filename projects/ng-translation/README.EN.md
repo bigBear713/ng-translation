@@ -14,7 +14,7 @@ Angular i18n translation component.
 
 ## Document
 - [中文](./README.md "中文文档")
-- [English](./README.en.md "English Document")
+- [English](./README.EN.md "English Document")
 
 ## Feature
 - Support to direct/lazy loading translated file;
@@ -25,7 +25,7 @@ Angular i18n translation component.
 
 ### Version
 ###### The ng-trans's main version will keep up with the Angular's main version
-- "@bigBear/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
+- "@bigBear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
 
 ### Module
 
