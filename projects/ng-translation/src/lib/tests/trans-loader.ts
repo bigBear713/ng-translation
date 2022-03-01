@@ -11,6 +11,7 @@ export const transLoader = {
       content: {
         'helloWorld': 'hello world',
       },
+      helloWorld: 'hello world!',
       component: '<0>component</0>',
       complexComponent: '<0>component0<1>component1</1></0>',
     },
@@ -19,6 +20,7 @@ export const transLoader = {
       content: {
         'helloWorld': '你好，世界',
       },
+      helloWorld: '你好，世界!',
       component: '<0>组件</0>',
       complexComponent: '<0>组件0<1>组件1</1></0>',
     },

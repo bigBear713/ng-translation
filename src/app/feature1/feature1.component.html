@@ -20,6 +20,13 @@
   {{"{{'contentWithParams'| ngTrans:({prefix:'content',params: params})}}:"}}
   {{'contentWithParams'| ngTrans:({prefix:'content',params: params})}}
 </div>
+
+<h5>动态调整options,options is {{options|json}}</h5>
+<button (click)="changeOptions()">change options</button>
+<p>{{'contentWithParams'| ngTrans:options}}</p>
+<p>
+  <ng-trans key="contentWithParams" [options]="options"></ng-trans>
+</p>
 <hr>
 
 <div>

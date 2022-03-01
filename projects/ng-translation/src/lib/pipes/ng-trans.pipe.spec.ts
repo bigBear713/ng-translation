@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { filter, switchMap, take } from 'rxjs/operators';
 import { NG_TRANS_DEFAULT_LANG } from '../constants/ng-trans-default-lang.token';
 import { NG_TRANS_LOADER } from '../constants/ng-trans-loader.token';
+import { INgTransOptions } from '../models';
 import { NgTransLangEnum } from '../models/ng-trans-lang.enum';
 import { NgTransTestingModule } from '../ng-trans-testing.module';
 import { NgTransService } from '../services/ng-trans.service';
@@ -85,6 +86,22 @@ describe('Pipe: NgTrans', () => {
         expect(transService.translationAsync).toHaveBeenCalledTimes(0);
         done();
       });
+    });
+  });
+
+  it('verify the trans text will be updated when options has been updated', (done) => {
+    transService.subscribeLoadDefaultOver().pipe(
+      filter(result => result),
+      take(1),
+    ).subscribe(() => {
+      let options: INgTransOptions = { prefix: 'content' };
+      const result1 = pipe.transform('helloWorld', options);
+      expect(result1).toEqual('你好，世界');
+
+      options = { prefix: undefined };
+      const result2 = pipe.transform('helloWorld', options);
+      expect(result2).toEqual('你好，世界!');
+      done();
     });
   });
 
