@@ -13,8 +13,8 @@ Angular i18n translation component.
 </div>
 
 ## Document
-- [中文](./projects/ng-translation/README.md "中文文档")
-- [English](./projects/ng-translation/README.EN.md "English Document")
+- [中文](https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.md "中文文档")
+- [English](https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.EN.md "English Document")
 
 
 ## Feature
