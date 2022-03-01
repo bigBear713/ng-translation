@@ -30,6 +30,10 @@ describe('Pipe: NgTrans', () => {
     pipe = new NgTransPipe(transService);
   });
 
+  beforeEach(async () => {
+    await transService.subscribeLoadDefaultOver().toPromise();
+  });
+
   it('create an instance', () => {
     expect(pipe).toBeTruthy();
   });
@@ -50,20 +54,15 @@ describe('Pipe: NgTrans', () => {
       };
     }).forEach(item => {
       it(item.title, (done) => {
-        transService.subscribeLoadDefaultOver().pipe(
-          filter(result => result),
-          take(1),
-        ).subscribe(() => {
-          const verifyResult = (expectResult: string) => {
-            const result = pipe.transform(item.test.key, item.test.options);
-            expect(result).toEqual(expectResult);
-          };
-          verifyResult(item.expect.resultZHCN);
+        const verifyResult = (expectResult: string) => {
+          const result = pipe.transform(item.test.key, item.test.options);
+          expect(result).toEqual(expectResult);
+        };
+        verifyResult(item.expect.resultZHCN);
 
-          transService.changeLang(NgTransLangEnum.EN).pipe(take(1)).subscribe(() => {
-            verifyResult(item.expect.resultEN);
-            done();
-          });
+        transService.changeLang(NgTransLangEnum.EN).pipe(take(1)).subscribe(() => {
+          verifyResult(item.expect.resultEN);
+          done();
         });
       });
     });
@@ -71,38 +70,35 @@ describe('Pipe: NgTrans', () => {
   });
 
   it('#ngOnDestroy()', (done) => {
-    transService.subscribeLoadDefaultOver().pipe(
-      filter(result => result),
+    transService.changeLang(NgTransLangEnum.EN).pipe(
+      switchMap(() => {
+        pipe.ngOnDestroy();
+        spyOn(transService, 'translationAsync').and.callThrough();
+        return transService.changeLang(NgTransLangEnum.ZH_CN)
+      }),
       take(1),
     ).subscribe(() => {
-      transService.changeLang(NgTransLangEnum.EN).pipe(
-        switchMap(() => {
-          pipe.ngOnDestroy();
-          spyOn(transService, 'translationAsync').and.callThrough();
-          return transService.changeLang(NgTransLangEnum.ZH_CN)
-        }),
-        take(1),
-      ).subscribe(() => {
-        expect(transService.translationAsync).toHaveBeenCalledTimes(0);
-        done();
-      });
+      expect(transService.translationAsync).toHaveBeenCalledTimes(0);
+      done();
     });
   });
 
-  it('verify the trans text will be updated when options has been updated', (done) => {
-    transService.subscribeLoadDefaultOver().pipe(
-      filter(result => result),
-      take(1),
-    ).subscribe(() => {
-      let options: INgTransOptions = { prefix: 'content' };
-      const result1 = pipe.transform('helloWorld', options);
-      expect(result1).toEqual('你好，世界');
+  it('verify the trans text will be updated when options has been updated', () => {
+    let options: INgTransOptions = { prefix: 'content' };
+    const result1 = pipe.transform('helloWorld', options);
+    expect(result1).toEqual('你好，世界');
 
-      options = { prefix: undefined };
-      const result2 = pipe.transform('helloWorld', options);
-      expect(result2).toEqual('你好，世界!');
-      done();
-    });
+    options = { prefix: undefined };
+    const result2 = pipe.transform('helloWorld', options);
+    expect(result2).toEqual('你好，世界!');
+  });
+
+  it('verify the trans text will be updated when key has been updated', () => {
+    const result1 = pipe.transform('content.helloWorld');
+    expect(result1).toEqual('你好，世界');
+
+    const result2 = pipe.transform('helloWorld');
+    expect(result2).toEqual('你好，世界!');
   });
 
 });
