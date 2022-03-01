@@ -61,6 +61,9 @@ export class Feature1Component implements OnInit {
   ngOnInit(): void {
     this.title$ = this.transService.translationAsync('title');
     this.titleWithParams$ = this.transService.translationAsync('content.contentWithParams', { params: this.params });
+    console.log(this.transService.getBrowserLang());
+    console.log(this.transService.getBrowserLangs());
+
   }
 
   changeOptions() {
