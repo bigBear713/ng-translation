@@ -34,8 +34,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private transService: NgTransService,
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.title$ = this.transService.translationAsync('title');
