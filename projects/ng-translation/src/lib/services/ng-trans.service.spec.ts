@@ -185,4 +185,24 @@ describe('Service: NgTrans', () => {
     });
   });
 
+  it('#getBrowserLang()', inject([NgTransService], (service: NgTransService) => {
+    expect(service.getBrowserLang()).toEqual(window.navigator.language);
+
+    spyOnProperty(window.navigator, 'language').and.returnValue(undefined);
+    expect(service.getBrowserLang()).toEqual(undefined);
+
+    spyOnProperty(window, 'navigator').and.returnValue(undefined);
+    expect(service.getBrowserLang()).toEqual(undefined);
+  }));
+
+  it('#getBrowserLangs()', inject([NgTransService], (service: NgTransService) => {
+    expect(service.getBrowserLangs()).toEqual(window.navigator.languages);
+
+    spyOnProperty(window.navigator, 'languages').and.returnValue(undefined);
+    expect(service.getBrowserLangs()).toEqual(undefined);
+
+    spyOnProperty(window, 'navigator').and.returnValue(undefined);
+    expect(service.getBrowserLangs()).toEqual(undefined);
+  }));
+
 });

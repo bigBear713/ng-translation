@@ -117,6 +117,14 @@ export class NgTransService {
     this.changeLang(lang).subscribe();
   }
 
+  getBrowserLang(): string | undefined {
+    return window?.navigator?.language;
+  }
+
+  getBrowserLangs(): readonly string[] | undefined {
+    return window?.navigator?.languages;
+  }
+
   translationAsync(key: string, options?: INgTransOptions): Observable<string> {
     return this.lang$.pipe(
       switchMap(_ => {
