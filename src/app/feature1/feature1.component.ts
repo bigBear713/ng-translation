@@ -1,5 +1,4 @@
-import { isString } from 'lodash-es';
-import { NgTransService } from 'ng-trans';
+import { INgTransOptions, NgTransService } from 'ng-trans';
 import { Observable } from 'rxjs';
 
 import {
@@ -7,7 +6,6 @@ import {
   OnInit
 } from '@angular/core';
 
-import { trans } from '../localization/en/translations';
 
 @Component({
   selector: 'app-feature1',
@@ -23,6 +21,11 @@ export class Feature1Component implements OnInit {
     params1: '{{params2}}',
     params2: '1111',
     params3: '2222',
+  };
+
+  options: INgTransOptions = {
+    prefix: 'content',
+    params: this.params,
   };
 
   get lang() {
@@ -58,10 +61,14 @@ export class Feature1Component implements OnInit {
   ngOnInit(): void {
     this.title$ = this.transService.translationAsync('title');
     this.titleWithParams$ = this.transService.translationAsync('content.contentWithParams', { params: this.params });
+    console.log(this.transService.getBrowserLang());
+    console.log(this.transService.getBrowserLangs());
+
   }
 
-  isString(content: any): boolean {
-    return isString(content);
+  changeOptions() {
+    const prefix = this.options.prefix ? undefined : 'content';
+    this.options = { ...this.options, prefix: prefix };
   }
 
 }
