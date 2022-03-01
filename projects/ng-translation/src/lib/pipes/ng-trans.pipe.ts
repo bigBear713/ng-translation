@@ -12,6 +12,7 @@ import {
 
 import { INgTransOptions } from '../models';
 import { NgTransService } from '../services/ng-trans.service';
+import { isEqual } from 'lodash-es';
 
 @Pipe({
   name: 'ngTrans',
@@ -34,11 +35,11 @@ export class NgTransPipe implements PipeTransform, OnDestroy {
   }
 
   transform(key: string, options?: INgTransOptions): string {
-    this.key = key;
-    this.options = options;
-
-    if (!this.latestValue) {
+    if (!this.latestValue || key !== this.key || !isEqual(options, this.options)) {
       this.latestValue = this.transService.translationSync(key, options);
+
+      this.key = key;
+      this.options = options;
     }
 
     return this.latestValue;

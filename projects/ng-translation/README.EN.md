@@ -13,8 +13,8 @@ Angular i18n translation component.
 </div>
 
 ## Document
-- [中文](./README.md "中文文档")
-- [English](./README.EN.md "English Document")
+- [中文](https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.md "中文文档")
+- [English](https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.EN.md "English Document")
 
 ## Feature
 - Support to direct/lazing loading translated file;
@@ -57,6 +57,8 @@ $ yarn add @bigbear713/ng-trans
 | ------------ | ------------ | ------------ | ------------ |
 | changeLang(lang: string)  | `Observable<INgTransChangeLang>`  | Switch language. The lang param should be same as the key of `NG_TRANS_LOADER`. It is an Observable event. The result will not be returned until the translated text of the switched language has been loaded. It does not need to unsubscribe, because it will auto be completed when switching the language, whether it is success or failure to switch. The details return result follow the definition of `INgTransChangeLang` below.  | When  you need to swithc language  |
 | changeLangSync(lang: string)  | `void`  | Switch language. The lang param should be same as the key of `NG_TRANS_LOADER`. It is a sync event, but it is not guaranteed to succeed and when to success.  | When you just want to do the switch behavior, Don't care about the result of it.  |
+| getBrowserLang()  | `string ｜ undefined`  | Get the first language of browser | When you only want to know what is the language of browser page  |
+| getBrowserLangs()  | `readonly string[]｜ undefined`  | Get a language array known to the user, by order of preference | If you need to known the languages known to the user |
 | translationAsync(key: string, options?: INgTransOptions)  | `Observable<string>`  | Get translated text asynchronously based on key and options. The options params is optional, the detail configs follow the definition of `INgTransOptions` below. And the return value is Observable. When it has not been unsubscribed, switching the language, the translated text will be subscribed so that getting the newest text. Don't forget to unsubscribe it | You can use the observable value in template. And it is recormmend to use it with `async`pipe.  |
 | translationSync(key: string, options?: INgTransOptions)  | `string`  | Synchronously get translated text according to key and options. The options params is optional, the detail configs follow the definition of `INgTransOptions` below. Because it is sync function, the translated text will be return immediately. When switching the language, you should recall the function to get the new lang's translated text | The text for temporary use, like when creating a modal via service, and setting the title of the modal. |
 | subscribeLangChange()  | `Observable<string>`  | An subscribe event of switching language. It will return an Observable value, so you can know the newest lang immediately if it does not be unsubscribed when the language has been switched. | When you should do something when the lang has been switched. |
