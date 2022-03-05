@@ -22,6 +22,7 @@ Angular i18n translation component.
 - 支持设置翻译文本加载失败时的重试次数；
 - 支持翻译文本中带有参数；
 - 支持翻译文本中带有组件的复杂场景；
+- 支持组件的更新策略为`ChangeDetectionStrategy.OnPush`;
 
 ### Version
 ###### ng-trans的大版本和Angular的大版本保持对应关系

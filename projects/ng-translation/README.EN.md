@@ -22,6 +22,7 @@ Angular i18n translation component.
 - Support to reset the max retry time when failure to load the translated file;
 - Support there are some params in translated sentence;
 - Support there are some components in the translated sentence;
+- Support the changeDetection of components as `ChangeDetectionStrategy.OnPush`;
 
 ### Version
 ###### The ng-trans's main version will keep up with the Angular's main version
