@@ -2,6 +2,7 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/ng-translation",
   "allowedNonPeerDependencies": [
+    "@bigbear713/nb-common",
     "lodash-es",
     "uuid",
     "tslib"

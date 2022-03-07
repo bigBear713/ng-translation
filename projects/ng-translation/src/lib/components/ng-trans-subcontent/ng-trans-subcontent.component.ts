@@ -18,12 +18,11 @@ import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interf
     <ng-container [ngSwitch]="isString">
       <ng-container *ngSwitchCase="true">{{content}}</ng-container>
       <ng-container *ngSwitchDefault
-                    [ngTemplateOutlet]="content | tplContent" 
+                    [ngTemplateOutlet]="content | nbTplContent" 
                     [ngTemplateOutletContext]="{ list }"></ng-container>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
 })
 export class NgTransSubcontentComponent implements OnChanges, OnInit {
 
