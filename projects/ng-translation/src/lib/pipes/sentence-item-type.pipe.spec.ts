@@ -1,3 +1,5 @@
+import { TestBed } from '@angular/core/testing';
+import { NbValueTypeService } from '@bigbear713/nb-common';
 import { isString } from 'lodash-es';
 import { NgTransSentenceItemEnum } from '../models/ng-trans-sentence-item.enum';
 import { INgTransSentencePart } from '../models/ng-trans-sentence-part.interface';
@@ -7,7 +9,8 @@ describe('Pipe: SentenceItemTypee', () => {
   let pipe: SentenceItemTypePipe;
 
   beforeEach(() => {
-    pipe = new SentenceItemTypePipe();
+    const valueType = TestBed.inject(NbValueTypeService);
+    pipe = new SentenceItemTypePipe(valueType);
   });
 
   it('create an instance', () => {

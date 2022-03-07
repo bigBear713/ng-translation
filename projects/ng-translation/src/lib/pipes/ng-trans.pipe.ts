@@ -5,6 +5,7 @@ import {
 } from 'rxjs/operators';
 
 import {
+  ChangeDetectorRef,
   OnDestroy,
   Pipe,
   PipeTransform
@@ -29,6 +30,7 @@ export class NgTransPipe implements PipeTransform, OnDestroy {
   private options: INgTransOptions | undefined;
 
   constructor(
+    private changeDR: ChangeDetectorRef,
     private transService: NgTransService,
   ) {
     this.subscribeLangChange();
@@ -54,7 +56,12 @@ export class NgTransPipe implements PipeTransform, OnDestroy {
     this.transService.subscribeLangChange().pipe(
       switchMap(_ => this.transService.translationAsync(this.key, this.options)),
       takeUntil(this.destroy$)
-    ).subscribe(latestValue => this.latestValue = latestValue);
+    ).subscribe(latestValue => this.updateLatestValue(latestValue));
+  }
+
+  private updateLatestValue(latestValue: string): void {
+    this.latestValue = latestValue;
+    this.changeDR.markForCheck();
   }
 
 }

@@ -2,10 +2,12 @@ import { NgTransToolsService } from './ng-trans-tools.service';
 import { TestBed, inject } from '@angular/core/testing';
 import { INgTransParams } from '../models/ng-trans-params.interface';
 import { handleSentenceWithParamsTestData } from '../tests/data';
+import { NbCommonTestingModule } from '@bigbear713/nb-common';
 
 describe('Service: NgTransTools', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [NbCommonTestingModule],
       providers: [NgTransToolsService]
     });
   });
