@@ -67,7 +67,7 @@ export class NgTransService {
     @Inject(NG_TRANS_MAX_RETRY_TOKEN) @Optional() private maxRetry: number,
     private transToolsService: NgTransToolsService,
   ) {
-    // if the maxRetry is undefined/null, use default setting,
+    // if the maxRetry is undefined/null, use default settings,
     // so can set the retry valus as 0 to cancel retry action.
     this.retry = this.maxRetry == null ? this.retry : this.maxRetry;
 
@@ -165,7 +165,7 @@ export class NgTransService {
       : this.loadDefaultOver$.asObservable().pipe(
         // the loadDefaultOver$ is BehaviorSubject, 
         // so the user will get a value immediately when subscribe it, 
-        // but it doesn't make sense， so here will skip it
+        // but it doesn't make sense, so here will skip it
         skipWhile((result, index) => (!result && (index === 0)))
       );
   }

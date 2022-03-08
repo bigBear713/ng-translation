@@ -11,7 +11,6 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
@@ -31,7 +30,7 @@ import { NgTransToolsService } from '../../services/ng-trans-tools.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
 })
-export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
+export class NgTransComponent implements OnChanges, OnDestroy {
 
   @Input()
   components: TemplateRef<{ content: string | TemplateRef<any>; list?: INgTransSentencePart[] }>[] = [];
@@ -67,8 +66,6 @@ export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
       this.reRender();
     }
   }
-
-  ngOnInit(): void { }
 
   ngOnDestroy(): void {
     this.destroy$.next();

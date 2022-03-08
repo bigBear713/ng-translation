@@ -1,4 +1,4 @@
-import { Component, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgTransTestingModule } from '../../ng-trans-testing.module';
 
@@ -48,15 +48,10 @@ describe('Component: NgTransSubcontent', () => {
   it('the content is a string value', () => {
     const content = 'test content';
     component.content = content;
-    const changes: SimpleChanges = {
-      content: new SimpleChange(undefined, content, true),
-    };
-    component.ngOnChanges(changes);
 
-    fixture.detectChanges();
+    detectChanges();
 
     expect(hostEle.textContent?.trim()).toEqual(content);
-    expect(component.isString).toEqual(true);
   });
 
   it('the content is a templateRef type value', () => {
@@ -66,15 +61,10 @@ describe('Component: NgTransSubcontent', () => {
 
     const content = mockTplRefComp.tplRef;
     component.content = content;
-    const changes: SimpleChanges = {
-      content: new SimpleChange(undefined, content, true),
-    };
-    component.ngOnChanges(changes);
 
-    fixture.detectChanges();
+    detectChanges();
 
     expect(hostEle.textContent?.trim()).toEqual(mockTplRefComp.content);
-    expect(component.isString).toEqual(false);
   });
 
   it('the content is a templateRef type value with string list param', () => {
@@ -87,16 +77,16 @@ describe('Component: NgTransSubcontent', () => {
     const content = mockTplRefComp.tplRefWithList;
     component.content = content;
     component.list = mockList;
-    const changes: SimpleChanges = {
-      content: new SimpleChange(undefined, content, true),
-    };
-    component.ngOnChanges(changes);
 
-    fixture.detectChanges();
+    detectChanges();
 
     const listFromDom = Array.from(hostEle.querySelectorAll('p')).map(item => item.textContent?.trim());
     expect(listFromDom).toEqual(mockList);
-    expect(component.isString).toEqual(false);
   });
 
+  function detectChanges() {
+    const changeDR = fixture.componentRef.injector.get(ChangeDetectorRef);
+    changeDR.markForCheck();
+    fixture.detectChanges();
+  }
 });
