@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { switchMap, take } from 'rxjs/operators';
-import { NG_TRANS_DEFAULT_LANG } from '../constants/ng-trans-default-lang.token';
-import { NG_TRANS_LOADER } from '../constants/ng-trans-loader.token';
-import { INgTransOptions } from '../models';
-import { NgTransLangEnum } from '../models/ng-trans-lang.enum';
-import { NgTransTestingModule } from '../ng-trans-testing.module';
-import { NgTransService } from '../services/ng-trans.service';
-import { translationSyncTestData, transLoader } from '../tests';
-import { NgTransPipe } from './ng-trans.pipe';
+import { NG_TRANS_DEFAULT_LANG } from '../../constants/ng-trans-default-lang.token';
+import { NG_TRANS_LOADER } from '../../constants/ng-trans-loader.token';
+import { INgTransOptions } from '../../models';
+import { NgTransLangEnum } from '../../models/ng-trans-lang.enum';
+import { NgTransTestingModule } from '../../testing/ng-trans-testing.module';
+import { NgTransService } from '../../services/ng-trans.service';
+import { translationSyncTestData, transLoader } from '../../testing';
+import { NgTransPipe } from '../ng-trans.pipe';
 
 describe('Pipe: NgTrans', () => {
   let pipe: NgTransPipe;
