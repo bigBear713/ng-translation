@@ -17,18 +17,16 @@ import {
 
 import {
   INgTransOptions,
-  INgTransParams
+  INgTransParams,
+  NgTransSentenceItemEnum,
+  INgTransSentencePart
 } from '../../models';
-import { NgTransSentenceItemEnum } from '../../models/ng-trans-sentence-item.enum';
-import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interface';
-import { NgTransService } from '../../services/ng-trans.service';
-import { NgTransToolsService } from '../../services/ng-trans-tools.service';
+import { NgTransService, NgTransToolsService } from '../../services';
 
 @Component({
   selector: 'ng-trans',
   templateUrl: './ng-trans.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
 })
 export class NgTransComponent implements OnChanges, OnDestroy {
 

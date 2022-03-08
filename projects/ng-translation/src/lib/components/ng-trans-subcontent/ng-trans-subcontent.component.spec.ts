@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgTransTestingModule } from '../../testing/ng-trans-testing.module';
+import { NgTransTestingModule } from '../../testing';
 import { NgTransSubcontentComponent } from './ng-trans-subcontent.component';
 
 @Component({

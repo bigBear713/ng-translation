@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { NbValueTypeService } from '@bigbear713/nb-common';
 import { isString } from 'lodash-es';
-import { NgTransSentenceItemEnum } from '../../models/ng-trans-sentence-item.enum';
-import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interface';
+import { INgTransSentencePart, NgTransSentenceItemEnum } from '../../models';
 import { SentenceItemTypePipe } from '../sentence-item-type.pipe';
 
 describe('Pipe: SentenceItemTypee', () => {

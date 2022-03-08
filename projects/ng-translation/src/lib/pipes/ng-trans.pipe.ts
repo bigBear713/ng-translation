@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 
 import { INgTransOptions } from '../models';
-import { NgTransService } from '../services/ng-trans.service';
+import { NgTransService } from '../services';
 import { isEqual } from 'lodash-es';
 
 @Pipe({

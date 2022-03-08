@@ -4,7 +4,7 @@ import {
   Input,
   TemplateRef
 } from '@angular/core';
-import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interface';
+import { INgTransSentencePart } from '../../models';
 
 @Component({
   selector: '[ng-trans-subcontent]',

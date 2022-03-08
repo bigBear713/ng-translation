@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { NbValueTypeService } from '@bigbear713/nb-common';
-import { NgTransSentenceItemEnum } from '../models/ng-trans-sentence-item.enum';
-import { INgTransSentencePart } from '../models/ng-trans-sentence-part.interface';
+import { INgTransSentencePart, NgTransSentenceItemEnum } from '../models';
 
 @Pipe({
   name: 'sentenceItemType'
