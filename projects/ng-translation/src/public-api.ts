@@ -1,4 +1,4 @@
-export * from './lib/services';
+export * from './lib/services/ng-trans.service';
 export * from './lib/components';
 export * from './lib/pipes/ng-trans.pipe';
 export * from './lib/ng-trans.module';

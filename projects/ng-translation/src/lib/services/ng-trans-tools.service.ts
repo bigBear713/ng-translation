@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { INgTransParams } from '../models/ng-trans-params.interface';
-import { INgTransSentencePart } from '../models/ng-trans-sentence-part.interface';
+import { INgTransSentencePart, INgTransParams } from '../models';
 import { v4 as uuidv4 } from 'uuid';
 import { NbValueTypeService } from '@bigbear713/nb-common';
 

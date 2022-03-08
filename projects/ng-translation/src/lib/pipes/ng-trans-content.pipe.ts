@@ -3,8 +3,8 @@ import {
   PipeTransform
 } from '@angular/core';
 
-import { INgTransParams } from '../models/ng-trans-params.interface';
-import { NgTransToolsService } from '../services/ng-trans-tools.service';
+import { INgTransParams } from '../models';
+import { NgTransToolsService } from '../services';
 
 @Pipe({
   name: 'ngTransContent'

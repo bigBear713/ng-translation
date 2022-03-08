@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { NgTransTestingModule } from '../../testing/ng-trans-testing.module';
-import { NgTransToolsService } from '../../services/ng-trans-tools.service';
-import { handleSentenceWithParamsTestData } from '../../testing';
+import { NgTransToolsService } from '../../services';
+import { handleSentenceWithParamsTestData, NgTransTestingModule } from '../../testing';
 import { NgTransContentPipe } from '../ng-trans-content.pipe';
 
 describe('Pipe: NgTransContente', () => {
