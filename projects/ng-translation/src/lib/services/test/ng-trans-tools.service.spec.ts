@@ -5,11 +5,17 @@ import { handleSentenceWithParamsTestData } from '../../testing';
 import { NbCommonTestingModule } from '@bigbear713/nb-common';
 
 describe('Service: NgTransTools', () => {
+  let service: NgTransToolsService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NbCommonTestingModule],
       providers: [NgTransToolsService]
     });
+  });
+
+  beforeEach(() => {
+    service = TestBed.inject(NgTransToolsService);
   });
 
   it('should be created', inject([NgTransToolsService], (service: NgTransToolsService) => {
@@ -100,5 +106,13 @@ describe('Service: NgTransTools', () => {
         expect(handleResult).toEqual(item.expect);
       }));
     });
+  });
+
+  it('#checkWindow()', () => {
+    expect(service.checkWindow()).toEqual(true);
+  });
+
+  it('#checkNavigator()', () => {
+    expect(service.checkNavigator()).toEqual(true);
   });
 });
