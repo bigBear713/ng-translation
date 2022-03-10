@@ -3,7 +3,8 @@ import {
   NG_TRANS_LOADER,
   NgTransLangEnum,
   NgTransModule,
-  NG_TRANS_MAX_RETRY_TOKEN
+  NG_TRANS_MAX_RETRY_TOKEN,
+  WARN_DEPRECATED_TOKEN
 } from 'ng-trans';
 
 import { NgModule } from '@angular/core';
@@ -25,6 +26,10 @@ import { environment } from '../environments/environment';
     AppRoutingModule
   ],
   providers: [
+    // {
+    //   provide: WARN_DEPRECATED_TOKEN,
+    //   useValue: false
+    // },
     // {
     //   provide: NG_TRANS_MAX_RETRY_TOKEN,
     //   useValue: 0

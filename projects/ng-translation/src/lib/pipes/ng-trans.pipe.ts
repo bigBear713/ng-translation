@@ -6,7 +6,9 @@ import {
 
 import {
   ChangeDetectorRef,
+  Inject,
   OnDestroy,
+  Optional,
   Pipe,
   PipeTransform
 } from '@angular/core';
@@ -14,6 +16,7 @@ import {
 import { INgTransOptions } from '../models';
 import { NgTransService } from '../services';
 import { isEqual } from 'lodash-es';
+import { deprecatedTip, WARN_DEPRECATED_TOKEN } from '../constants';
 
 @Pipe({
   name: 'ngTrans',
@@ -30,10 +33,15 @@ export class NgTransPipe implements PipeTransform, OnDestroy {
   private options: INgTransOptions | undefined;
 
   constructor(
+    @Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean,
     private changeDR: ChangeDetectorRef,
     private transService: NgTransService,
   ) {
     this.subscribeLangChange();
+
+    if (warnDeprecated !== false) {
+      console.warn(deprecatedTip);
+    }
   }
 
   transform(key: string, options?: INgTransOptions): string {
