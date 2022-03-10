@@ -1,10 +1,11 @@
 import { NgModule } from "@angular/core";
 import { NgTransModule } from "../ng-trans.module";
-import { NgTransService } from "../services";
+import { NgTransService, NgTransToolsService } from "../services";
 
 @NgModule({
   providers: [
-    NgTransService
+    NgTransService,
+    NgTransToolsService,
   ],
   exports: [NgTransModule]
 })
