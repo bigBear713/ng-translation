@@ -1,9 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Inject,
   Input,
+  Optional,
   TemplateRef
 } from '@angular/core';
+import { deprecatedTip, WARN_DEPRECATED_TOKEN } from '../../constants';
 import { INgTransSentencePart } from '../../models';
 
 @Component({
@@ -26,6 +29,12 @@ export class NgTransSubcontentComponent {
   @Input('trans-subcontent-list')
   list: INgTransSentencePart[] = [];
 
-  constructor() { }
+  constructor(
+    @Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean,
+  ) {
+    if (warnDeprecated !== false) {
+      console.warn(deprecatedTip);
+    }
+  }
 
 }

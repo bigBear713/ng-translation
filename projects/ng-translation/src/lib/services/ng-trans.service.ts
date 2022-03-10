@@ -26,9 +26,11 @@ import {
 } from '@angular/core';
 
 import {
+  deprecatedTip,
   NG_TRANS_DEFAULT_LANG,
   NG_TRANS_LOADER,
-  NG_TRANS_MAX_RETRY_TOKEN
+  NG_TRANS_MAX_RETRY_TOKEN,
+  WARN_DEPRECATED_TOKEN
 } from '../constants';
 import {
   INgTransChangeLang,
@@ -65,8 +67,13 @@ export class NgTransService {
     @Inject(NG_TRANS_DEFAULT_LANG) @Optional() private transDefaultLang: string,
     @Inject(NG_TRANS_LOADER) @Optional() private transLoader: INgTransLoader,
     @Inject(NG_TRANS_MAX_RETRY_TOKEN) @Optional() private maxRetry: number,
+    @Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean,
     private transToolsService: NgTransToolsService,
   ) {
+    if (warnDeprecated !== false) {
+      console.warn(deprecatedTip);
+    }
+
     // if the maxRetry is undefined/null, use default settings,
     // so can set the retry valus as 0 to cancel retry action.
     this.retry = this.maxRetry == null ? this.retry : this.maxRetry;

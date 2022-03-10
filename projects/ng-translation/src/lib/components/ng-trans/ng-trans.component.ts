@@ -8,9 +8,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
+  Optional,
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
@@ -22,6 +24,7 @@ import {
   INgTransSentencePart
 } from '../../models';
 import { NgTransService, NgTransToolsService } from '../../services';
+import { deprecatedTip, WARN_DEPRECATED_TOKEN } from '../../constants';
 
 @Component({
   selector: 'ng-trans',
@@ -50,11 +53,16 @@ export class NgTransComponent implements OnChanges, OnDestroy {
   private originTrans: string = '';
 
   constructor(
+    @Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean,
     private changeDR: ChangeDetectorRef,
     private transToolsService: NgTransToolsService,
     private transService: NgTransService,
   ) {
     this.subscribeLangChange();
+
+    if (warnDeprecated !== false) {
+      console.warn(deprecatedTip);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
