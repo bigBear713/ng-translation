@@ -5,14 +5,18 @@ import {
 } from 'rxjs/operators';
 
 import {
+  ChangeDetectorRef,
+  Inject,
   OnDestroy,
+  Optional,
   Pipe,
   PipeTransform
 } from '@angular/core';
 
 import { INgTransOptions } from '../models';
-import { NgTransService } from '../services/ng-trans.service';
+import { NgTransService } from '../services';
 import { isEqual } from 'lodash-es';
+import { deprecatedTip, WARN_DEPRECATED_TOKEN } from '../constants';
 
 @Pipe({
   name: 'ngTrans',
@@ -29,9 +33,15 @@ export class NgTransPipe implements PipeTransform, OnDestroy {
   private options: INgTransOptions | undefined;
 
   constructor(
+    @Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean,
+    private changeDR: ChangeDetectorRef,
     private transService: NgTransService,
   ) {
     this.subscribeLangChange();
+
+    if (warnDeprecated !== false) {
+      console.warn(deprecatedTip);
+    }
   }
 
   transform(key: string, options?: INgTransOptions): string {
@@ -54,7 +64,12 @@ export class NgTransPipe implements PipeTransform, OnDestroy {
     this.transService.subscribeLangChange().pipe(
       switchMap(_ => this.transService.translationAsync(this.key, this.options)),
       takeUntil(this.destroy$)
-    ).subscribe(latestValue => this.latestValue = latestValue);
+    ).subscribe(latestValue => this.updateLatestValue(latestValue));
+  }
+
+  private updateLatestValue(latestValue: string): void {
+    this.latestValue = latestValue;
+    this.changeDR.markForCheck();
   }
 
 }

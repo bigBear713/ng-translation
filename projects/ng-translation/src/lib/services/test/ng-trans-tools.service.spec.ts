@@ -1,13 +1,21 @@
-import { NgTransToolsService } from './ng-trans-tools.service';
+import { NgTransToolsService } from '../ng-trans-tools.service';
 import { TestBed, inject } from '@angular/core/testing';
-import { INgTransParams } from '../models/ng-trans-params.interface';
-import { handleSentenceWithParamsTestData } from '../tests/data';
+import { INgTransParams } from '../../models';
+import { handleSentenceWithParamsTestData } from '../../testing';
+import { NbCommonTestingModule } from '@bigbear713/nb-common';
 
 describe('Service: NgTransTools', () => {
+  let service: NgTransToolsService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [NbCommonTestingModule],
       providers: [NgTransToolsService]
     });
+  });
+
+  beforeEach(() => {
+    service = TestBed.inject(NgTransToolsService);
   });
 
   it('should be created', inject([NgTransToolsService], (service: NgTransToolsService) => {
@@ -98,5 +106,13 @@ describe('Service: NgTransTools', () => {
         expect(handleResult).toEqual(item.expect);
       }));
     });
+  });
+
+  it('#checkWindow()', () => {
+    expect(service.checkWindow()).toEqual(true);
+  });
+
+  it('#checkNavigator()', () => {
+    expect(service.checkNavigator()).toEqual(true);
   });
 });

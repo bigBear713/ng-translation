@@ -1,31 +1,27 @@
-import { isString } from 'lodash-es';
-
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  Inject,
   Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
+  Optional,
   TemplateRef
 } from '@angular/core';
-import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interface';
+import { deprecatedTip, WARN_DEPRECATED_TOKEN } from '../../constants';
+import { INgTransSentencePart } from '../../models';
 
 @Component({
   selector: '[ng-trans-subcontent]',
   template: `
-    <ng-container [ngSwitch]="isString">
+    <ng-container [ngSwitch]="content | nbIsString">
       <ng-container *ngSwitchCase="true">{{content}}</ng-container>
       <ng-container *ngSwitchDefault
-                    [ngTemplateOutlet]="content | tplContent" 
+                    [ngTemplateOutlet]="content | nbTplContent" 
                     [ngTemplateOutletContext]="{ list }"></ng-container>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
 })
-export class NgTransSubcontentComponent implements OnChanges, OnInit {
+export class NgTransSubcontentComponent {
 
   @Input('ng-trans-subcontent')
   content: string | TemplateRef<any> = '';
@@ -33,23 +29,12 @@ export class NgTransSubcontentComponent implements OnChanges, OnInit {
   @Input('trans-subcontent-list')
   list: INgTransSentencePart[] = [];
 
-  isString: boolean = true;
-
   constructor(
-    private changeDR: ChangeDetectorRef,
-  ) { }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.content) {
-      this.updateIsString(this.content);
+    @Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean,
+  ) {
+    if (warnDeprecated !== false) {
+      console.warn(deprecatedTip);
     }
-  }
-
-  ngOnInit() { }
-
-  private updateIsString(content: string | TemplateRef<any> = ''): void {
-    this.isString = isString(content);
-    this.changeDR.markForCheck();
   }
 
 }

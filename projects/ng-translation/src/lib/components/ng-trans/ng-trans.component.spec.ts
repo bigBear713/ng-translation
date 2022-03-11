@@ -3,10 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { take } from 'rxjs/operators';
 import { NG_TRANS_LOADER } from '../../constants';
 import { NgTransLangEnum } from '../../models';
-import { NgTransTestingModule } from '../../ng-trans-testing.module';
-import { NgTransService } from '../../services';
-import { NgTransToolsService } from '../../services/ng-trans-tools.service';
-import { transLoader } from '../../tests';
+import { NgTransService, NgTransToolsService } from '../../services';
+import { transLoader, NgTransTestingModule } from '../../testing';
 import { NgTransComponent } from './ng-trans.component';
 
 @Component({

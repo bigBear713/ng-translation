@@ -1,10 +1,9 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { filter, switchMap, take } from 'rxjs/operators';
-import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER, NG_TRANS_MAX_RETRY_TOKEN } from '../constants';
-import { NgTransLangEnum } from '../models';
-import { NgTransTestingModule } from '../ng-trans-testing.module';
-import { translationSyncTestData, transLoader } from '../tests';
-import { NgTransService } from './ng-trans.service';
+import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER, NG_TRANS_MAX_RETRY_TOKEN } from '../../constants';
+import { NgTransLangEnum } from '../../models';
+import { translationSyncTestData, transLoader, NgTransTestingModule } from '../../testing';
+import { NgTransService } from '../ng-trans.service';
 
 describe('Service: NgTrans', () => {
 

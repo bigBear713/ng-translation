@@ -21,13 +21,15 @@
 <!-- because the content may be rendered directly, or input as a component prop, so here should be as a templateRef. -->
 <!-- render the templateRef component of components with content, and the content type in context is string -->
 <ng-template #compTpl let-data="content">
-  <ng-container *ngTemplateOutlet="components[data.index];context:{content:data.content|ngTransContent:params}">
+  <ng-container
+    *ngTemplateOutlet="components[data.index]|nbTplContent;context:{content:data.content|ngTransContent:params}">
   </ng-container>
 </ng-template>
 
 <!-- there are multiple components, so should render the templateRef component firstly,  -->
 <!-- then making the sentenceListTpl as content prop, so user can render it more flexible -->
 <ng-template #multiCompTpl let-data="content">
-  <ng-container *ngTemplateOutlet="components[data.index];context:{content:sentenceListTpl,list:data.list}">
+  <ng-container
+    *ngTemplateOutlet="components[data.index]|nbTplContent;context:{content:sentenceListTpl,list:data.list}">
   </ng-container>
 </ng-template>

@@ -1,4 +1,4 @@
-import { NgTransLangEnum } from '../models/ng-trans-lang.enum';
+import { NgTransLangEnum } from '../models';
 
 export const transLoader = {
   dynamicLoader: {

@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
-import { isString } from 'lodash-es';
-import { INgTransParams } from '../models/ng-trans-params.interface';
-import { INgTransSentencePart } from '../models/ng-trans-sentence-part.interface';
+import { INgTransSentencePart, INgTransParams } from '../models';
 import { v4 as uuidv4 } from 'uuid';
+import { NbValueTypeService } from '@bigbear713/nb-common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NgTransToolsService {
 
-  constructor() { }
+  constructor(private valueType: NbValueTypeService) { }
+
+  checkNavigator(): boolean {
+    return this.checkWindow() && typeof window.navigator !== 'undefined'
+  }
+
+  checkWindow(): boolean {
+    return typeof window !== 'undefined';
+  }
 
   getFinalKey(key: string, prefix?: string): string {
     return prefix ? `${prefix}.${key}` : key;
@@ -63,7 +70,7 @@ export class NgTransToolsService {
       }
 
       const handleResult = this.handleCompStr(trans);
-      if (isString(handleResult)) {
+      if (this.valueType.isString(handleResult)) {
         sentenceList.push(handleResult);
         trans = '';
       } else {

@@ -8,30 +8,30 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
+  Optional,
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
 
 import {
   INgTransOptions,
-  INgTransParams
+  INgTransParams,
+  NgTransSentenceItemEnum,
+  INgTransSentencePart
 } from '../../models';
-import { NgTransSentenceItemEnum } from '../../models/ng-trans-sentence-item.enum';
-import { INgTransSentencePart } from '../../models/ng-trans-sentence-part.interface';
-import { NgTransService } from '../../services/ng-trans.service';
-import { NgTransToolsService } from '../../services/ng-trans-tools.service';
+import { NgTransService, NgTransToolsService } from '../../services';
+import { deprecatedTip, WARN_DEPRECATED_TOKEN } from '../../constants';
 
 @Component({
   selector: 'ng-trans',
   templateUrl: './ng-trans.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
 })
-export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
+export class NgTransComponent implements OnChanges, OnDestroy {
 
   @Input()
   components: TemplateRef<{ content: string | TemplateRef<any>; list?: INgTransSentencePart[] }>[] = [];
@@ -53,11 +53,16 @@ export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
   private originTrans: string = '';
 
   constructor(
+    @Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean,
     private changeDR: ChangeDetectorRef,
     private transToolsService: NgTransToolsService,
     private transService: NgTransService,
   ) {
     this.subscribeLangChange();
+
+    if (warnDeprecated !== false) {
+      console.warn(deprecatedTip);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -67,8 +72,6 @@ export class NgTransComponent implements OnChanges, OnInit, OnDestroy {
       this.reRender();
     }
   }
-
-  ngOnInit(): void { }
 
   ngOnDestroy(): void {
     this.destroy$.next();

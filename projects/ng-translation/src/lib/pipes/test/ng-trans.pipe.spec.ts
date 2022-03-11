@@ -1,13 +1,12 @@
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { filter, switchMap, take } from 'rxjs/operators';
-import { NG_TRANS_DEFAULT_LANG } from '../constants/ng-trans-default-lang.token';
-import { NG_TRANS_LOADER } from '../constants/ng-trans-loader.token';
-import { INgTransOptions } from '../models';
-import { NgTransLangEnum } from '../models/ng-trans-lang.enum';
-import { NgTransTestingModule } from '../ng-trans-testing.module';
-import { NgTransService } from '../services/ng-trans.service';
-import { translationSyncTestData, transLoader } from '../tests';
-import { NgTransPipe } from './ng-trans.pipe';
+import { switchMap, take } from 'rxjs/operators';
+import { NG_TRANS_LOADER, NG_TRANS_DEFAULT_LANG } from '../../constants';
+import { INgTransOptions, NgTransLangEnum } from '../../models';
+import { NgTransService } from '../../services';
+import { translationSyncTestData, transLoader, NgTransTestingModule } from '../../testing';
+import { NgTransPipe } from '../ng-trans.pipe';
 
 describe('Pipe: NgTrans', () => {
   let pipe: NgTransPipe;
@@ -15,9 +14,10 @@ describe('Pipe: NgTrans', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgTransTestingModule],
+      imports: [CommonModule, NgTransTestingModule],
       declarations: [],
       providers: [
+        { provide: ChangeDetectorRef, useValue: jasmine.createSpyObj(ChangeDetectorRef, ['markForCheck']) },
         { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.ZH_CN, },
         { provide: NG_TRANS_LOADER, useValue: transLoader.dynamicLoader },
       ]
@@ -27,7 +27,8 @@ describe('Pipe: NgTrans', () => {
 
   beforeEach(() => {
     transService = TestBed.inject(NgTransService);
-    pipe = new NgTransPipe(transService);
+    const changeDR = TestBed.inject(ChangeDetectorRef);
+    pipe = new NgTransPipe(changeDR, transService);
   });
 
   beforeEach(async () => {

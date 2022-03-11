@@ -1,12 +1,16 @@
 {
   "name": "@bigbear713/ng-trans",
-  "version": "12.1.0",
+  "version": "12.1.1",
   "homepage": "https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.md",
-  "description": "An angular(2+) component about i18n.",
+  "description": "Angular translation lib by bigBear713.",
   "keywords": [
+    "ng",
+    "angular",
     "angular2+",
     "i18n",
     "translation",
+    "nb-trans",
+    "ng-trans",
     "bigBear713"
   ],
   "license": "MIT",
@@ -22,6 +26,7 @@
     "@angular/core": "^12.2.0"
   },
   "dependencies": {
+    "@bigbear713/nb-common": "^12.1.0",
     "lodash-es": "^4.17.21",
     "tslib": "^2.3.0",
     "uuid": "^8.3.2"
