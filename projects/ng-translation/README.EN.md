@@ -25,7 +25,7 @@ Angular i18n translation component.
 - Support the changeDetection of components as `ChangeDetectionStrategy.OnPush`;
 
 ### Version
-###### The ng-trans's main version will keep up with the Angular's main version
+###### The ng-trans's major version will keep up with the Angular's major version
 - "@bigbear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
 
 ### Installation
@@ -47,21 +47,21 @@ $ yarn add @bigbear713/ng-trans
 
 #### NgTransService
 ##### `v12.0.0`
-###### It is a `service` to provide the translate function.
+###### It is a `service` to provide the translate feature.
 ##### Properties
 | Properties  | Type  | Description  | Version |
 | ------------ | ------------ | ------------ | ------------ |
 | lang  | `string`  | Current language value  | `v12.0.0` |
-| loadDefaultOver  | `boolean`  | Whether the translated file in the default language is loaded  | `v12.0.0` |
+| loadDefaultOver  | `boolean`  | Whether the translated file of the default language is loaded  | `v12.0.0` |
 
 ##### Methods
 | Name  | Return  | Description  | Scenes  | Version |
 | ------------ | ------------ | ------------ | ------------ | ------------ |
 | changeLang(lang: string)  | `Observable<INgTransChangeLang>`  | Switch language. The lang param should be same as the key of `NG_TRANS_LOADER`. It is an Observable event. The result will not be returned until the translated text of the switched language has been loaded. It does not need to unsubscribe, because it will auto be completed when switching the language, whether it is success or failure to switch. The details return result follow the definition of `INgTransChangeLang` below.  | When  you need to swithc language  | `v12.0.0` |
-| changeLangSync(lang: string)  | `void`  | Switch language. The lang param should be same as the key of `NG_TRANS_LOADER`. It is a sync event, but it is not guaranteed to succeed and when to success.  | When you just want to do the switch behavior, Don't care about the result of it.  | `v12.0.0` |
+| changeLangSync(lang: string)  | `void`  | Switch language. The lang param should be same as the key of `NG_TRANS_LOADER`. It is a sync event, but it is not guaranteed to succeed and when to success.  | When you just want to do the switch behavior, don't care about the result of it.  | `v12.0.0` |
 | getBrowserLang()  | `string ｜ undefined`  | Get the first language of browser | When you only want to know what is the language of browser page  | `v12.1.0` |
 | getBrowserLangs()  | `readonly string[]｜ undefined`  | Get a language array known to the user, by order of preference | If you need to known the languages known to the user | `v12.1.0` |
-| translationAsync(key: string, options?: INgTransOptions)  | `Observable<string>`  | Get translated text asynchronously based on key and options. The options params is optional, the detail configs follow the definition of `INgTransOptions` below. And the return value is Observable. When it has not been unsubscribed, switching the language, the translated text will be subscribed so that getting the newest text. Don't forget to unsubscribe it | You can use the observable value in template. And it is recormmend to use it with `async`pipe.  | `v12.0.0` |
+| translationAsync(key: string, options?: INgTransOptions)  | `Observable<string>`  | Get translated text asynchronously based on key and options. The options params is optional, the detail configs follow the definition of `INgTransOptions` below. And the return value is Observable. When it has not been unsubscribed, switching the language, the translated text will be subscribed so that getting the newest text. Don't forget to unsubscribe it | You can use the observable value in template. And it is recormmend to use it with `async` pipe.  | `v12.0.0` |
 | translationSync(key: string, options?: INgTransOptions)  | `string`  | Synchronously get translated text according to key and options. The options params is optional, the detail configs follow the definition of `INgTransOptions` below. Because it is sync function, the translated text will be return immediately. When switching the language, you should recall the function to get the new lang's translated text | The text for temporary use, like when creating a modal via service, and setting the title of the modal. | `v12.0.0` |
 | subscribeLangChange()  | `Observable<string>`  | An subscribe event of switching language. It will return an Observable value, so you can know the newest lang immediately if it does not be unsubscribed when the language has been switched. | When you should do something when the lang has been switched. | `v12.0.0` |
 | subscribeLoadDefaultOver()  | `Observable<boolean>`  | Whethe the translated file of default lang has been load over. If success to load the file, you will subscribe true value, otherwise it is false. It will auto be completed after loading over (success or not), so you do not need to unsubscribe it | When preparing the date of whole project, you can use it. It better to display the tranlated content when user view the page. | `v12.0.0` |
@@ -77,6 +77,10 @@ this.transService.changeLang(lang).subscribe(result=>{
 
 // switch language, sync event, not guaranteed to succeed
 this.transService.changeLangSync(lang);
+
+this.transService.getBrowserLang(); // 'en'
+
+this.transService.getBrowserLangs(); // ['en']
 
 // async to translate text. can subscribe the translated text, also can use it with async pipe in template
 const trans$ = this.transService.translationAsync('title');
@@ -142,9 +146,16 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
 ##### Usage
 ```html
 <!-- used with <ng-trans></ng-trans> component -->
-<ng-trans [key]="complexContent" [components]="[com1]"></ng-trans>
-<ng-template #comp1 let-compContent="content" let-compList="list">
-  <div [ng-trans-subcontent]="compContent" [trans-subcontent-list]="compList"></div>
+<!-- demo: This is a sentence: <0>component1</0>.<1> <0>component1 of component2</0> other part of component2 </1>.<2>component3</2> -->
+<ng-trans [key]="complexContent" [components]="[comp1,comp2,comp3]"></ng-trans>
+<ng-template #comp1 let-comContent="content" let-list="list">
+  <b [nb-trans-subcontent]="comContent" [trans-subcontent-list]="list"></b>
+</ng-template>
+<ng-template #comp2 let-comContent="content" let-list="list">
+  <app-widget [comContent]="comContent" [list]="list"></app-widget>
+</ng-template>
+<ng-template #comp3 let-comContent="content">
+  <b>{{comContent}}</b>
 </ng-template>
 ```
 
@@ -256,12 +267,12 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
 ##### Usage
 ```ts
   providers: [
-	// ...
+    // ...
     {
       provide: NG_TRANS_MAX_RETRY_TOKEN,
       useValue: 3
     },
-	// ...
+    // ...
   ]
 ```
 #### WARN_DEPRECATED_TOKEN

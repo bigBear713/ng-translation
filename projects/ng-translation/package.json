@@ -2,11 +2,15 @@
   "name": "@bigbear713/ng-trans",
   "version": "12.1.1",
   "homepage": "https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.md",
-  "description": "An angular(2+) component about i18n.",
+  "description": "Angular translation lib by bigBear713.",
   "keywords": [
+    "ng",
+    "angular",
     "angular2+",
     "i18n",
     "translation",
+    "nb-trans",
+    "ng-trans",
     "bigBear713"
   ],
   "license": "MIT",
