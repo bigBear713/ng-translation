@@ -28,7 +28,7 @@ describe('Pipe: NgTrans', () => {
   beforeEach(() => {
     transService = TestBed.inject(NgTransService);
     const changeDR = TestBed.inject(ChangeDetectorRef);
-    pipe = new NgTransPipe(changeDR, transService);
+    pipe = new NgTransPipe(false, changeDR, transService);
   });
 
   beforeEach(async () => {
