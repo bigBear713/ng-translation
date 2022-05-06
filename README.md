@@ -12,6 +12,9 @@ Angular i18n translation component.
 
 </div>
 
+## Recommend
+- 该组件已经进入废弃阶段，计划在维护两个版本后将停止维护。推荐您使用`@bigbear713/nb-trans`或者其他多语言组件库
+
 ## Document
 - [中文](https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.md "中文文档")
 - [English](https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.EN.md "English Document")
