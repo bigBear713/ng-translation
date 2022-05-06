@@ -12,6 +12,9 @@ Angular i18n translation component.
 
 </div>
 
+## Recommend
+- The component is going to be deprecated, will not be maintained after 2 version in schedule. We recommend you to use the `@bigbear713/nb-trans` or other components.
+
 ## Document
 - [中文](https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.md "中文文档")
 - [English](https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.EN.md "English Document")
@@ -27,6 +30,7 @@ Angular i18n translation component.
 ### Version
 ###### The ng-trans's major version will keep up with the Angular's major version
 - "@bigbear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
+- "@bigbear713/ng-trans":"^13.0.0" - "@angular/core": "^13.0.0"
 
 ### Installation
 ```bash
