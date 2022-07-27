@@ -31,6 +31,7 @@ Angular i18n translation component.
 ###### ng-trans的大版本和Angular的大版本保持对应关系
 - "@bigbear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
 - "@bigbear713/ng-trans":"^13.0.0" - "@angular/core": "^13.0.0"
+- "@bigbear713/ng-trans":"^14.0.0" - "@angular/core": "^14.0.0"
 
 ### Installation
 ```bash
