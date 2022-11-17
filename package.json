@@ -1,6 +1,6 @@
 {
   "name": "ng-translation-demo",
-  "version": "14.0.0",
+  "version": "15.0.0",
   "homepage": "https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.md",
   "scripts": {
     "ng": "ng",

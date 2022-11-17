@@ -32,6 +32,7 @@ Angular i18n translation component.
 - "@bigbear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
 - "@bigbear713/ng-trans":"^13.0.0" - "@angular/core": "^13.0.0"
 - "@bigbear713/ng-trans":"^14.0.0" - "@angular/core": "^14.0.0"
+- "@bigbear713/nb-trans":"^15.0.0" - "@angular/core": "^15.0.0"
 
 ### Installation
 ```bash
