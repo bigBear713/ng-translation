@@ -1,4 +1,4 @@
-export enum NgTransLangEnum {
+export enum NgTransLang {
   // 简体中文
   ZH_CN = 'zh-CN',
   // 繁体中文	
@@ -105,3 +105,7 @@ export enum NgTransLangEnum {
   // 越南语	
   VI_VN = 'vi-VN',
 }
+/**
+ * @deprecated use "NgTransLang" please
+ */
+export const NgTransLangEnum = NgTransLang;

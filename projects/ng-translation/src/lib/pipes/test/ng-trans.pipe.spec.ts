@@ -3,7 +3,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { switchMap, take } from 'rxjs/operators';
 import { NG_TRANS_LOADER, NG_TRANS_DEFAULT_LANG } from '../../constants';
-import { INgTransOptions, NgTransLangEnum } from '../../models';
+import { INgTransOptions, NgTransLang } from '../../models';
 import { NgTransService } from '../../services';
 import { translationSyncTestData, transLoader, NgTransTestingModule } from '../../testing';
 import { NgTransPipe } from '../ng-trans.pipe';
@@ -18,7 +18,7 @@ describe('Pipe: NgTrans', () => {
       declarations: [],
       providers: [
         { provide: ChangeDetectorRef, useValue: jasmine.createSpyObj(ChangeDetectorRef, ['markForCheck']) },
-        { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.ZH_CN, },
+        { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLang.ZH_CN, },
         { provide: NG_TRANS_LOADER, useValue: transLoader.dynamicLoader },
       ]
     })
@@ -61,7 +61,7 @@ describe('Pipe: NgTrans', () => {
         };
         verifyResult(item.expect.resultZHCN);
 
-        transService.changeLang(NgTransLangEnum.EN).pipe(take(1)).subscribe(() => {
+        transService.changeLang(NgTransLang.EN).pipe(take(1)).subscribe(() => {
           verifyResult(item.expect.resultEN);
           done();
         });
@@ -71,11 +71,11 @@ describe('Pipe: NgTrans', () => {
   });
 
   it('#ngOnDestroy()', (done) => {
-    transService.changeLang(NgTransLangEnum.EN).pipe(
+    transService.changeLang(NgTransLang.EN).pipe(
       switchMap(() => {
         pipe.ngOnDestroy();
         spyOn(transService, 'translationAsync').and.callThrough();
-        return transService.changeLang(NgTransLangEnum.ZH_CN)
+        return transService.changeLang(NgTransLang.ZH_CN)
       }),
       take(1),
     ).subscribe(() => {

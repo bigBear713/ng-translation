@@ -29,20 +29,20 @@ import {
   deprecatedTip,
   NG_TRANS_DEFAULT_LANG,
   NG_TRANS_LOADER,
-  NG_TRANS_MAX_RETRY_TOKEN,
-  WARN_DEPRECATED_TOKEN
+  NG_TRANS_MAX_RETRY,
+  WARN_DEPRECATED
 } from '../constants';
 import {
   INgTransChangeLang,
   INgTransLoader,
   INgTransOptions,
-  NgTransLangEnum
+  NgTransLang
 } from '../models';
 import { NgTransToolsService } from './ng-trans-tools.service';
 
 @Injectable({ providedIn: 'root' })
 export class NgTransService {
-  private lang$ = new BehaviorSubject<string>(NgTransLangEnum.ZH_CN);
+  private lang$ = new BehaviorSubject<string>(NgTransLang.ZH_CN);
 
   private loadDefaultOver$ = new BehaviorSubject<boolean>(false);
 
@@ -63,8 +63,8 @@ export class NgTransService {
   constructor(
     @Inject(NG_TRANS_DEFAULT_LANG) @Optional() private transDefaultLang: string,
     @Inject(NG_TRANS_LOADER) @Optional() private transLoader: INgTransLoader,
-    @Inject(NG_TRANS_MAX_RETRY_TOKEN) @Optional() private maxRetry: number,
-    @Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean,
+    @Inject(NG_TRANS_MAX_RETRY) @Optional() private maxRetry: number,
+    @Inject(WARN_DEPRECATED) @Optional() warnDeprecated: boolean,
     private transToolsService: NgTransToolsService,
   ) {
     if (warnDeprecated !== false) {
@@ -77,7 +77,7 @@ export class NgTransService {
 
     this.transLoader = this.transLoader || {};
 
-    this.lang$.next(transDefaultLang || NgTransLangEnum.ZH_CN);
+    this.lang$.next(transDefaultLang || NgTransLang.ZH_CN);
     this.loadDefaultTrans();
   }
 

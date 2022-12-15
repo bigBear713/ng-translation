@@ -2,7 +2,7 @@ import { Component, SimpleChange, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { take } from 'rxjs/operators';
 import { NG_TRANS_LOADER } from '../../constants';
-import { NgTransLangEnum } from '../../models';
+import { NgTransLang } from '../../models';
 import { NgTransService, NgTransToolsService } from '../../services';
 import { transLoader, NgTransTestingModule } from '../../testing';
 import { NgTransComponent } from './ng-trans.component';
@@ -80,7 +80,7 @@ describe('Component: NgTrans', () => {
     component.key = 'title';
     component.options = {};
 
-    transService.changeLang(NgTransLangEnum.EN).pipe(take(1)).subscribe(() => {
+    transService.changeLang(NgTransLang.EN).pipe(take(1)).subscribe(() => {
       expect(transToolsService.handleTrans).toHaveBeenCalledTimes(1);
       done();
     });

@@ -6,7 +6,7 @@ import {
   Optional,
   TemplateRef
 } from '@angular/core';
-import { deprecatedTip, WARN_DEPRECATED_TOKEN } from '../../constants';
+import { deprecatedTip, WARN_DEPRECATED } from '../../constants';
 import { INgTransSentencePart } from '../../models';
 
 @Component({
@@ -30,7 +30,7 @@ export class NgTransSubcontentComponent {
   list: INgTransSentencePart[] = [];
 
   constructor(
-    @Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean,
+    @Inject(WARN_DEPRECATED) @Optional() warnDeprecated: boolean,
   ) {
     if (warnDeprecated !== false) {
       console.warn(deprecatedTip);

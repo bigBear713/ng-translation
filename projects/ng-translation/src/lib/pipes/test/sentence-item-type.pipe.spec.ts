@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { NbValueTypeService } from '@bigbear713/nb-common';
 import { isString } from 'lodash-es';
-import { INgTransSentencePart, NgTransSentenceItemEnum } from '../../models';
+import { INgTransSentencePart, NgTransSentenceItem } from '../../models';
 import { SentenceItemTypePipe } from '../sentence-item-type.pipe';
 
 describe('Pipe: SentenceItemTypee', () => {
@@ -18,9 +18,9 @@ describe('Pipe: SentenceItemTypee', () => {
 
   describe('#transform()', () => {
     [
-      { params: 'strContent', expect: NgTransSentenceItemEnum.STR },
-      { params: { index: 0, content: 'strContent', list: [] }, expect: NgTransSentenceItemEnum.COMP },
-      { params: { index: 0, content: '<0>str</0>', list: [{ index: 0, content: 'str', list: [] }] }, expect: NgTransSentenceItemEnum.MULTI_COMP },
+      { params: 'strContent', expect: NgTransSentenceItem.STR },
+      { params: { index: 0, content: 'strContent', list: [] }, expect: NgTransSentenceItem.COMP },
+      { params: { index: 0, content: '<0>str</0>', list: [{ index: 0, content: 'str', list: [] }] }, expect: NgTransSentenceItem.MULTI_COMP },
       { params: { index: undefined, content: 'strContent', list: [] } as unknown as INgTransSentencePart, expect: undefined },
       { params: { index: undefined, content: 'strContent', list: undefined } as unknown as INgTransSentencePart, expect: undefined },
     ].forEach(item => {
