@@ -26,6 +26,7 @@ Angular i18n translation component.
 - Support there are some params in translated sentence;
 - Support there are some components in the translated sentence;
 - Support the changeDetection of components as `ChangeDetectionStrategy.OnPush`;
+- Support to used in `standalone component`;
 
 ### Version
 ###### The ng-trans's major version will keep up with the Angular's major version
