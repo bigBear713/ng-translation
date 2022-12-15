@@ -40,11 +40,8 @@ import {
 } from '../models';
 import { NgTransToolsService } from './ng-trans-tools.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class NgTransService {
-
   private lang$ = new BehaviorSubject<string>(NgTransLangEnum.ZH_CN);
 
   private loadDefaultOver$ = new BehaviorSubject<boolean>(false);
@@ -184,21 +181,20 @@ export class NgTransService {
   }
 
   private loadDefaultTrans(): void {
-    this.loadTrans(this.lang).subscribe(trans => {
-      const result = !!trans;
+    this.loadTrans(this.lang).pipe(
+      map(trans => !!trans),
+    ).subscribe(result => {
       this.loadDefaultOver$.next(result);
       this.loadDefaultOver$.complete();
+      
       this.loadLangTrans$.next(result);
     });
   }
 
   private loadLangTrans(lang: string): Observable<boolean> {
     return this.loadTrans(lang).pipe(
-      map(trans => {
-        const result = !!trans;
-        this.loadLangTrans$.next(result);
-        return result;
-      })
+      map(trans => !!trans),
+      tap(result => this.loadLangTrans$.next(result))
     );
   }
 
@@ -211,7 +207,7 @@ export class NgTransService {
     const loaderFn: Observable<Object> = isFunction(loader)
       // switch map as load lang observable, 
       // so it will retry when failure to load the lang content
-      ? of(null).pipe(switchMap(() => from(loader())))
+      ? of(null).pipe(switchMap(() => (from(loader()) as Observable<Object>)))
       : of(loader);
     return loaderFn.pipe(
       tap(trans => this.translations[lang] = trans),

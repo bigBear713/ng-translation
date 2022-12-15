@@ -3,11 +3,10 @@ import { INgTransSentencePart, INgTransParams } from '../models';
 import { v4 as uuidv4 } from 'uuid';
 import { NbValueTypeService } from '@bigbear713/nb-common';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class NgTransToolsService {
+type StrKeyObject = { [key: string]: string };
 
+@Injectable({ providedIn: 'root' })
+export class NgTransToolsService {
   constructor(private valueType: NbValueTypeService) { }
 
   checkNavigator(): boolean {
@@ -31,33 +30,17 @@ export class NgTransToolsService {
       return trans;
     }
 
-    const keys = Object.keys(params);
-    if (!keys.length) {
+    const paramsKeys = Object.keys(params);
+    if (!paramsKeys.length) {
       return trans;
     }
 
-    const keysUUID = keys.reduce(
-      (pre: { [key: string]: string }, key) => {
-        pre[key] = uuidv4();
-        return pre;
-      },
-      {}
-    );
-
-    let transTemp = trans;
+    const paramsKeysUUID = this.getParamsKeyUuid(paramsKeys);
     // first, replace the param keys as uuid keys
-    keys.forEach(key => {
-      transTemp = this.handleSentence(transTemp, `{{${key}}}`, keysUUID[key]);
-    });
-
-    trans = transTemp;
     // then, replace the uuid keys as params value,
     // so the value will not be wrong when the params value is same with other param value
-    keys.forEach(key => {
-      trans = this.handleSentence(trans, keysUUID[key], params[key]);
-    });
-
-    return trans;
+    const transWithUUIDKey = this.replaceParamsKeysAsUuidKey(trans, { keys: paramsKeys, keysUUID: paramsKeysUUID });
+    return this.replaceUuidKeyAsParamsValue(transWithUUIDKey, { params, keys: paramsKeys, keysUUID: paramsKeysUUID });
   }
 
   handleTrans(trans: string): INgTransSentencePart[] {
@@ -83,6 +66,16 @@ export class NgTransToolsService {
       }
     }
     return sentenceList;
+  }
+
+  private getParamsKeyUuid(paramsKey: string[]): StrKeyObject {
+    return paramsKey.reduce(
+      (pre: StrKeyObject, key) => {
+        pre[key] = uuidv4();
+        return pre;
+      },
+      {}
+    );
   }
 
   private handleCompStr(content: string) {
@@ -112,4 +105,27 @@ export class NgTransToolsService {
       otherContent,
     };
   }
+
+  private replaceParamsKeysAsUuidKey(
+    trans: string,
+    paramsArg: { keys: string[], keysUUID: StrKeyObject }
+  ): string {
+    const { keys, keysUUID } = paramsArg;
+    keys.forEach(key => {
+      trans = this.handleSentence(trans, `{{${key}}}`, keysUUID[key]);
+    });
+    return trans;
+  }
+
+  private replaceUuidKeyAsParamsValue(
+    trans: string,
+    paramsArg: { params: INgTransParams, keys: string[], keysUUID: StrKeyObject }
+  ): string {
+    const { params, keys, keysUUID } = paramsArg;
+    keys.forEach(key => {
+      trans = this.handleSentence(trans, keysUUID[key], params[key]);
+    });
+    return trans;
+  }
+
 }
