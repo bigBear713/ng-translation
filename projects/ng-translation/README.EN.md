@@ -197,7 +197,7 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
 
 #### NG_TRANS_DEFAULT_LANG：
 ##### `v12.0.0`
-###### The default lang. When initial the instance of `NgTransService`, it will auto to load the default lang's translated content. The value is `NgTransLangEnum.ZH_CN` when you do not set it in AppModule. It will be set in AppModule in common
+###### The default lang. When initial the instance of `NgTransService`, it will auto to load the default lang's translated content. The value is `NgTransLang.ZH_CN` when you do not set it in AppModule. It will be set in AppModule in common
 
 ##### Usage
 ```ts
@@ -205,7 +205,7 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
     // ...
     {
       provide: NG_TRANS_DEFAULT_LANG,
-      useValue: NgTransLangEnum.ZH_CN,
+      useValue: NgTransLang.ZH_CN,
     },
     // ...
   ]
@@ -225,8 +225,8 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
     {
       provide: NG_TRANS_LOADER,
       useValue: {
-        [NgTransLangEnum.ZH_CN]: zhCNTrans,
-        [NgTransLangEnum.EN]: enTrans,
+        [NgTransLang.ZH_CN]: zhCNTrans,
+        [NgTransLang.EN]: enTrans,
       }
     }
     // ...
@@ -242,10 +242,10 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
       useFactory: (http: HttpClient) => ({
         // dyn load and the content is a json file
         // the loader fn return value can be Observable<Object>/Promise<Object> type
-        // [NgTransLangEnum.EN]: () => http.get('./assets/localization/en/translations.json').toPromise(),
-        [NgTransLangEnum.EN]: () => http.get('./assets/localization/en/translations.json'),
-        // [NgTransLangEnum.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json').toPromise(),
-        [NgTransLangEnum.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json'),
+        // [NgTransLang.EN]: () => http.get('./assets/localization/en/translations.json').toPromise(),
+        [NgTransLang.EN]: () => http.get('./assets/localization/en/translations.json'),
+        // [NgTransLang.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json').toPromise(),
+        [NgTransLang.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json'),
       }),
       deps: [HttpClient]
     }
@@ -259,8 +259,8 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
     {
       provide: NG_TRANS_LOADER,
       useValue: {
-        [NgTransLangEnum.EN]: () => import('./localization/en/translations').then(data => data.trans),
-        [NgTransLangEnum.ZH_CN]: () => import('./localization/zh-CN/translations').then(data => data.trans),
+        [NgTransLang.EN]: () => import('./localization/en/translations').then(data => data.trans),
+        [NgTransLang.ZH_CN]: () => import('./localization/zh-CN/translations').then(data => data.trans),
       }
     }
     // ...
@@ -269,6 +269,9 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
 
 #### NG_TRANS_MAX_RETRY_TOKEN：
 ##### `v12.0.0`
+##### `@deprecated` from `v15.0.0`
+#### NG_TRANS_MAX_RETRY:
+##### `v15.0.0`
 ###### The max retry time when failure to load translated file. The default is 5. It will be set in AppModule in common.
 
 ##### Usage
@@ -276,7 +279,7 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
   providers: [
     // ...
     {
-      provide: NG_TRANS_MAX_RETRY_TOKEN,
+      provide: NG_TRANS_MAX_RETRY,
       useValue: 3
     },
     // ...
@@ -284,6 +287,9 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
 ```
 #### WARN_DEPRECATED_TOKEN
 ##### `v12.1.1`
+##### `@deprecated` from `v15.0.0`
+#### WARN_DEPRECATED:
+##### `v15.0.0`
 ###### The lib is going to be deprecated, so there will display the warning message in console when you using it. And if you do not want to see the warning message in console, you can set the token as false in AppModule.
 
 ##### Usage
@@ -291,7 +297,7 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
   providers: [
 	// ...
     {
-      provide: WARN_DEPRECATED_TOKEN,
+      provide: WARN_DEPRECATED,
       useValue: false
     },
 	// ...
@@ -348,10 +354,16 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
 ### Enum
 #### NgTransLangEnum：
 ##### `v12.0.0`
+##### `@deprecated` from `v15.0.0`
+#### NgTransLang:
+##### `v15.0.0`
 ###### The enum of common language. You can not use it if you don't like, because only use it to set the default lang in lib (you can overwrite it), it is not used anywhere.
 
 #### NgTransSentenceItemEnum：
 ##### `v12.0.0`
+##### `@deprecated` from `v15.0.0`
+#### NgTransSentenceItem:
+##### `v15.0.0`
 ###### The enum of sentence item. When parsing the translated sentence, it will be as the type:`STR`, `COMP` or `MULTI_COMP`.
 
 
