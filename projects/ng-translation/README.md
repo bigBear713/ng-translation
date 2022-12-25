@@ -267,11 +267,10 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
   ]
 ```
 
-#### NG_TRANS_MAX_RETRY_TOKEN:
-##### `v12.0.0`
-##### `@deprecated` from `v15.0.0`
 #### NG_TRANS_MAX_RETRY:
 ##### `v15.0.0`
+#### NG_TRANS_MAX_RETRY_TOKEN:
+##### `v12.0.0`, `@deprecated` from `v15.0.0`
 ###### 翻译文本加载失败时的最大重试次数，默认为5次。一般只在AppModule设置一次
 
 ##### Usage
@@ -286,11 +285,10 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
   ]
 ```
 
-#### WARN_DEPRECATED_TOKEN
-##### `v12.1.1`
-##### `@deprecated` from `v15.0.0`
 #### WARN_DEPRECATED:
 ##### `v15.0.0`
+#### WARN_DEPRECATED_TOKEN
+##### `v12.1.1`, `@deprecated` from `v15.0.0`
 ###### 本组件库将被弃用，使用时默认会在console输出警告信息。如果你不想在console看到这些警告信息，可在AppModule中设置该token为false。
 
 ##### Usage
@@ -352,18 +350,16 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
 | list  | `INgTransSentencePart[]`  | false  | 文本句子的解析部分 | `v12.0.0` |
 
 ### Enum
-#### NgTransLangEnum：
-##### `v12.0.0`
-##### `@deprecated` from `v15.0.0`
 #### NgTransLang:
 ##### `v15.0.0`
+#### NgTransLangEnum：
+##### `v12.0.0`， `@deprecated` from `v15.0.0`
 ###### 常用语言枚举。除了默认语言未设置时的默认值外，组件以及服务中均未直接使用该枚举中的值，所以不强制要求使用该枚举。
 
-#### NgTransSentenceItemEnum：
-##### `v12.0.0`
-##### `@deprecated` from `v15.0.0`
 #### NgTransSentenceItem:
 ##### `v15.0.0`
+#### NgTransSentenceItemEnum：
+##### `v12.0.0`, `@deprecated` from `v15.0.0`
 ###### 句子项类型枚举。在对句子内容进行解析时，会将句子分为`STR`,`COMP`和`MULTI_COMP`这3种类型
 
 

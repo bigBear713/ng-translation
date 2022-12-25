@@ -267,11 +267,10 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
   ]
 ```
 
-#### NG_TRANS_MAX_RETRY_TOKEN：
-##### `v12.0.0`
-##### `@deprecated` from `v15.0.0`
 #### NG_TRANS_MAX_RETRY:
 ##### `v15.0.0`
+#### NG_TRANS_MAX_RETRY_TOKEN：
+##### `v12.0.0`, `@deprecated` from `v15.0.0`
 ###### The max retry time when failure to load translated file. The default is 5. It will be set in AppModule in common.
 
 ##### Usage
@@ -285,11 +284,10 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
     // ...
   ]
 ```
-#### WARN_DEPRECATED_TOKEN
-##### `v12.1.1`
-##### `@deprecated` from `v15.0.0`
 #### WARN_DEPRECATED:
 ##### `v15.0.0`
+#### WARN_DEPRECATED_TOKEN
+##### `v12.1.1`, `@deprecated` from `v15.0.0`
 ###### The lib is going to be deprecated, so there will display the warning message in console when you using it. And if you do not want to see the warning message in console, you can set the token as false in AppModule.
 
 ##### Usage
@@ -352,18 +350,16 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
 | list  | `INgTransSentencePart[]`  | false  | The parsed content of sentence | `v12.0.0` |
 
 ### Enum
-#### NgTransLangEnum：
-##### `v12.0.0`
-##### `@deprecated` from `v15.0.0`
 #### NgTransLang:
 ##### `v15.0.0`
+#### NgTransLangEnum：
+##### `v12.0.0`, `@deprecated` from `v15.0.0`
 ###### The enum of common language. You can not use it if you don't like, because only use it to set the default lang in lib (you can overwrite it), it is not used anywhere.
 
-#### NgTransSentenceItemEnum：
-##### `v12.0.0`
-##### `@deprecated` from `v15.0.0`
 #### NgTransSentenceItem:
 ##### `v15.0.0`
+#### NgTransSentenceItemEnum：
+##### `v12.0.0`, `@deprecated` from `v15.0.0`
 ###### The enum of sentence item. When parsing the translated sentence, it will be as the type:`STR`, `COMP` or `MULTI_COMP`.
 
 
