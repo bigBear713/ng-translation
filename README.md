@@ -12,8 +12,8 @@ Angular i18n translation component.
 
 </div>
 
-## Recommend
-- 该组件已经进入废弃阶段，计划在维护两个版本后将停止维护。推荐您使用`@bigbear713/nb-trans`或者其他多语言组件库
+## Attention
+- 该组件已经废弃，将不再推出`v16`版本,`v15`是最后一个版本。推荐您使用`@bigbear713/nb-trans`或者其他多语言组件库.
 
 ## Document
 - [中文](https://github.com/bigBear713/ng-translation/blob/master/projects/ng-translation/README.md "中文文档")
@@ -26,6 +26,7 @@ Angular i18n translation component.
 - 支持翻译文本中带有参数；
 - 支持翻译文本中带有组件的复杂场景；
 - 支持组件的更新策略为`ChangeDetectionStrategy.OnPush`;
+- 支持在`standalone component`中使用；
 
 ## Installation
 ```bash

@@ -14,11 +14,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { Feature2Component } from './feature2/feature2.component';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [	
+    AppComponent,
+   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     NgTransModule,

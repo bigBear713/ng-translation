@@ -20,11 +20,11 @@ import {
 import {
   INgTransOptions,
   INgTransParams,
-  NgTransSentenceItemEnum,
+  NgTransSentenceItem,
   INgTransSentencePart
 } from '../../models';
 import { NgTransService, NgTransToolsService } from '../../services';
-import { deprecatedTip, WARN_DEPRECATED_TOKEN } from '../../constants';
+import { deprecatedTip, WARN_DEPRECATED } from '../../constants';
 
 @Component({
   selector: 'ng-trans',
@@ -46,14 +46,14 @@ export class NgTransComponent implements OnChanges, OnDestroy {
 
   sentenceList: INgTransSentencePart[] = [];
 
-  SentenceItemEnum = NgTransSentenceItemEnum;
+  SentenceItemEnum = NgTransSentenceItem;
 
   private destroy$ = new Subject<void>();
 
   private originTrans: string = '';
 
   constructor(
-    @Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean,
+    @Inject(WARN_DEPRECATED) @Optional() warnDeprecated: boolean,
     private changeDR: ChangeDetectorRef,
     private transToolsService: NgTransToolsService,
     private transService: NgTransService,

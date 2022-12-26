@@ -1,7 +1,7 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { filter, switchMap, take } from 'rxjs/operators';
-import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER, NG_TRANS_MAX_RETRY_TOKEN } from '../../constants';
-import { NgTransLangEnum } from '../../models';
+import { NG_TRANS_DEFAULT_LANG, NG_TRANS_LOADER, NG_TRANS_MAX_RETRY } from '../../constants';
+import { NgTransLang } from '../../models';
 import { translationSyncTestData, transLoader, NgTransTestingModule } from '../../testing';
 import { NgTransService } from '../ng-trans.service';
 
@@ -29,7 +29,7 @@ describe('Service: NgTrans', () => {
           TestBed.configureTestingModule({
             imports: [NgTransTestingModule],
             providers: [
-              { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.ZH_CN, },
+              { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLang.ZH_CN, },
               { provide: NG_TRANS_LOADER, useValue: loaderMethodItem.loader },
             ]
           });
@@ -48,9 +48,9 @@ describe('Service: NgTrans', () => {
         });
 
         [
-          { lang: NgTransLangEnum.ZH_CN, expect: { changeResult: { curLang: NgTransLangEnum.ZH_CN, result: true }, transResult: '标题  ' } },
-          { lang: NgTransLangEnum.EN, expect: { changeResult: { curLang: NgTransLangEnum.EN, result: true }, transResult: 'title  ' } },
-          { lang: NgTransLangEnum.AR_EG, expect: { changeResult: { curLang: NgTransLangEnum.ZH_CN, result: false }, transResult: '标题  ' } },
+          { lang: NgTransLang.ZH_CN, expect: { changeResult: { curLang: NgTransLang.ZH_CN, result: true }, transResult: '标题  ' } },
+          { lang: NgTransLang.EN, expect: { changeResult: { curLang: NgTransLang.EN, result: true }, transResult: 'title  ' } },
+          { lang: NgTransLang.AR_EG, expect: { changeResult: { curLang: NgTransLang.ZH_CN, result: false }, transResult: '标题  ' } },
         ].forEach(item => {
           it(`change lang as ${item.lang}`, (done) => {
             service.subscribeLoadDefaultOver().pipe(
@@ -68,9 +68,9 @@ describe('Service: NgTrans', () => {
 
         describe('#subscribeLangChange()', () => {
           [
-            { lang: NgTransLangEnum.ZH_CN, expect: NgTransLangEnum.ZH_CN },
-            { lang: NgTransLangEnum.EN, expect: NgTransLangEnum.EN },
-            { lang: NgTransLangEnum.AR_EG, expect: NgTransLangEnum.ZH_CN },
+            { lang: NgTransLang.ZH_CN, expect: NgTransLang.ZH_CN },
+            { lang: NgTransLang.EN, expect: NgTransLang.EN },
+            { lang: NgTransLang.AR_EG, expect: NgTransLang.ZH_CN },
           ].forEach(item => {
             it(`change lang as ${item.lang}`, (done) => {
               service.subscribeLoadDefaultOver().pipe(
@@ -93,7 +93,7 @@ describe('Service: NgTrans', () => {
 
   it('#changeLangSync()', inject([NgTransService], (service: NgTransService) => {
     spyOn(service, 'changeLang').and.callThrough();
-    service.changeLangSync(NgTransLangEnum.BG_BG);
+    service.changeLangSync(NgTransLang.BG_BG);
     expect(service.changeLang).toHaveBeenCalledTimes(1);
   }));
 
@@ -103,7 +103,7 @@ describe('Service: NgTrans', () => {
       TestBed.configureTestingModule({
         imports: [NgTransTestingModule],
         providers: [
-          { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.ZH_CN },
+          { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLang.ZH_CN },
           { provide: NG_TRANS_LOADER, useValue: transLoader.staticLoader },
         ]
       });
@@ -132,7 +132,7 @@ describe('Service: NgTrans', () => {
       TestBed.configureTestingModule({
         imports: [NgTransTestingModule],
         providers: [
-          { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.ZH_CN },
+          { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLang.ZH_CN },
           { provide: NG_TRANS_LOADER, useValue: transLoader.dynamicLoader },
         ]
       });
@@ -152,7 +152,7 @@ describe('Service: NgTrans', () => {
     it('change lang as en', (done) => {
       service.subscribeLoadDefaultOver().pipe(
         filter(result => result),
-        switchMap(() => service.changeLang(NgTransLangEnum.EN)),
+        switchMap(() => service.changeLang(NgTransLang.EN)),
         switchMap(() => service.translationAsync('title')),
       ).pipe(take(1)).subscribe(transContent => {
         expect(transContent).toEqual('title  ');
@@ -164,22 +164,22 @@ describe('Service: NgTrans', () => {
   it('when failure to load default lang', (done) => {
     const langLoader = () => Promise.reject();
     const transLoader = {
-      [NgTransLangEnum.EN_US]: langLoader
+      [NgTransLang.EN_US]: langLoader
     };
     TestBed.configureTestingModule({
       imports: [NgTransTestingModule],
       providers: [
-        { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLangEnum.EN_US },
+        { provide: NG_TRANS_DEFAULT_LANG, useValue: NgTransLang.EN_US },
         { provide: NG_TRANS_LOADER, useValue: transLoader },
-        { provide: NG_TRANS_MAX_RETRY_TOKEN, useValue: 3 },
+        { provide: NG_TRANS_MAX_RETRY, useValue: 3 },
       ]
     });
-    spyOn(transLoader, NgTransLangEnum.EN_US).and.callThrough();
+    spyOn(transLoader, NgTransLang.EN_US).and.callThrough();
     const service = TestBed.inject(NgTransService);
     service.subscribeLoadDefaultOver().pipe(
       take(1),
     ).subscribe(_ => {
-      expect(transLoader[NgTransLangEnum.EN_US]).toHaveBeenCalledTimes(4);
+      expect(transLoader[NgTransLang.EN_US]).toHaveBeenCalledTimes(4);
       done();
     });
   });
