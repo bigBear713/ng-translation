@@ -26,12 +26,14 @@ Angular i18n translation component.
 - 支持翻译文本中带有参数；
 - 支持翻译文本中带有组件的复杂场景；
 - 支持组件的更新策略为`ChangeDetectionStrategy.OnPush`;
+- 支持在`standalone component`中使用；
 
 ### Version
 ###### ng-trans的大版本和Angular的大版本保持对应关系
 - "@bigbear713/ng-trans":"^12.0.0" - "@angular/core": "^12.0.0"
 - "@bigbear713/ng-trans":"^13.0.0" - "@angular/core": "^13.0.0"
 - "@bigbear713/ng-trans":"^14.0.0" - "@angular/core": "^14.0.0"
+- "@bigbear713/nb-trans":"^15.0.0" - "@angular/core": "^15.0.0"
 
 ### Installation
 ```bash
@@ -195,7 +197,7 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
 
 #### NG_TRANS_DEFAULT_LANG：
 ##### `v12.0.0`
-###### 用于设置默认语言，初始化`NgTransService`实例时将自动加载该语言的文本内容。不设置时默认为`NgTransLangEnum.ZH_CN`。一般只在AppModule设置一次
+###### 用于设置默认语言，初始化`NgTransService`实例时将自动加载该语言的文本内容。不设置时默认为`NgTransLang.ZH_CN`。一般只在AppModule设置一次
 
 ##### Usage
 ```ts
@@ -203,7 +205,7 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
     // ...
     {
       provide: NG_TRANS_DEFAULT_LANG,
-      useValue: NgTransLangEnum.ZH_CN,
+      useValue: NgTransLang.ZH_CN,
     },
     // ...
   ]
@@ -223,8 +225,8 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
     {
       provide: NG_TRANS_LOADER,
       useValue: {
-        [NgTransLangEnum.ZH_CN]: zhCNTrans,
-        [NgTransLangEnum.EN]: enTrans,
+        [NgTransLang.ZH_CN]: zhCNTrans,
+        [NgTransLang.EN]: enTrans,
       }
     }
     // ...
@@ -240,10 +242,10 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
       useFactory: (http: HttpClient) => ({
         // dyn load and the content is a json file
         // the loader fn return value can be Observable<Object>/Promise<Object> type
-        // [NgTransLangEnum.EN]: () => http.get('./assets/localization/en/translations.json').toPromise(),
-        [NgTransLangEnum.EN]: () => http.get('./assets/localization/en/translations.json'),
-        // [NgTransLangEnum.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json').toPromise(),
-        [NgTransLangEnum.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json'),
+        // [NgTransLang.EN]: () => http.get('./assets/localization/en/translations.json').toPromise(),
+        [NgTransLang.EN]: () => http.get('./assets/localization/en/translations.json'),
+        // [NgTransLang.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json').toPromise(),
+        [NgTransLang.ZH_CN]: () => http.get('./assets/localization/zh-CN/translations.json'),
       }),
       deps: [HttpClient]
     }
@@ -257,16 +259,18 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
     {
       provide: NG_TRANS_LOADER,
       useValue: {
-        [NgTransLangEnum.EN]: () => import('./localization/en/translations').then(data => data.trans),
-        [NgTransLangEnum.ZH_CN]: () => import('./localization/zh-CN/translations').then(data => data.trans),
+        [NgTransLang.EN]: () => import('./localization/en/translations').then(data => data.trans),
+        [NgTransLang.ZH_CN]: () => import('./localization/zh-CN/translations').then(data => data.trans),
       }
     }
     // ...
   ]
 ```
 
-#### NG_TRANS_MAX_RETRY_TOKEN：
-##### `v12.0.0`
+#### NG_TRANS_MAX_RETRY:
+##### `v15.0.0`
+#### NG_TRANS_MAX_RETRY_TOKEN:
+##### `v12.0.0`, `@deprecated` from `v15.0.0`
 ###### 翻译文本加载失败时的最大重试次数，默认为5次。一般只在AppModule设置一次
 
 ##### Usage
@@ -274,15 +278,17 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
   providers: [
     // ...
     {
-      provide: NG_TRANS_MAX_RETRY_TOKEN,
+      provide: NG_TRANS_MAX_RETRY,
       useValue: 3
     },
     // ...
   ]
 ```
 
+#### WARN_DEPRECATED:
+##### `v15.0.0`
 #### WARN_DEPRECATED_TOKEN
-##### `v12.1.1`
+##### `v12.1.1`, `@deprecated` from `v15.0.0`
 ###### 本组件库将被弃用，使用时默认会在console输出警告信息。如果你不想在console看到这些警告信息，可在AppModule中设置该token为false。
 
 ##### Usage
@@ -290,7 +296,7 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
   providers: [
 	// ...
     {
-      provide: WARN_DEPRECATED_TOKEN,
+      provide: WARN_DEPRECATED,
       useValue: false
     },
 	// ...
@@ -344,12 +350,16 @@ this.transService.subscribeLoadDefaultOver().subscribe(over=>{
 | list  | `INgTransSentencePart[]`  | false  | 文本句子的解析部分 | `v12.0.0` |
 
 ### Enum
+#### NgTransLang:
+##### `v15.0.0`
 #### NgTransLangEnum：
-##### `v12.0.0`
+##### `v12.0.0`， `@deprecated` from `v15.0.0`
 ###### 常用语言枚举。除了默认语言未设置时的默认值外，组件以及服务中均未直接使用该枚举中的值，所以不强制要求使用该枚举。
 
+#### NgTransSentenceItem:
+##### `v15.0.0`
 #### NgTransSentenceItemEnum：
-##### `v12.0.0`
+##### `v12.0.0`, `@deprecated` from `v15.0.0`
 ###### 句子项类型枚举。在对句子内容进行解析时，会将句子分为`STR`,`COMP`和`MULTI_COMP`这3种类型
 
 

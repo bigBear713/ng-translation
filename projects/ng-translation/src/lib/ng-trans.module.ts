@@ -6,7 +6,7 @@ import {
   NgTransComponent,
   NgTransSubcontentComponent
 } from './components';
-import { deprecatedTip, WARN_DEPRECATED_TOKEN } from './constants';
+import { deprecatedTip, WARN_DEPRECATED } from './constants';
 import {
   NgTransContentPipe,
   NgTransPipe,
@@ -38,7 +38,7 @@ const PIPES = [
   ]
 })
 export class NgTransModule {
-  constructor(@Inject(WARN_DEPRECATED_TOKEN) @Optional() warnDeprecated: boolean) {
+  constructor(@Inject(WARN_DEPRECATED) @Optional() warnDeprecated: boolean) {
     if (warnDeprecated !== false) {
       console.warn(deprecatedTip);
     }
